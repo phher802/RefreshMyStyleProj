@@ -9,7 +9,7 @@ namespace RefreshMyStyleApp.Models
     public class ProfileImage
     {
         [Key]
-        public int? ProfileImage_Id { get; set; }
+        public int? ProfileImageId { get; set; }
 
         [Display(Name = "Profile Picture")]
         public string ProfileImageTitle { get; set; }

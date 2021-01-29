@@ -24,6 +24,24 @@ namespace RefreshMyStyleApp.Models
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
         public string PhoneNumber { get; set; }
 
-        
+        [ForeignKey("ProfileImage")]
+        public int? ProfileImageId { get; set; }
+        public ProfileImage ProfileImage { get; set; }
+
+        [ForeignKey("Video")]
+        public int? VideoId { get; set; }
+        public Video Video { get; set; }
+
+        [ForeignKey("Image")]
+        public int? ImageId { get; set; }
+        public Image Image { get; set; }
+
+        [ForeignKey("Event")]
+        public int? EventId { get; set; }
+        public Event Event { get; set; }
+
+        [ForeignKey("FriendsList")]
+        public int FriendsListId { get; set; }
+        public FriendsList FriendsList { get; set; }
     }
 }
