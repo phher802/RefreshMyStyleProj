@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using RefreshMyStyleApp.Models;
 
 namespace RefreshMyStyleApp.Data
 {
@@ -12,5 +13,7 @@ namespace RefreshMyStyleApp.Data
             : base(options)
         {
         }
+
+        public DbSet<ProfileImage> profileImages { get; set; }
     }
 }
