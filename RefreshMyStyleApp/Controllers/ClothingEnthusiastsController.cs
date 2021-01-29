@@ -92,7 +92,7 @@ namespace RefreshMyStyleApp.Controllers
         {
             ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId");
             ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId");
-            ViewData["ImageId"] = new SelectList(_context.images, "ImageId", "ImageId");
+            ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId");
             ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId");
             return View();
         }
@@ -112,7 +112,7 @@ namespace RefreshMyStyleApp.Controllers
             }
             ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId", clothingEnthusiast.EventId);
             ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId", clothingEnthusiast.FriendsListId);
-            ViewData["ImageId"] = new SelectList(_context.images, "ImageId", "ImageId", clothingEnthusiast.ImageId);
+            ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId", clothingEnthusiast.ImageId);
             ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId", clothingEnthusiast.ProfileImageId);
             return View(clothingEnthusiast);
         }
@@ -132,7 +132,7 @@ namespace RefreshMyStyleApp.Controllers
             }
             ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId", clothingEnthusiast.EventId);
             ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId", clothingEnthusiast.FriendsListId);
-            ViewData["ImageId"] = new SelectList(_context.images, "ImageId", "ImageId", clothingEnthusiast.ImageId);
+            ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId", clothingEnthusiast.ImageId);
             ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId", clothingEnthusiast.ProfileImageId);
             return View(clothingEnthusiast);
         }
@@ -171,7 +171,7 @@ namespace RefreshMyStyleApp.Controllers
             }
             ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId", clothingEnthusiast.EventId);
             ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId", clothingEnthusiast.FriendsListId);
-            ViewData["ImageId"] = new SelectList(_context.images, "ImageId", "ImageId", clothingEnthusiast.ImageId);
+            ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId", clothingEnthusiast.ImageId);
             ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId", clothingEnthusiast.ProfileImageId);
             return View(clothingEnthusiast);
         }
