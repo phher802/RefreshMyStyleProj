@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace RefreshMyStyleApp.Models
 {
-    public class ClaimedList
+    public class LikedList
     {
         [Key]
-        public int? ClaimedListId { get; set; }
-
+        public int? LikedListId { get; set; }
 
         [ForeignKey("ClothingEnthusiast")]
         public int UserId { get; set; }
@@ -26,6 +25,5 @@ namespace RefreshMyStyleApp.Models
         [ForeignKey("Video")]
         public int? VideoId { get; set; }
         public Video Video { get; set; }
-
     }
 }
