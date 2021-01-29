@@ -49,6 +49,7 @@ namespace RefreshMyStyleApp.Controllers
             return View(clothingEnthusiast);
         }
 
+        [HttpPost]
         public IActionResult UpoadImage()
         {
             foreach(var file in Request.Form.Files)
@@ -71,9 +72,20 @@ namespace RefreshMyStyleApp.Controllers
             ViewBag.Message = "Image(s) stored in database!";
             return View("Index");
         
-
-
         }
+         
+        [HttpPost]
+        public IActionResult RetreiveImage()
+        {
+            Image img = _context.Images.OrderByDescending(i => i.ImageId).SingleOrDefault();
+            string imageBase64Data = Convert.ToBase64String(img.ImageData);
+            string imageDataURL = string.Format("data:image/jpg;base64, {0}", imageBase64Data);
+
+            ViewBag.ImageTitle = img.ImageTitle;
+            ViewBag.ImageDataURL = imageDataURL;
+            return View("Index");
+        }
+
 
         // GET: ClothingEnthusiasts/Create
         public IActionResult Create()
