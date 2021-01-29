@@ -7,14 +7,15 @@ using System.Threading.Tasks;
 
 namespace RefreshMyStyleApp.Models
 {
-    public class FriendsList
+    public class EventList
     {
         [Key]
-        public int? FriendsListId { get; set; }
+        public int? EventListId { get; set; }
 
 
         [ForeignKey("ClothingEnthusiast")]
         public int UserId { get; set; }
         public ClothingEnthusiast User { get; set; }
+
     }
 }

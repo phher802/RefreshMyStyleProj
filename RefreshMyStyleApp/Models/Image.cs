@@ -15,6 +15,7 @@ namespace RefreshMyStyleApp.Models
 
         public byte[] ImageData { get; set; }
 
+        [Display(Name = "Category")]
         public string ClothingCategory { get; set; }
 
         public string Color { get; set; }
