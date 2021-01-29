@@ -12,6 +12,7 @@ namespace RefreshMyStyleApp.Models
         [Key]
         public int FriendsListId { get; set; }
 
+
         [ForeignKey("ClothingEnthusiast")]
         public int UserId { get; set; }
         public ClothingEnthusiast User { get; set; }
