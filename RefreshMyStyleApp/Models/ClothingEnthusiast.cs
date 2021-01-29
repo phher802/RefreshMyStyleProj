@@ -30,11 +30,6 @@ namespace RefreshMyStyleApp.Models
         public ProfileImage ProfileImage { get; set; }
 
 
-        [ForeignKey("Video")]
-        public int? VideoId { get; set; }
-        public Video Video { get; set; }
-
-
         [ForeignKey("Image")]
         public int? ImageId { get; set; }
         public Image Image { get; set; }

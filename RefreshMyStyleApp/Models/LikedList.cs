@@ -22,8 +22,5 @@ namespace RefreshMyStyleApp.Models
         public Image Image { get; set; }
 
 
-        [ForeignKey("Video")]
-        public int? VideoId { get; set; }
-        public Video Video { get; set; }
     }
 }
