@@ -15,5 +15,6 @@ namespace RefreshMyStyleApp.Data
         }
 
         public DbSet<ProfileImage> profileImages { get; set; }
+        public DbSet<Image> images { get; set; }
     }
 }
