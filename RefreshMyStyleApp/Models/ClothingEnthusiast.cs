@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace RefreshMyStyleApp.Models
 {
@@ -43,5 +44,9 @@ namespace RefreshMyStyleApp.Models
         [ForeignKey("FriendsList")]
         public int? FriendsListId { get; set; }
         public FriendsList FriendsList { get; set; }
+
+        [ForeignKey("IdentityUser")]
+        public string IdentityUserId { get; set; }
+        public IdentityUser IdentityUser { get; set; }
     }
 }

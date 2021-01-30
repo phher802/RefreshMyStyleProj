@@ -21,6 +21,6 @@ namespace RefreshMyStyleApp.Models
         public int? ImageId { get; set; }
         public Image Image { get; set; }
 
-
+       
     }
 }
