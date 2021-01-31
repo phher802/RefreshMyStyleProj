@@ -43,7 +43,7 @@ namespace RefreshMyStyleApp.Areas.Identity.Pages.Account
 
         [BindProperty]
         public InputModel Input { get; set; }
-        public SelectList Roles {get; set; }
+        //public SelectList Roles {get; set; }
 
         public string ReturnUrl { get; set; }
 
@@ -67,16 +67,16 @@ namespace RefreshMyStyleApp.Areas.Identity.Pages.Account
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
 
-            [Required]
-            public string Role { get; set; }
+            //[Required]
+           // public string Role { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            var roles = _roleManager.Roles;
-            Roles = new SelectList(roles, "Name", "Name");
+            //var roles = _roleManager.Roles;
+            //Role = new (roles, "Name", "Name");
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
@@ -89,10 +89,10 @@ namespace RefreshMyStyleApp.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    if(await _roleManager.RoleExistsAsync(Input.Role))
-                    {
-                        await _userManager.AddToRoleAsync(user, Input.Role);
-                    }
+                    //if(await _roleManager.RoleExistsAsync(Input.Role))
+                    //{
+                    //    await _userManager.AddToRoleAsync(user, Input.Role);
+                    //}
 
                     _logger.LogInformation("User created a new account with password.");
 
