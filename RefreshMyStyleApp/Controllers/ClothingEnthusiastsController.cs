@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -21,10 +22,20 @@ namespace RefreshMyStyleApp.Controllers
         }
 
         // GET: ClothingEnthusiasts
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var applicationDbContext = _context.ClothingEnthusiast.Include(c => c.Event).Include(c => c.FriendsList).Include(c => c.Image).Include(c => c.ProfileImage);
-            return View(await applicationDbContext.ToListAsync());
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = _context.ClothingEnthusiast.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            if (user == null)
+            {
+                return RedirectToAction(nameof(Create));
+            }
+
+            return View(user);
+
+            //var applicationDbContext = _context.ClothingEnthusiast.Include(c => c.Event).Include(c => c.FriendsList).Include(c => c.Image).Include(c => c.ProfileImage);
+            //return View(await applicationDbContext.ToListAsync());
+
         }
 
         // GET: ClothingEnthusiasts/Details/5
@@ -95,6 +106,9 @@ namespace RefreshMyStyleApp.Controllers
             ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId");
             ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId");
             return View();
+
+
+
         }
 
         // POST: ClothingEnthusiasts/Create
@@ -104,6 +118,15 @@ namespace RefreshMyStyleApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserId,FName,LName,PhoneNumber,ProfileImageId,ImageId,EventId,FriendsListId")] ClothingEnthusiast clothingEnthusiast)
         {
+            if ( clothingEnthusiast != null)
+            {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                clothingEnthusiast.IdentityUserId = userId;
+                _context.Add(clothingEnthusiast);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(clothingEnthusiast);
