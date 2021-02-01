@@ -25,7 +25,7 @@ namespace RefreshMyStyleApp.Controllers
         public IActionResult Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _context.ClothingEnthusiast.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var user = _context.ClothingEnthusiast.Where(c => c.IdentityUserId == userId).SingleOrDefault();
             if (user == null)
             {
                 return RedirectToAction(nameof(Create));
@@ -116,9 +116,9 @@ namespace RefreshMyStyleApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,FName,LName,PhoneNumber,ProfileImageId,ImageId,EventId,FriendsListId")] ClothingEnthusiast clothingEnthusiast)
+        public IActionResult Create([Bind("UserId,FName,LName,PhoneNumber,ProfileImageId,ImageId,EventId,FriendsListId")] ClothingEnthusiast clothingEnthusiast)
         {
-            if ( clothingEnthusiast != null)
+            if (clothingEnthusiast != null)
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 clothingEnthusiast.IdentityUserId = userId;
@@ -127,17 +127,19 @@ namespace RefreshMyStyleApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            if (ModelState.IsValid)
-            {
-                _context.Add(clothingEnthusiast);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId", clothingEnthusiast.EventId);
-            ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId", clothingEnthusiast.FriendsListId);
-            ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId", clothingEnthusiast.ImageId);
-            ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId", clothingEnthusiast.ProfileImageId);
             return View(clothingEnthusiast);
+
+            //if (ModelState.IsValid)
+            //{
+            //    _context.Add(clothingEnthusiast);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId", clothingEnthusiast.EventId);
+            //ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId", clothingEnthusiast.FriendsListId);
+            //ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId", clothingEnthusiast.ImageId);
+            //ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId", clothingEnthusiast.ProfileImageId);
+
         }
 
         // GET: ClothingEnthusiasts/Edit/5
