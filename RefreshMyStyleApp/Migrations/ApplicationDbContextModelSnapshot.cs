@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RefreshMyStyleApp.Data;
 
-namespace RefreshMyStyleApp.Data.Migrations
+namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210130001547_Initial")]
-    partial class Initial
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -50,10 +48,10 @@ namespace RefreshMyStyleApp.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3529b2d0-3803-4cf7-b6e4-ecafbddcc3e9",
-                            ConcurrencyStamp = "ef822aeb-68e6-43e0-9365-a5cef6b0c7c4",
-                            Name = "User",
-                            NormalizedName = "USER"
+                            Id = "43b264b0-6f61-44b1-8860-2c45b57ce697",
+                            ConcurrencyStamp = "213963e3-0b8d-4d65-89b1-1594b8a857d7",
+                            Name = "ClothingEnthusiast",
+                            NormalizedName = "CLOTHINGENTHUSIAST"
                         });
                 });
 
@@ -271,7 +269,7 @@ namespace RefreshMyStyleApp.Data.Migrations
 
                     b.HasIndex("ProfileImageId");
 
-                    b.ToTable("ClothingEnthusiast");
+                    b.ToTable("ClothingEnthusiasts");
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Event", b =>
@@ -386,7 +384,7 @@ namespace RefreshMyStyleApp.Data.Migrations
 
                     b.HasKey("ProfileImageId");
 
-                    b.ToTable("profileImages");
+                    b.ToTable("ProfileImages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

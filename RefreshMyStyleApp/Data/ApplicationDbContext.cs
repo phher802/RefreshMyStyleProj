@@ -10,14 +10,16 @@ namespace RefreshMyStyleApp.Data
 {
     public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
+        public DbSet<ProfileImage> ProfileImages { get; set; }
+        public DbSet<Image> Images { get; set; }
+        public DbSet<ClothingEnthusiast> ClothingEnthusiasts { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
 
-        public DbSet<ProfileImage> profileImages { get; set; }
-        public DbSet<Image> Images { get; set; }
-        public DbSet<ClothingEnthusiast> ClothingEnthusiast { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -27,8 +29,8 @@ namespace RefreshMyStyleApp.Data
                 .HasData(
                 new IdentityRole
                 {
-                    Name = "User",
-                    NormalizedName = "USER"
+                    Name = "ClothingEnthusiast",
+                    NormalizedName = "CLOTHINGENTHUSIAST"
                 });
         }
     }
