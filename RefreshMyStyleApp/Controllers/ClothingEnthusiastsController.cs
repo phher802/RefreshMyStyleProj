@@ -25,7 +25,7 @@ namespace RefreshMyStyleApp.Controllers
         public IActionResult Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _context.ClothingEnthusiast.Where(c => c.IdentityUserId == userId).SingleOrDefault();
+            var user = _context.ClothingEnthusiasts.Where(c => c.IdentityUserId == userId).SingleOrDefault();
             if (user == null)
             {
                 return RedirectToAction(nameof(Create));
@@ -46,7 +46,7 @@ namespace RefreshMyStyleApp.Controllers
                 return NotFound();
             }
 
-            var clothingEnthusiast = await _context.ClothingEnthusiast
+            var clothingEnthusiast = await _context.ClothingEnthusiasts
                 .Include(c => c.Event)
                 .Include(c => c.FriendsList)
                 .Include(c => c.Image)
@@ -101,10 +101,10 @@ namespace RefreshMyStyleApp.Controllers
         // GET: ClothingEnthusiasts/Create
         public IActionResult Create()
         {
-            ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId");
-            ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId");
-            ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId");
-            ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId");
+           // ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId");
+            //ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId");
+            //ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId");
+            //ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId");
             return View();
 
 
@@ -150,7 +150,7 @@ namespace RefreshMyStyleApp.Controllers
                 return NotFound();
             }
 
-            var clothingEnthusiast = await _context.ClothingEnthusiast.FindAsync(id);
+            var clothingEnthusiast = await _context.ClothingEnthusiasts.FindAsync(id);
             if (clothingEnthusiast == null)
             {
                 return NotFound();
@@ -158,7 +158,7 @@ namespace RefreshMyStyleApp.Controllers
             ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId", clothingEnthusiast.EventId);
             ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId", clothingEnthusiast.FriendsListId);
             ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId", clothingEnthusiast.ImageId);
-            ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId", clothingEnthusiast.ProfileImageId);
+            ViewData["ProfileImageId"] = new SelectList(_context.ProfileImages, "ProfileImageId", "ProfileImageId", clothingEnthusiast.ProfileImageId);
             return View(clothingEnthusiast);
         }
 
@@ -197,7 +197,7 @@ namespace RefreshMyStyleApp.Controllers
             ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId", clothingEnthusiast.EventId);
             ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId", clothingEnthusiast.FriendsListId);
             ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId", clothingEnthusiast.ImageId);
-            ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId", clothingEnthusiast.ProfileImageId);
+            ViewData["ProfileImageId"] = new SelectList(_context.ProfileImages, "ProfileImageId", "ProfileImageId", clothingEnthusiast.ProfileImageId);
             return View(clothingEnthusiast);
         }
 
@@ -209,7 +209,7 @@ namespace RefreshMyStyleApp.Controllers
                 return NotFound();
             }
 
-            var clothingEnthusiast = await _context.ClothingEnthusiast
+            var clothingEnthusiast = await _context.ClothingEnthusiasts
                 .Include(c => c.Event)
                 .Include(c => c.FriendsList)
                 .Include(c => c.Image)
@@ -228,15 +228,15 @@ namespace RefreshMyStyleApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var clothingEnthusiast = await _context.ClothingEnthusiast.FindAsync(id);
-            _context.ClothingEnthusiast.Remove(clothingEnthusiast);
+            var clothingEnthusiast = await _context.ClothingEnthusiasts.FindAsync(id);
+            _context.ClothingEnthusiasts.Remove(clothingEnthusiast);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool ClothingEnthusiastExists(int id)
         {
-            return _context.ClothingEnthusiast.Any(e => e.UserId == id);
+            return _context.ClothingEnthusiasts.Any(e => e.UserId == id);
         }
     }
 }

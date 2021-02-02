@@ -24,7 +24,7 @@ namespace RefreshMyStyleApp.ActionFilters
             {
                 if (_claimsPrincipal.IsInRole("ClothingEnthusiast"))
                 {
-                    context.Result = new RedirectToActionResult("Index", "ClothingEnthusiast", null);
+                    context.Result = new RedirectToActionResult("Index", "ClothingEnthusiasts", null);
                 }
              
             }

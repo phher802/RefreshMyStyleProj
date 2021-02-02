@@ -28,7 +28,7 @@
                 <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
             </div>
             <button type="submit" class="btn btn-primary">Register</button>
-            <div class="form-group">
+            <div class="form-group" typeof="hidden">
                 <label asp-for="Input.Role"></label>
                 <Select asp-for="Input.Role" class="form-control" asp-items="@Model.Roles"></Select>
                 <span asp-validation-for="Input.Role" class="text-danger"></span>
