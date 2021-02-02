@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace RefreshMyStyleApp.Models
 {
+
     public class ProfileImage
     {
         [Key]

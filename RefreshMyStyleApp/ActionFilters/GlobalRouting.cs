@@ -22,9 +22,9 @@ namespace RefreshMyStyleApp.ActionFilters
             var controller = context.RouteData.Values["controller"];
             if (controller.Equals("Home"))
             {
-                if (_claimsPrincipal.IsInRole("ClothingEnthusiast"))
+                if (_claimsPrincipal.IsInRole("Person"))
                 {
-                    context.Result = new RedirectToActionResult("Index", "ClothingEnthusiasts", null);
+                    context.Result = new RedirectToActionResult("Index", "People", null);
                 }
              
             }

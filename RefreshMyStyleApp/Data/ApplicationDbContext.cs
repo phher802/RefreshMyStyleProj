@@ -12,7 +12,7 @@ namespace RefreshMyStyleApp.Data
     {
         public DbSet<ProfileImage> ProfileImages { get; set; }
         public DbSet<Image> Images { get; set; }
-        public DbSet<ClothingEnthusiast> ClothingEnthusiasts { get; set; }
+        public DbSet<Person> People { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -29,8 +29,8 @@ namespace RefreshMyStyleApp.Data
                 .HasData(
                 new IdentityRole
                 {
-                    Name = "ClothingEnthusiast",
-                    NormalizedName = "CLOTHINGENTHUSIAST"
+                    Name = "Person",
+                    NormalizedName = "PERSON"
                 });
         }
     }

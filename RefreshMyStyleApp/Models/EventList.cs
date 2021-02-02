@@ -15,7 +15,7 @@ namespace RefreshMyStyleApp.Models
 
         [ForeignKey("ClothingEnthusiast")]
         public int UserId { get; set; }
-        public ClothingEnthusiast User { get; set; }
+        public Person User { get; set; }
 
     }
 }
