@@ -85,6 +85,20 @@ namespace RefreshMyStyleApp.Controllers
         }
 
         [HttpPost]
+        public IActionResult RetreiveProfileImage()
+        {
+            ProfileImage profileImg = _context.ProfileImages.OrderByDescending(i => i.ProfileImageId).SingleOrDefault();
+            string imageBase64Data = Convert.ToBase64String(profileImg.ProfileImageData);
+            string profileImageDataURL = string.Format("data:image/jpg;base64, {0}", imageBase64Data);
+
+            ViewBag.ProfileImageTitle = profileImg.ProfileImageTitle;
+            ViewBag.ProfileImageDataURL = profileImageDataURL;
+            return View("Index");
+        }
+
+
+
+        [HttpPost]
         public IActionResult UpoadImage()
         {
             foreach (var file in Request.Form.Files)
