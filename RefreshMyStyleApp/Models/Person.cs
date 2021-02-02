@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace RefreshMyStyleApp.Models
 {
-    public class ClothingEnthusiast
+    public class Person
     {
         [Key]
-        public int UserId { get; set; }
+        public int Id { get; set; }
 
         [Display(Name = "First Name")]
         public string FName { get; set; }

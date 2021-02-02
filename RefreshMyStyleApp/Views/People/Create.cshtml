@@ -1,5 +1,5 @@
-﻿@model RefreshMyStyleApp.Models.ClothingEnthusiast
-
+﻿@model RefreshMyStyleApp.Models.Person
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -7,12 +7,20 @@
 
 <h1>Create</h1>
 
-<h4>ClothingEnthusiast</h4>
+<h4>Person</h4>
 <h1>@ViewBag.Message</h1>
 <h1>@ViewBag.ProfileImageTitle</h1>
 <img src="@ViewBag.ProfileImageDataUrl" />
 
 <hr />
+<form asp-action="UploadProfileImage" asp-controller="People" method="post"
+      enctype="multipart/form-data">
+    <input type="file" id="file1" name="file1" multiple="multiple" />
+    <button type="submit">Upload profile picture</button>
+</form>
+<form asp-action="RetrieveProfileImage" asp-controller="People" method="post">
+    <button type="submit">Show latest profile picture</button>
+</form>
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
@@ -32,22 +40,12 @@
                 <input asp-for="PhoneNumber" class="form-control" />
                 <span asp-validation-for="PhoneNumber" class="text-danger"></span>
             </div>
-        </form>
-        <form asp-action="UploadProfileImage" asp-controller="ClothingEnthusiastsController" method="post"
-              enctype="multipart/form-data">
-            <input type="file" id="file1" name="file1" multiple="multiple" value="" />
-            <button type="submit">Upload profile picture</button>
-        </form>
-        <form asp-action="RetrieveProfileImage" asp-controller="ClothingEnthusiastsController" method="post">
-            <button type="submit">Show latest profile picture</button>
-        </form>
-        <form style="display: none">
-            <div class="form-group">
+            <div class="form-group" style="display: none">
                 <label asp-for="IdentityUserId" class="control-label"></label>
                 <select asp-for="IdentityUserId" class="form-control" asp-items="ViewBag.IdentityUserId"></select>
             </div>
             <div class="form-group">
-                <input type="hidden" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>

@@ -12,26 +12,27 @@ using RefreshMyStyleApp.Models;
 
 namespace RefreshMyStyleApp.Controllers
 {
-    public class ClothingEnthusiastsController : Controller
+    public class PeopleController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public ClothingEnthusiastsController(ApplicationDbContext context)
+        public PeopleController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: ClothingEnthusiasts
+        // GET: People
         public IActionResult Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var user = _context.ClothingEnthusiasts.Where(c => c.IdentityUserId == userId).SingleOrDefault();
-            if (user == null)
+            var person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            
+            if (person == null)
             {
                 return RedirectToAction(nameof(Create));
             }
 
-            return View(user);
+            return View(person);
 
             //var applicationDbContext = _context.ClothingEnthusiast.Include(c => c.Event).Include(c => c.FriendsList).Include(c => c.Image).Include(c => c.ProfileImage);
             //return View(await applicationDbContext.ToListAsync());
@@ -46,19 +47,20 @@ namespace RefreshMyStyleApp.Controllers
                 return NotFound();
             }
 
-            var clothingEnthusiast = await _context.ClothingEnthusiasts
+            var person = await _context.People
                 .Include(c => c.Event)
                 .Include(c => c.FriendsList)
                 .Include(c => c.Image)
                 .Include(c => c.ProfileImage)
-                .FirstOrDefaultAsync(m => m.UserId == id);
-            if (clothingEnthusiast == null)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (person == null)
             {
                 return NotFound();
             }
 
-            return View(clothingEnthusiast);
+            return View(person);
         }
+
 
         [HttpPost]
         public IActionResult UpoadProfileImage()
@@ -79,6 +81,7 @@ namespace RefreshMyStyleApp.Controllers
                 _context.SaveChanges();
 
             }
+
 
             ViewBag.Message = "ProfileImage(s) stored in database!";
             return View("Index");
@@ -136,36 +139,38 @@ namespace RefreshMyStyleApp.Controllers
         }
 
 
-        // GET: ClothingEnthusiasts/Create
+        // GET: People/Create
         public IActionResult Create()
         {
+            Person person = new Person();
+            return View(person);
             // ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId");
             //ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId");
             //ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId");
             //ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId");
-            return View();
+        
 
 
 
         }
 
-        // POST: ClothingEnthusiasts/Create
+        // POST: People/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("UserId,FName,LName,PhoneNumber,ProfileImageId,ImageId,EventId,FriendsListId")] ClothingEnthusiast clothingEnthusiast)
+        public IActionResult Create([Bind("FName,LName,PhoneNumber")] Person person)
         {
-            if (clothingEnthusiast != null)
+            if (ModelState.IsValid)
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                clothingEnthusiast.IdentityUserId = userId;
-                _context.Add(clothingEnthusiast);
+                person.IdentityUserId = userId;
+                _context.Add(person);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-
-            return View(clothingEnthusiast);
+         
+            return View(person);
 
             //if (ModelState.IsValid)
             //{
@@ -188,16 +193,16 @@ namespace RefreshMyStyleApp.Controllers
                 return NotFound();
             }
 
-            var clothingEnthusiast = await _context.ClothingEnthusiasts.FindAsync(id);
-            if (clothingEnthusiast == null)
+            var person = await _context.People.FindAsync(id);
+            if (person == null)
             {
                 return NotFound();
             }
-            ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId", clothingEnthusiast.EventId);
-            ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId", clothingEnthusiast.FriendsListId);
-            ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId", clothingEnthusiast.ImageId);
-            ViewData["ProfileImageId"] = new SelectList(_context.ProfileImages, "ProfileImageId", "ProfileImageId", clothingEnthusiast.ProfileImageId);
-            return View(clothingEnthusiast);
+            ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId", person.EventId);
+            ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId", person.FriendsListId);
+            ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId", person.ImageId);
+            ViewData["ProfileImageId"] = new SelectList(_context.ProfileImages, "ProfileImageId", "ProfileImageId", person.ProfileImageId);
+            return View(person);
         }
 
         // POST: ClothingEnthusiasts/Edit/5
@@ -205,9 +210,9 @@ namespace RefreshMyStyleApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UserId,FName,LName,PhoneNumber,ProfileImageId,ImageId,EventId,FriendsListId")] ClothingEnthusiast clothingEnthusiast)
+        public async Task<IActionResult> Edit(int id, [Bind("UserId,FName,LName,PhoneNumber,ProfileImageId,ImageId,EventId,FriendsListId")] Person person)
         {
-            if (id != clothingEnthusiast.UserId)
+            if (id != person.Id)
             {
                 return NotFound();
             }
@@ -216,12 +221,12 @@ namespace RefreshMyStyleApp.Controllers
             {
                 try
                 {
-                    _context.Update(clothingEnthusiast);
+                    _context.Update(person);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClothingEnthusiastExists(clothingEnthusiast.UserId))
+                    if (!PeopleExists(person.Id))
                     {
                         return NotFound();
                     }
@@ -232,11 +237,11 @@ namespace RefreshMyStyleApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId", clothingEnthusiast.EventId);
-            ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId", clothingEnthusiast.FriendsListId);
-            ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId", clothingEnthusiast.ImageId);
-            ViewData["ProfileImageId"] = new SelectList(_context.ProfileImages, "ProfileImageId", "ProfileImageId", clothingEnthusiast.ProfileImageId);
-            return View(clothingEnthusiast);
+            ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId", person.EventId);
+            ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId", person.FriendsListId);
+            ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId", person.ImageId);
+            ViewData["ProfileImageId"] = new SelectList(_context.ProfileImages, "ProfileImageId", "ProfileImageId", person.ProfileImageId);
+            return View(person);
         }
 
         // GET: ClothingEnthusiasts/Delete/5
@@ -247,18 +252,18 @@ namespace RefreshMyStyleApp.Controllers
                 return NotFound();
             }
 
-            var clothingEnthusiast = await _context.ClothingEnthusiasts
+            var person = await _context.People
                 .Include(c => c.Event)
                 .Include(c => c.FriendsList)
                 .Include(c => c.Image)
                 .Include(c => c.ProfileImage)
-                .FirstOrDefaultAsync(m => m.UserId == id);
-            if (clothingEnthusiast == null)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (person == null)
             {
                 return NotFound();
             }
 
-            return View(clothingEnthusiast);
+            return View(person);
         }
 
         // POST: ClothingEnthusiasts/Delete/5
@@ -266,15 +271,15 @@ namespace RefreshMyStyleApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var clothingEnthusiast = await _context.ClothingEnthusiasts.FindAsync(id);
-            _context.ClothingEnthusiasts.Remove(clothingEnthusiast);
+            var person = await _context.People.FindAsync(id);
+            _context.People.Remove(person);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool ClothingEnthusiastExists(int id)
+        private bool PeopleExists(int id)
         {
-            return _context.ClothingEnthusiasts.Any(e => e.UserId == id);
+            return _context.People.Any(e => e.Id == id);
         }
     }
 }

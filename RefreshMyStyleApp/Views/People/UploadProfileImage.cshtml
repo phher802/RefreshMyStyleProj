@@ -1,0 +1,42 @@
+﻿@model RefreshMyStyleApp.Models.ProfileImage
+
+@{
+    ViewData["Title"] = "UploadProfileImage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>UploadProfileImage</h1>
+
+<h1>@ViewBag.Message</h1>
+<h1>@ViewBag.ProfileImageTitle</h1>
+<img src="@ViewBag.ProfileImageDataUrl" />
+<form asp-action="UploadProfileImage" asp-controller="ClothingEnthusiasts" method="post"
+      enctype="multipart/form-data">
+    <input type="file" id="file1" name="file1" multiple="multiple" />
+    <button type="submit">Upload profile picture</button>
+</form>
+<form asp-action="RetrieveProfileImage" asp-controller="ClothingEnthusiasts" method="post">
+    <button type="submit">Show latest profile picture</button>
+</form>
+<div>
+    <h4>ProfileImage</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProfileImageTitle)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProfileImageTitle)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProfileImageData)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProfileImageData)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ProfileImageId">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

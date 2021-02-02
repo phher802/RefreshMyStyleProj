@@ -200,10 +200,10 @@ namespace RefreshMyStyleApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClothingEnthusiasts",
+                name: "People",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FName = table.Column<string>(nullable: true),
                     LName = table.Column<string>(nullable: true),
@@ -216,27 +216,27 @@ namespace RefreshMyStyleApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClothingEnthusiasts", x => x.UserId);
+                    table.PrimaryKey("PK_People", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClothingEnthusiasts_FriendsList_FriendsListId",
+                        name: "FK_People_FriendsList_FriendsListId",
                         column: x => x.FriendsListId,
                         principalTable: "FriendsList",
                         principalColumn: "FriendsListId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ClothingEnthusiasts_AspNetUsers_IdentityUserId",
+                        name: "FK_People_AspNetUsers_IdentityUserId",
                         column: x => x.IdentityUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ClothingEnthusiasts_Images_ImageId",
+                        name: "FK_People_Images_ImageId",
                         column: x => x.ImageId,
                         principalTable: "Images",
                         principalColumn: "ImageId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ClothingEnthusiasts_ProfileImages_ProfileImageId",
+                        name: "FK_People_ProfileImages_ProfileImageId",
                         column: x => x.ProfileImageId,
                         principalTable: "ProfileImages",
                         principalColumn: "ProfileImageId",
@@ -255,10 +255,10 @@ namespace RefreshMyStyleApp.Migrations
                 {
                     table.PrimaryKey("PK_EventList", x => x.EventListId);
                     table.ForeignKey(
-                        name: "FK_EventList_ClothingEnthusiasts_UserId",
+                        name: "FK_EventList_People_UserId",
                         column: x => x.UserId,
-                        principalTable: "ClothingEnthusiasts",
-                        principalColumn: "UserId",
+                        principalTable: "People",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -288,7 +288,7 @@ namespace RefreshMyStyleApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "c59fc846-319f-4e0a-8c6a-bf536cd67471", "900c0a02-d982-45e1-b677-eb6c250324e1", "ClothingEnthusiast", "CLOTHINGENTHUSIAST" });
+                values: new object[] { "0b6d3771-322a-468e-b3dc-4c523d6d77b6", "f38656a5-0d87-470d-8071-f1c9d892294c", "Person", "PERSON" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -330,33 +330,6 @@ namespace RefreshMyStyleApp.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClothingEnthusiasts_EventId",
-                table: "ClothingEnthusiasts",
-                column: "EventId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClothingEnthusiasts_FriendsListId",
-                table: "ClothingEnthusiasts",
-                column: "FriendsListId",
-                unique: true,
-                filter: "[FriendsListId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClothingEnthusiasts_IdentityUserId",
-                table: "ClothingEnthusiasts",
-                column: "IdentityUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClothingEnthusiasts_ImageId",
-                table: "ClothingEnthusiasts",
-                column: "ImageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClothingEnthusiasts_ProfileImageId",
-                table: "ClothingEnthusiasts",
-                column: "ProfileImageId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Event_EventListId",
                 table: "Event",
                 column: "EventListId");
@@ -366,9 +339,36 @@ namespace RefreshMyStyleApp.Migrations
                 table: "EventList",
                 column: "UserId");
 
+            migrationBuilder.CreateIndex(
+                name: "IX_People_EventId",
+                table: "People",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_People_FriendsListId",
+                table: "People",
+                column: "FriendsListId",
+                unique: true,
+                filter: "[FriendsListId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_People_IdentityUserId",
+                table: "People",
+                column: "IdentityUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_People_ImageId",
+                table: "People",
+                column: "ImageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_People_ProfileImageId",
+                table: "People",
+                column: "ProfileImageId");
+
             migrationBuilder.AddForeignKey(
-                name: "FK_ClothingEnthusiasts_Event_EventId",
-                table: "ClothingEnthusiasts",
+                name: "FK_People_Event_EventId",
+                table: "People",
                 column: "EventId",
                 principalTable: "Event",
                 principalColumn: "EventId",
@@ -378,12 +378,12 @@ namespace RefreshMyStyleApp.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_ClothingEnthusiasts_AspNetUsers_IdentityUserId",
-                table: "ClothingEnthusiasts");
+                name: "FK_People_AspNetUsers_IdentityUserId",
+                table: "People");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_ClothingEnthusiasts_Event_EventId",
-                table: "ClothingEnthusiasts");
+                name: "FK_Event_EventList_EventListId",
+                table: "Event");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -407,13 +407,13 @@ namespace RefreshMyStyleApp.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Event");
-
-            migrationBuilder.DropTable(
                 name: "EventList");
 
             migrationBuilder.DropTable(
-                name: "ClothingEnthusiasts");
+                name: "People");
+
+            migrationBuilder.DropTable(
+                name: "Event");
 
             migrationBuilder.DropTable(
                 name: "FriendsList");
