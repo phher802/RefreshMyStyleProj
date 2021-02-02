@@ -61,9 +61,33 @@ namespace RefreshMyStyleApp.Controllers
         }
 
         [HttpPost]
+        public IActionResult UpoadProfileImage()
+        {
+            foreach (var file in Request.Form.Files)
+            {
+                ProfileImage profileImg = new ProfileImage();
+                profileImg.ProfileImageTitle = file.FileName;
+
+                MemoryStream ms = new MemoryStream();
+                file.CopyTo(ms);
+                profileImg.ProfileImageData = ms.ToArray();
+
+                ms.Close();
+                ms.Dispose();
+
+                _context.ProfileImages.Add(profileImg);
+                _context.SaveChanges();
+
+            }
+
+            ViewBag.Message = "ProfileImage(s) stored in database!";
+            return View("Index");
+        }
+
+        [HttpPost]
         public IActionResult UpoadImage()
         {
-            foreach(var file in Request.Form.Files)
+            foreach (var file in Request.Form.Files)
             {
                 Image img = new Image();
                 img.ImageTitle = file.FileName;
@@ -76,15 +100,15 @@ namespace RefreshMyStyleApp.Controllers
                 ms.Dispose();
 
                 _context.Images.Add(img);
-                _context.SaveChanges(); 
+                _context.SaveChanges();
 
             }
 
             ViewBag.Message = "Image(s) stored in database!";
             return View("Index");
-        
+
         }
-         
+
         [HttpPost]
         public IActionResult RetreiveImage()
         {
@@ -101,7 +125,7 @@ namespace RefreshMyStyleApp.Controllers
         // GET: ClothingEnthusiasts/Create
         public IActionResult Create()
         {
-           // ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId");
+            // ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId");
             //ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId");
             //ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId");
             //ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId");
