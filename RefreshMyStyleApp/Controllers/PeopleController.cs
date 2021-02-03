@@ -4,22 +4,28 @@ using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RefreshMyStyleApp.Data;
 using RefreshMyStyleApp.Models;
+using RefreshMyStyleApp.ViewModels;
 
 namespace RefreshMyStyleApp.Controllers
 {
     public class PeopleController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly object webHostEnvironment;
+        private object hostEnvironment;
+        private readonly IWebHostEnvironment _env;
 
-        public PeopleController(ApplicationDbContext context)
+        public PeopleController(ApplicationDbContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
         // GET: People
@@ -40,7 +46,51 @@ namespace RefreshMyStyleApp.Controllers
 
         }
 
-        // GET: ClothingEnthusiasts/Details/5
+        public IActionResult New()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> New(PersonViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string uniqueFileName = UploadedFile(model);
+
+                Person person = new Person
+                {
+                    FName = model.FName,
+                    LName = model.LName,
+                    FullName = model.FName + " " + model.LName,            
+                    ProfilePicture = uniqueFileName,
+                };
+                _context.Add(person);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View();
+        }
+
+        private string UploadedFile(PersonViewModel model)
+        {
+            string uniqueFileName = null;
+
+            if (model.ProfileImage != null)
+            {
+                string uploadsFolder = Path.Combine(_env.WebRootPath, "images");
+                uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ProfileImage.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    model.ProfileImage.CopyTo(fileStream);
+                }
+            }
+            return uniqueFileName;
+        }
+
+        // GET: People/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)

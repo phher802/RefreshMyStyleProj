@@ -48,8 +48,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6fbb791d-7da7-442b-9746-75cba168deba",
-                            ConcurrencyStamp = "6b271894-655f-44a4-9a05-9538bcf01d67",
+                            Id = "c719176a-b467-4d53-af4e-f0bd0de56806",
+                            ConcurrencyStamp = "325347af-fad8-4fa2-9581-5973b8db7d00",
                             Name = "Person",
                             NormalizedName = "PERSON"
                         });
@@ -307,6 +307,9 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<string>("ImageTitle")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Img")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
 
@@ -337,6 +340,9 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<int?>("FriendsListId")
                         .HasColumnType("int");
 
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(450)");
 
@@ -349,8 +355,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProfileImageId")
-                        .HasColumnType("int");
+                    b.Property<string>("ProfilePicture")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -363,8 +369,6 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasIndex("IdentityUserId");
 
                     b.HasIndex("ImageId");
-
-                    b.HasIndex("ProfileImageId");
 
                     b.ToTable("People");
                 });
@@ -471,10 +475,6 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasOne("RefreshMyStyleApp.Models.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId");
-
-                    b.HasOne("RefreshMyStyleApp.Models.Image", "ProfileImage")
-                        .WithMany()
-                        .HasForeignKey("ProfileImageId");
                 });
 #pragma warning restore 612, 618
         }

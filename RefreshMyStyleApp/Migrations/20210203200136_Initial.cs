@@ -67,6 +67,7 @@ namespace RefreshMyStyleApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ImageTitle = table.Column<string>(nullable: true),
                     ImageData = table.Column<byte[]>(nullable: true),
+                    Img = table.Column<string>(nullable: true),
                     ClothingCategory = table.Column<string>(nullable: true),
                     Color = table.Column<string>(nullable: true),
                     Size = table.Column<string>(nullable: true),
@@ -207,8 +208,9 @@ namespace RefreshMyStyleApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FName = table.Column<string>(nullable: true),
                     LName = table.Column<string>(nullable: true),
+                    FullName = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
-                    ProfileImageId = table.Column<int>(nullable: true),
+                    ProfilePicture = table.Column<string>(nullable: true),
                     ImageId = table.Column<int>(nullable: true),
                     EventId = table.Column<int>(nullable: true),
                     FriendsListId = table.Column<int>(nullable: true),
@@ -232,12 +234,6 @@ namespace RefreshMyStyleApp.Migrations
                     table.ForeignKey(
                         name: "FK_People_Images_ImageId",
                         column: x => x.ImageId,
-                        principalTable: "Images",
-                        principalColumn: "ImageId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_People_Images_ProfileImageId",
-                        column: x => x.ProfileImageId,
                         principalTable: "Images",
                         principalColumn: "ImageId",
                         onDelete: ReferentialAction.Restrict);
@@ -288,7 +284,7 @@ namespace RefreshMyStyleApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "6fbb791d-7da7-442b-9746-75cba168deba", "6b271894-655f-44a4-9a05-9538bcf01d67", "Person", "PERSON" });
+                values: new object[] { "c719176a-b467-4d53-af4e-f0bd0de56806", "325347af-fad8-4fa2-9581-5973b8db7d00", "Person", "PERSON" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -360,11 +356,6 @@ namespace RefreshMyStyleApp.Migrations
                 name: "IX_People_ImageId",
                 table: "People",
                 column: "ImageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_People_ProfileImageId",
-                table: "People",
-                column: "ProfileImageId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_People_Event_EventId",
