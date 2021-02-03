@@ -19,16 +19,15 @@ namespace RefreshMyStyleApp.Models
         [Display(Name = "Last Name")]
         public string LName { get; set; }
 
+        [Display(Name = "Full Name")]
+        public string FullName { get; set; }
 
         [Display(Name = "Primary Phone Number")]
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
         public string PhoneNumber { get; set; }
 
-
-        [ForeignKey("ProfileImage")]
-        public int? ProfileImageId { get; set; }
-        public Image ProfileImage { get; set; }
+        public string ProfilePicture { get; set; }
 
 
         [ForeignKey("Image")]
