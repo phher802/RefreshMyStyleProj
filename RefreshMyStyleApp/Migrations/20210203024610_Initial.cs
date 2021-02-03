@@ -80,6 +80,20 @@ namespace RefreshMyStyleApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProfileImages",
+                columns: table => new
+                {
+                    ProfileImageId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ProfileImageTitle = table.Column<string>(nullable: true),
+                    ProfileImageData = table.Column<byte[]>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProfileImages", x => x.ProfileImageId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -194,6 +208,7 @@ namespace RefreshMyStyleApp.Migrations
                     FName = table.Column<string>(nullable: true),
                     LName = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
+                    ProfileImageId = table.Column<int>(nullable: true),
                     ImageId = table.Column<int>(nullable: true),
                     EventId = table.Column<int>(nullable: true),
                     FriendsListId = table.Column<int>(nullable: true),
@@ -220,6 +235,12 @@ namespace RefreshMyStyleApp.Migrations
                         principalTable: "Images",
                         principalColumn: "ImageId",
                         onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_People_Images_ProfileImageId",
+                        column: x => x.ProfileImageId,
+                        principalTable: "Images",
+                        principalColumn: "ImageId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -236,29 +257,6 @@ namespace RefreshMyStyleApp.Migrations
                     table.ForeignKey(
                         name: "FK_EventList_People_UserId",
                         column: x => x.UserId,
-                        principalTable: "People",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ProfileImages",
-                columns: table => new
-                {
-                    ProfileImageId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProfileImageTitle = table.Column<string>(nullable: true),
-                    ContentType = table.Column<string>(nullable: true),
-                    Filetype = table.Column<int>(nullable: false),
-                    ProfileImageData = table.Column<byte[]>(nullable: true),
-                    PersonId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProfileImages", x => x.ProfileImageId);
-                    table.ForeignKey(
-                        name: "FK_ProfileImages_People_PersonId",
-                        column: x => x.PersonId,
                         principalTable: "People",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -290,7 +288,7 @@ namespace RefreshMyStyleApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "ce94075c-22c4-4e9a-9450-d13c4ceb4c65", "57438fe1-1344-449b-a246-1e249a641785", "Person", "PERSON" });
+                values: new object[] { "6fbb791d-7da7-442b-9746-75cba168deba", "6b271894-655f-44a4-9a05-9538bcf01d67", "Person", "PERSON" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -364,9 +362,9 @@ namespace RefreshMyStyleApp.Migrations
                 column: "ImageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProfileImages_PersonId",
-                table: "ProfileImages",
-                column: "PersonId");
+                name: "IX_People_ProfileImageId",
+                table: "People",
+                column: "ProfileImageId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_People_Event_EventId",
