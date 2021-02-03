@@ -61,46 +61,93 @@ namespace RefreshMyStyleApp.Controllers
             return View(person);
         }
 
-        public IActionResult Image(string img)
+        // GET: People/Create
+        public IActionResult Create()
         {
+            Person person = new Person();
+            return View(person);
+            // ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId");
+            //ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId");
+            //ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId");
+            //ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId");
+
+        }
+
+        // POST: People/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create([Bind("FName,LName,PhoneNumber")] Person person)
+        {
+            if (ModelState.IsValid)
+            {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                person.IdentityUserId = userId;
+                _context.Add(person);
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index));
+            }
+
+            UploadProfileImage();
+            RetrieveProfileImage();
+
+
+            return View(person);
+
+            //if (ModelState.IsValid)
+            //{
+            //    _context.Add(clothingEnthusiast);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
+            //ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId", clothingEnthusiast.EventId);
+            //ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId", clothingEnthusiast.FriendsListId);
+            //ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId", clothingEnthusiast.ImageId);
+            //ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId", clothingEnthusiast.ProfileImageId);
+
+        }
+
+        public IActionResult UploadProfileImage(IFormFile profileUpload)
+        {
+            if (profileUpload != null)
+            {
+
+                foreach (var file in Request.Form.Files)
+                {
+                    ProfileImage profileImg = new ProfileImage();
+                    profileImg.ProfileImageTitle = file.FileName;
+
+                    MemoryStream ms = new MemoryStream();
+                    file.CopyTo(ms);
+                    profileImg.ProfileImageData = ms.ToArray();
+
+                    ms.Close();
+                    ms.Dispose();
+                    _context.ProfileImages.Add(profileImg);
+                    _context.SaveChanges();
+
+                }
+            }
+            ViewBag.Message = "ProfileImage(s) stored in database!";
             return View();
         }
 
-        
-        //public IActionResult UploadProfileImage()
-        //{
-   
-        //    foreach (var file in Request.Form.Files)
-        //    {
-        //        ProfileImage profileImg = new ProfileImage();
-        //        profileImg.ProfileImageTitle = file.FileName;
+        [HttpPost]
+        public IActionResult RetrieveProfileImage(IFormFile retrieveProfile)
+        {
+            if (retrieveProfile != null)
+            {
+                var profileImg = _context.ProfileImages.OrderByDescending(i => i.ProfileImageId).FirstOrDefault();
+                string imageBase64Data = Convert.ToBase64String(profileImg.ProfileImageData);
+                string profileImageDataURL = string.Format("data:image/jpg;base64, {0}", imageBase64Data);
 
-        //        MemoryStream ms = new MemoryStream();
-        //        file.CopyTo(ms);
-        //        profileImg.ProfileImageData = ms.ToArray();
-
-        //        ms.Close();
-        //        ms.Dispose();
-        //        _context.ProfileImages.Add(profileImg);
-        //        _context.SaveChanges();
-
-        //    }
-
-        //    ViewBag.Message = "ProfileImage(s) stored in database!";
-        //    return View("Index");
-        //}
-
-        //[HttpPost]
-        //public IActionResult RetrieveProfileImage()
-        //{
-        //    ProfileImage profileImg = _context.ProfileImages.OrderByDescending(i => i.ProfileImageId).SingleOrDefault();
-        //    string imageBase64Data = Convert.ToBase64String(profileImg.ProfileImageData);
-        //    string profileImageDataURL = string.Format("data:image/jpg;base64, {0}", imageBase64Data);
-
-        //    ViewBag.ProfileImageTitle = profileImg.ProfileImageTitle;
-        //    ViewBag.ProfileImageDataURL = profileImageDataURL;
-        //    return View("Index");
-        //}
+                ViewBag.ProfileImageTitle = profileImg.ProfileImageTitle;
+                ViewBag.ProfileImageDataURL = profileImageDataURL;
+            }
+         
+            return View("Index");
+        }
 
 
 
@@ -141,52 +188,6 @@ namespace RefreshMyStyleApp.Controllers
             return View("Index");
         }
 
-
-        // GET: People/Create
-        public IActionResult Create()
-        {
-            Person person = new Person();
-            return View(person);
-            // ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId");
-            //ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId");
-            //ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId");
-            //ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId");
-        
-
-
-
-        }
-
-        // POST: People/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("FName,LName,PhoneNumber")] Person person)
-        {
-            if (ModelState.IsValid)
-            {
-                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                person.IdentityUserId = userId;
-                _context.Add(person);
-                _context.SaveChanges();
-                return RedirectToAction(nameof(Index));
-            }
-         
-            return View(person);
-
-            //if (ModelState.IsValid)
-            //{
-            //    _context.Add(clothingEnthusiast);
-            //    await _context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(Index));
-            //}
-            //ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId", clothingEnthusiast.EventId);
-            //ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId", clothingEnthusiast.FriendsListId);
-            //ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId", clothingEnthusiast.ImageId);
-            //ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId", clothingEnthusiast.ProfileImageId);
-
-        }
 
         // GET: ClothingEnthusiasts/Edit/5
         public async Task<IActionResult> Edit(int? id)

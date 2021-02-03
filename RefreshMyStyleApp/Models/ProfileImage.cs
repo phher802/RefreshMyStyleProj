@@ -14,10 +14,8 @@ namespace RefreshMyStyleApp.Models
 
         [Display(Name = "Profile Picture")]
         public string ProfileImageTitle { get; set; }
-        public string ContentType { get; set; }
-        public FileType Filetype { get; set; }
+
         public byte[] ProfileImageData { get; set; }
-        public int PersonId { get; set; }
-        public virtual Person person { get; set; }
+   
     }
 }
