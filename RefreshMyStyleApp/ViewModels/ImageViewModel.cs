@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
-namespace RefreshMyStyleApp.Models
+namespace RefreshMyStyleApp.ViewModels
 {
-    public class Image
+    public class ImageViewModel
     {
         [Key]
         public int? ImageId { get; set; }
@@ -15,7 +16,7 @@ namespace RefreshMyStyleApp.Models
 
         public byte[] ImageData { get; set; }
 
-        public string Img { get; set; }
+        public IFormFile Img { get; set; }
 
         [Display(Name = "Category")]
         public string ClothingCategory { get; set; }
@@ -33,3 +34,4 @@ namespace RefreshMyStyleApp.Models
         public bool ToGiveAway { get; set; }
     }
 }
+
