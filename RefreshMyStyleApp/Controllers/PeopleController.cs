@@ -27,7 +27,7 @@ namespace RefreshMyStyleApp.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            
+
             if (person == null)
             {
                 return RedirectToAction(nameof(Create));
@@ -89,10 +89,6 @@ namespace RefreshMyStyleApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            UploadProfileImage();
-            RetrieveProfileImage();
-
-
             return View(person);
 
             //if (ModelState.IsValid)
@@ -108,44 +104,39 @@ namespace RefreshMyStyleApp.Controllers
 
         }
 
-        public IActionResult UploadProfileImage(IFormFile profileUpload)
+        public IActionResult UploadProfileImage()
         {
-            if (profileUpload != null)
+
+
+            foreach (var file in Request.Form.Files)
             {
+                ProfileImage profileImg = new ProfileImage();
+                profileImg.ProfileImageTitle = file.FileName;
 
-                foreach (var file in Request.Form.Files)
-                {
-                    ProfileImage profileImg = new ProfileImage();
-                    profileImg.ProfileImageTitle = file.FileName;
+                MemoryStream ms = new MemoryStream();
+                file.CopyTo(ms);
+                profileImg.ProfileImageData = ms.ToArray();
 
-                    MemoryStream ms = new MemoryStream();
-                    file.CopyTo(ms);
-                    profileImg.ProfileImageData = ms.ToArray();
+                ms.Close();
+                ms.Dispose();
 
-                    ms.Close();
-                    ms.Dispose();
-                    _context.ProfileImages.Add(profileImg);
-                    _context.SaveChanges();
+                _context.ProfileImages.Add(profileImg);
+                _context.SaveChanges();
 
-                }
             }
             ViewBag.Message = "ProfileImage(s) stored in database!";
             return View();
         }
 
         [HttpPost]
-        public IActionResult RetrieveProfileImage(IFormFile retrieveProfile)
+        public IActionResult RetrieveProfileImage()
         {
-            if (retrieveProfile != null)
-            {
-                var profileImg = _context.ProfileImages.OrderByDescending(i => i.ProfileImageId).FirstOrDefault();
-                string imageBase64Data = Convert.ToBase64String(profileImg.ProfileImageData);
-                string profileImageDataURL = string.Format("data:image/jpg;base64, {0}", imageBase64Data);
+            var profileImg = _context.ProfileImages.OrderByDescending(i => i.ProfileImageId).FirstOrDefault();
+            string imageBase64Data = Convert.ToBase64String(profileImg.ProfileImageData);
+            string profileImageDataURL = string.Format("data:image/jpg;base64, {0}", imageBase64Data);
 
-                ViewBag.ProfileImageTitle = profileImg.ProfileImageTitle;
-                ViewBag.ProfileImageDataURL = profileImageDataURL;
-            }
-         
+            ViewBag.ProfileImageTitle = profileImg.ProfileImageTitle;
+            ViewBag.ProfileImageDataURL = profileImageDataURL;
             return View("Index");
         }
 
