@@ -10,7 +10,7 @@ using RefreshMyStyleApp.Data;
 namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210202160322_Initial")]
+    [Migration("20210203015741_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,8 +50,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0b6d3771-322a-468e-b3dc-4c523d6d77b6",
-                            ConcurrencyStamp = "f38656a5-0d87-470d-8071-f1c9d892294c",
+                            Id = "ce94075c-22c4-4e9a-9450-d13c4ceb4c65",
+                            ConcurrencyStamp = "57438fe1-1344-449b-a246-1e249a641785",
                             Name = "Person",
                             NormalizedName = "PERSON"
                         });
@@ -351,9 +351,6 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProfileImageId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EventId");
@@ -366,8 +363,6 @@ namespace RefreshMyStyleApp.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.HasIndex("ProfileImageId");
-
                     b.ToTable("People");
                 });
 
@@ -378,6 +373,15 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ContentType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Filetype")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PersonId")
+                        .HasColumnType("int");
+
                     b.Property<byte[]>("ProfileImageData")
                         .HasColumnType("varbinary(max)");
 
@@ -385,6 +389,8 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ProfileImageId");
+
+                    b.HasIndex("PersonId");
 
                     b.ToTable("ProfileImages");
                 });
@@ -473,10 +479,15 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasOne("RefreshMyStyleApp.Models.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId");
+                });
 
-                    b.HasOne("RefreshMyStyleApp.Models.ProfileImage", "ProfileImage")
-                        .WithMany()
-                        .HasForeignKey("ProfileImageId");
+            modelBuilder.Entity("RefreshMyStyleApp.Models.ProfileImage", b =>
+                {
+                    b.HasOne("RefreshMyStyleApp.Models.Person", "person")
+                        .WithMany("ProfileImages")
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

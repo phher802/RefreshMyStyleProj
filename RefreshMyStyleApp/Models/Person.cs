@@ -26,9 +26,7 @@ namespace RefreshMyStyleApp.Models
         public string PhoneNumber { get; set; }
 
 
-        [ForeignKey("ProfileImage")]
-        public int? ProfileImageId { get; set; }
-        public ProfileImage ProfileImage { get; set; }
+        public virtual ICollection<ProfileImage> ProfileImages { get; set; }
 
 
         [ForeignKey("Image")]

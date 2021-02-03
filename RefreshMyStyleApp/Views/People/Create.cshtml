@@ -1,5 +1,6 @@
 ﻿@model RefreshMyStyleApp.Models.Person
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -8,15 +9,13 @@
 <h1>Create</h1>
 
 <h4>Person</h4>
-<h1>@ViewBag.Message</h1>
-<h1>@ViewBag.ProfileImageTitle</h1>
-<img src="@ViewBag.ProfileImageDataUrl" />
 
 <hr />
-<form asp-action="UploadProfileImage" asp-controller="People" method="post"
-      enctype="multipart/form-data">
+
+<form asp-action="UploadProfileImage" asp-controller="People"
+      enctype="multipart/form-data" method="post">
     <input type="file" id="file1" name="file1" multiple="multiple" />
-    <button type="submit">Upload profile picture</button>
+    <input type="submit">Upload profile picture</>
 </form>
 <form asp-action="RetrieveProfileImage" asp-controller="People" method="post">
     <button type="submit">Show latest profile picture</button>
