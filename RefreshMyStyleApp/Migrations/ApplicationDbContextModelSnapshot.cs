@@ -48,8 +48,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6fbb791d-7da7-442b-9746-75cba168deba",
-                            ConcurrencyStamp = "6b271894-655f-44a4-9a05-9538bcf01d67",
+                            Id = "95d2a10d-e2e1-4128-af87-ec63e0df589f",
+                            ConcurrencyStamp = "b9985efa-fa4d-4acf-b234-9492472933e3",
                             Name = "Person",
                             NormalizedName = "PERSON"
                         });
@@ -224,6 +224,18 @@ namespace RefreshMyStyleApp.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("RefreshMyStyleApp.Models.ClaimedList", b =>
+                {
+                    b.Property<int?>("ClaimedListId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("ClaimedListId");
+
+                    b.ToTable("ClaimedList");
+                });
+
             modelBuilder.Entity("RefreshMyStyleApp.Models.Event", b =>
                 {
                     b.Property<int?>("EventId")
@@ -250,7 +262,7 @@ namespace RefreshMyStyleApp.Migrations
 
                     b.HasIndex("EventListId");
 
-                    b.ToTable("Event");
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.EventList", b =>
@@ -260,29 +272,9 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("EventListId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("EventList");
-                });
-
-            modelBuilder.Entity("RefreshMyStyleApp.Models.FriendsList", b =>
-                {
-                    b.Property<int?>("FriendsListId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FriendsListId");
-
-                    b.ToTable("FriendsList");
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Image", b =>
@@ -291,6 +283,9 @@ namespace RefreshMyStyleApp.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("ClaimedListId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ClothingCategory")
                         .HasColumnType("nvarchar(max)");
@@ -301,11 +296,17 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("ImageData")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("FilePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<string>("ImageTitle")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("LikedListId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
@@ -318,7 +319,25 @@ namespace RefreshMyStyleApp.Migrations
 
                     b.HasKey("ImageId");
 
+                    b.HasIndex("ClaimedListId");
+
+                    b.HasIndex("Id");
+
+                    b.HasIndex("LikedListId");
+
                     b.ToTable("Images");
+                });
+
+            modelBuilder.Entity("RefreshMyStyleApp.Models.LikedList", b =>
+                {
+                    b.Property<int?>("LikedListId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.HasKey("LikedListId");
+
+                    b.ToTable("LikedList");
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Person", b =>
@@ -328,63 +347,36 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("EventId")
+                    b.Property<int?>("ClaimedListId")
                         .HasColumnType("int");
 
                     b.Property<string>("FName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("FriendsListId")
-                        .HasColumnType("int");
-
                     b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
 
                     b.Property<string>("LName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("LikedListId")
+                        .HasColumnType("int");
+
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProfileImageId")
-                        .HasColumnType("int");
+                    b.Property<string>("ProfileImageFilePath")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EventId");
-
-                    b.HasIndex("FriendsListId")
-                        .IsUnique()
-                        .HasFilter("[FriendsListId] IS NOT NULL");
+                    b.HasIndex("ClaimedListId");
 
                     b.HasIndex("IdentityUserId");
 
-                    b.HasIndex("ImageId");
-
-                    b.HasIndex("ProfileImageId");
+                    b.HasIndex("LikedListId");
 
                     b.ToTable("People");
-                });
-
-            modelBuilder.Entity("RefreshMyStyleApp.Models.ProfileImage", b =>
-                {
-                    b.Property<int?>("ProfileImageId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<byte[]>("ProfileImageData")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("ProfileImageTitle")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ProfileImageId");
-
-                    b.ToTable("ProfileImages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -445,36 +437,36 @@ namespace RefreshMyStyleApp.Migrations
                         .HasForeignKey("EventListId");
                 });
 
-            modelBuilder.Entity("RefreshMyStyleApp.Models.EventList", b =>
+            modelBuilder.Entity("RefreshMyStyleApp.Models.Image", b =>
                 {
-                    b.HasOne("RefreshMyStyleApp.Models.Person", "User")
+                    b.HasOne("RefreshMyStyleApp.Models.ClaimedList", "ClaimedList")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("ClaimedListId");
+
+                    b.HasOne("RefreshMyStyleApp.Models.Person", "Person")
+                        .WithMany()
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("RefreshMyStyleApp.Models.LikedList", "LikedList")
+                        .WithMany()
+                        .HasForeignKey("LikedListId");
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Person", b =>
                 {
-                    b.HasOne("RefreshMyStyleApp.Models.Event", "Event")
+                    b.HasOne("RefreshMyStyleApp.Models.ClaimedList", "ClaimedList")
                         .WithMany()
-                        .HasForeignKey("EventId");
-
-                    b.HasOne("RefreshMyStyleApp.Models.FriendsList", "FriendsList")
-                        .WithOne("User")
-                        .HasForeignKey("RefreshMyStyleApp.Models.Person", "FriendsListId");
+                        .HasForeignKey("ClaimedListId");
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
                         .HasForeignKey("IdentityUserId");
 
-                    b.HasOne("RefreshMyStyleApp.Models.Image", "Image")
+                    b.HasOne("RefreshMyStyleApp.Models.LikedList", "LikedList")
                         .WithMany()
-                        .HasForeignKey("ImageId");
-
-                    b.HasOne("RefreshMyStyleApp.Models.Image", "ProfileImage")
-                        .WithMany()
-                        .HasForeignKey("ProfileImageId");
+                        .HasForeignKey("LikedListId");
                 });
 #pragma warning restore 612, 618
         }

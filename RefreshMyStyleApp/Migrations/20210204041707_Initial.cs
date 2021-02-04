@@ -47,50 +47,39 @@ namespace RefreshMyStyleApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FriendsList",
+                name: "ClaimedList",
                 columns: table => new
                 {
-                    FriendsListId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(nullable: false)
+                    ClaimedListId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FriendsList", x => x.FriendsListId);
+                    table.PrimaryKey("PK_ClaimedList", x => x.ClaimedListId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Images",
+                name: "EventList",
                 columns: table => new
                 {
-                    ImageId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ImageTitle = table.Column<string>(nullable: true),
-                    ImageData = table.Column<byte[]>(nullable: true),
-                    ClothingCategory = table.Column<string>(nullable: true),
-                    Color = table.Column<string>(nullable: true),
-                    Size = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    ToShare = table.Column<bool>(nullable: false),
-                    ToGiveAway = table.Column<bool>(nullable: false)
+                    EventListId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Images", x => x.ImageId);
+                    table.PrimaryKey("PK_EventList", x => x.EventListId);
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProfileImages",
+                name: "LikedList",
                 columns: table => new
                 {
-                    ProfileImageId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProfileImageTitle = table.Column<string>(nullable: true),
-                    ProfileImageData = table.Column<byte[]>(nullable: true)
+                    LikedListId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProfileImages", x => x.ProfileImageId);
+                    table.PrimaryKey("PK_LikedList", x => x.LikedListId);
                 });
 
             migrationBuilder.CreateTable(
@@ -200,70 +189,7 @@ namespace RefreshMyStyleApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "People",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FName = table.Column<string>(nullable: true),
-                    LName = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    ProfileImageId = table.Column<int>(nullable: true),
-                    ImageId = table.Column<int>(nullable: true),
-                    EventId = table.Column<int>(nullable: true),
-                    FriendsListId = table.Column<int>(nullable: true),
-                    IdentityUserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_People", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_People_FriendsList_FriendsListId",
-                        column: x => x.FriendsListId,
-                        principalTable: "FriendsList",
-                        principalColumn: "FriendsListId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_People_AspNetUsers_IdentityUserId",
-                        column: x => x.IdentityUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_People_Images_ImageId",
-                        column: x => x.ImageId,
-                        principalTable: "Images",
-                        principalColumn: "ImageId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_People_Images_ProfileImageId",
-                        column: x => x.ProfileImageId,
-                        principalTable: "Images",
-                        principalColumn: "ImageId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EventList",
-                columns: table => new
-                {
-                    EventListId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_EventList", x => x.EventListId);
-                    table.ForeignKey(
-                        name: "FK_EventList_People_UserId",
-                        column: x => x.UserId,
-                        principalTable: "People",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Event",
+                name: "Events",
                 columns: table => new
                 {
                     EventId = table.Column<int>(nullable: false)
@@ -276,19 +202,97 @@ namespace RefreshMyStyleApp.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Event", x => x.EventId);
+                    table.PrimaryKey("PK_Events", x => x.EventId);
                     table.ForeignKey(
-                        name: "FK_Event_EventList_EventListId",
+                        name: "FK_Events_EventList_EventListId",
                         column: x => x.EventListId,
                         principalTable: "EventList",
                         principalColumn: "EventListId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "People",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FName = table.Column<string>(nullable: true),
+                    LName = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    ProfileImageFilePath = table.Column<string>(nullable: true),
+                    ClaimedListId = table.Column<int>(nullable: true),
+                    LikedListId = table.Column<int>(nullable: true),
+                    IdentityUserId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_People", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_People_ClaimedList_ClaimedListId",
+                        column: x => x.ClaimedListId,
+                        principalTable: "ClaimedList",
+                        principalColumn: "ClaimedListId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_People_AspNetUsers_IdentityUserId",
+                        column: x => x.IdentityUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_People_LikedList_LikedListId",
+                        column: x => x.LikedListId,
+                        principalTable: "LikedList",
+                        principalColumn: "LikedListId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Images",
+                columns: table => new
+                {
+                    ImageId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImageTitle = table.Column<string>(nullable: true),
+                    FilePath = table.Column<string>(nullable: true),
+                    ClothingCategory = table.Column<string>(nullable: true),
+                    Color = table.Column<string>(nullable: true),
+                    Size = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    ToShare = table.Column<bool>(nullable: false),
+                    ToGiveAway = table.Column<bool>(nullable: false),
+                    Id = table.Column<int>(nullable: false),
+                    LikedListId = table.Column<int>(nullable: true),
+                    ClaimedListId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Images", x => x.ImageId);
+                    table.ForeignKey(
+                        name: "FK_Images_ClaimedList_ClaimedListId",
+                        column: x => x.ClaimedListId,
+                        principalTable: "ClaimedList",
+                        principalColumn: "ClaimedListId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Images_People_Id",
+                        column: x => x.Id,
+                        principalTable: "People",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Images_LikedList_LikedListId",
+                        column: x => x.LikedListId,
+                        principalTable: "LikedList",
+                        principalColumn: "LikedListId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "6fbb791d-7da7-442b-9746-75cba168deba", "6b271894-655f-44a4-9a05-9538bcf01d67", "Person", "PERSON" });
+                values: new object[] { "95d2a10d-e2e1-4128-af87-ec63e0df589f", "b9985efa-fa4d-4acf-b234-9492472933e3", "Person", "PERSON" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -330,26 +334,29 @@ namespace RefreshMyStyleApp.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Event_EventListId",
-                table: "Event",
+                name: "IX_Events_EventListId",
+                table: "Events",
                 column: "EventListId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EventList_UserId",
-                table: "EventList",
-                column: "UserId");
+                name: "IX_Images_ClaimedListId",
+                table: "Images",
+                column: "ClaimedListId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_People_EventId",
-                table: "People",
-                column: "EventId");
+                name: "IX_Images_Id",
+                table: "Images",
+                column: "Id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_People_FriendsListId",
+                name: "IX_Images_LikedListId",
+                table: "Images",
+                column: "LikedListId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_People_ClaimedListId",
                 table: "People",
-                column: "FriendsListId",
-                unique: true,
-                filter: "[FriendsListId] IS NOT NULL");
+                column: "ClaimedListId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_People_IdentityUserId",
@@ -357,34 +364,13 @@ namespace RefreshMyStyleApp.Migrations
                 column: "IdentityUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_People_ImageId",
+                name: "IX_People_LikedListId",
                 table: "People",
-                column: "ImageId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_People_ProfileImageId",
-                table: "People",
-                column: "ProfileImageId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_People_Event_EventId",
-                table: "People",
-                column: "EventId",
-                principalTable: "Event",
-                principalColumn: "EventId",
-                onDelete: ReferentialAction.Restrict);
+                column: "LikedListId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_People_AspNetUsers_IdentityUserId",
-                table: "People");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Event_EventList_EventListId",
-                table: "Event");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -401,13 +387,13 @@ namespace RefreshMyStyleApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ProfileImages");
+                name: "Events");
+
+            migrationBuilder.DropTable(
+                name: "Images");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
-
-            migrationBuilder.DropTable(
-                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "EventList");
@@ -416,13 +402,13 @@ namespace RefreshMyStyleApp.Migrations
                 name: "People");
 
             migrationBuilder.DropTable(
-                name: "Event");
+                name: "ClaimedList");
 
             migrationBuilder.DropTable(
-                name: "FriendsList");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Images");
+                name: "LikedList");
         }
     }
 }

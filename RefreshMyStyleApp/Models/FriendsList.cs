@@ -13,8 +13,8 @@ namespace RefreshMyStyleApp.Models
         public int? FriendsListId { get; set; }
 
 
-        [ForeignKey("ClothingEnthusiast")]
-        public int UserId { get; set; }
-        public Person User { get; set; }
+        [ForeignKey("Person")]
+        public int Id { get; set; }
+        public Person Person { get; set; }
     }
 }

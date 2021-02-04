@@ -10,9 +10,11 @@ namespace RefreshMyStyleApp.Data
 {
     public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
-        public DbSet<ProfileImage> ProfileImages { get; set; }
+    
         public DbSet<Image> Images { get; set; }
         public DbSet<Person> People { get; set; }
+
+        public DbSet<Event> Events { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
