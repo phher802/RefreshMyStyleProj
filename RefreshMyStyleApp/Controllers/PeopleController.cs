@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,11 +16,14 @@ namespace RefreshMyStyleApp.Controllers
 {
     public class PeopleController : Controller
     {
-        private readonly ApplicationDbContext _context;
 
-        public PeopleController(ApplicationDbContext context)
+        private readonly ApplicationDbContext _context;
+        private readonly IWebHostEnvironment _env;
+
+        public PeopleController(ApplicationDbContext context, IWebHostEnvironment env)
         {
             _context = context;
+            _env = env;
         }
 
         // GET: People
@@ -58,6 +62,34 @@ namespace RefreshMyStyleApp.Controllers
             return View(person);
         }
 
+        [HttpPost]
+        public IActionResult UploadFiles(List<IFormFile> files)
+        {
+            long size = files.Sum(f => f.Length);
+
+            // full path to file in temp location
+            var filePath = Path.GetTempFileName();
+
+            foreach (var formFile in files)
+            {
+                var uploads = Path.Combine(_env.WebRootPath, "images");
+                var fullPath = Path.Combine(uploads, GetUniqueFileName(formFile.FileName));
+                formFile.CopyTo(new FileStream(fullPath, FileMode.Create));
+
+            }
+            //return Ok(new { count = files.Count, size, filePath });
+            return View();
+        }
+
+        private string GetUniqueFileName(string fileName)
+        {
+            fileName = Path.GetFileName(fileName);
+            return Path.GetFileNameWithoutExtension(fileName)
+                      + "_"
+                      + Guid.NewGuid().ToString().Substring(0, 4)
+                      + Path.GetExtension(fileName);
+        }
+
         // GET: People/Create
         public IActionResult Create()
         {
@@ -75,7 +107,7 @@ namespace RefreshMyStyleApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("FName,LName,PhoneNumber,")] Person person)
+        public IActionResult Create([Bind("FName,LName,PhoneNumber,ProfileImage")] Person person)
         {
             if (ModelState.IsValid)
             {
@@ -86,9 +118,9 @@ namespace RefreshMyStyleApp.Controllers
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
-
+ 
             return View(person);
-
+            
             //if (ModelState.IsValid)
             //{
             //    _context.Add(clothingEnthusiast);
@@ -100,8 +132,8 @@ namespace RefreshMyStyleApp.Controllers
             //ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId", clothingEnthusiast.ImageId);
             //ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId", clothingEnthusiast.ProfileImageId);
 
-        }
 
+        }
 
         // GET: ClothingEnthusiasts/Edit/5
         public async Task<IActionResult> Edit(int? id)

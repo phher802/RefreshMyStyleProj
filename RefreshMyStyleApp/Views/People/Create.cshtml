@@ -36,10 +36,6 @@
                 <label asp-for="IdentityUserId" class="control-label"></label>
                 <select asp-for="IdentityUserId" class="form-control" asp-items="ViewBag.IdentityUserId"></select>
             </div>
-            @*<div class="form-group"  >
-                <input asp-for="" type="file" id="file1" name="file1" multiple="multiple" />
-            
-            </div>*@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" asp-controller="People" asp-action="RetrieveProfileImage" />
             </div>
@@ -47,14 +43,21 @@
     </div>
 </div>
 
-@*<form asp-action="UploadProfileImage" asp-controller="People"
-      enctype="multipart/form-data" method="post">
-    <input type="file" id="file1" name="file1" multiple="multiple" />
-    <input type="submit">Upload profile picture</>
-</form>*@
-@*<form asp-action="RetrieveProfileImage" asp-controller="People" method="post">
-    <button type="submit">Show latest profile picture</button>
-</form>*@
+<form method="post" enctype="multipart/form-data" asp-controller="People"
+      asp-action="UploadFiles">
+    <div class="form-group">
+        <div class="col-md-10">
+            <p>Upload one or more files using this form:</p>
+            <input type="file" name="files" multiple />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="submit" value="Upload" />
+        </div>
+    </div>
+</form>
+
 
 <div>
     <a asp-action="Index">Back to List</a>
