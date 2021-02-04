@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace RefreshMyStyleApp.Models
@@ -27,25 +28,27 @@ namespace RefreshMyStyleApp.Models
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
         public string PhoneNumber { get; set; }
 
-        public string ProfilePicture { get; set; }
+        [Required(ErrorMessage = "Please choose profile image")]
+        public string ProfileImageFilePath{ get; set; }
+
+        [NotMapped]
+        public string ProfileImage { get; set; }
 
 
-        [ForeignKey("Image")]
-        public int? ImageId { get; set; }
-        public Image Image { get; set; }
+        [ForeignKey("ClaimedList")]
+        public int? ClaimedListId { get; set; }
+        public ClaimedList ClaimedList { get; set; }
 
 
-        [ForeignKey("Event")]
-        public int? EventId { get; set; }
-        public Event Event { get; set; }
+        [ForeignKey("LikedList")]
+        public int? LikedListId { get; set; }
+        public LikedList LikedList { get; set; }
 
-
-        [ForeignKey("FriendsList")]
-        public int? FriendsListId { get; set; }
-        public FriendsList FriendsList { get; set; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
+      
+
     }
 }

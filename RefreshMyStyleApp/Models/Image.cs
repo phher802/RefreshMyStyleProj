@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,9 +14,8 @@ namespace RefreshMyStyleApp.Models
 
         public string ImageTitle { get; set; }
 
-        public byte[] ImageData { get; set; }
+        public string FilePath { get; set; }
 
-        public string Img { get; set; }
 
         [Display(Name = "Category")]
         public string ClothingCategory { get; set; }
@@ -31,5 +31,17 @@ namespace RefreshMyStyleApp.Models
 
         [Display(Name = "Give")]
         public bool ToGiveAway { get; set; }
+
+        [ForeignKey("LikedList")]
+        public int? LikedListId { get; set; }
+        public LikedList LikedList { get; set; }
+
+        [ForeignKey("ClaimedList")]
+        public int? ClaimedListId { get; set; }
+        public ClaimedList ClaimedList { get; set; }
+
+        [ForeignKey("Person")]
+        public int? Id { get; set; }
+        public Person Person { get; set; }
     }
 }

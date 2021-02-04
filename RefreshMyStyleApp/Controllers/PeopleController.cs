@@ -64,7 +64,7 @@ namespace RefreshMyStyleApp.Controllers
                     FName = model.FName,
                     LName = model.LName,
                     FullName = model.FName + " " + model.LName,            
-                    ProfilePicture = uniqueFileName,
+                    ProfileImage = uniqueFileName,
                 };
                 _context.Add(person);
                 await _context.SaveChangesAsync();
@@ -99,9 +99,6 @@ namespace RefreshMyStyleApp.Controllers
             }
 
             var person = await _context.People
-                .Include(c => c.Event)
-                .Include(c => c.FriendsList)
-                .Include(c => c.Image)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (person == null)
             {
@@ -154,81 +151,6 @@ namespace RefreshMyStyleApp.Controllers
 
         }
 
-        public IActionResult UploadProfileImage()
-        {
-
-
-            foreach (var file in Request.Form.Files)
-            {
-                ProfileImage profileImg = new ProfileImage();
-                profileImg.ProfileImageTitle = file.FileName;
-
-                MemoryStream ms = new MemoryStream();
-                file.CopyTo(ms);
-                profileImg.ProfileImageData = ms.ToArray();
-
-                ms.Close();
-                ms.Dispose();
-
-                _context.ProfileImages.Add(profileImg);
-                _context.SaveChanges();
-
-            }
-            ViewBag.Message = "ProfileImage(s) stored in database!";
-            return View();
-        }
-
-        [HttpPost]
-        public IActionResult RetrieveProfileImage()
-        {
-            var profileImg = _context.ProfileImages.OrderByDescending(i => i.ProfileImageId).FirstOrDefault();
-            string imageBase64Data = Convert.ToBase64String(profileImg.ProfileImageData);
-            string profileImageDataURL = string.Format("data:image/jpg;base64, {0}", imageBase64Data);
-
-            ViewBag.ProfileImageTitle = profileImg.ProfileImageTitle;
-            ViewBag.ProfileImageDataURL = profileImageDataURL;
-            return View("Index");
-        }
-
-
-
-        [HttpPost]
-        public IActionResult UpoadImage()
-        {
-            foreach (var file in Request.Form.Files)
-            {
-                Image img = new Image();
-                img.ImageTitle = file.FileName;
-
-                MemoryStream ms = new MemoryStream();
-                file.CopyTo(ms);
-                img.ImageData = ms.ToArray();
-
-                ms.Close();
-                ms.Dispose();
-
-                _context.Images.Add(img);
-                _context.SaveChanges();
-
-            }
-
-            ViewBag.Message = "Image(s) stored in database!";
-            return View("Index");
-
-        }
-
-        [HttpPost]
-        public IActionResult RetreiveImage()
-        {
-            Image img = _context.Images.OrderByDescending(i => i.ImageId).SingleOrDefault();
-            string imageBase64Data = Convert.ToBase64String(img.ImageData);
-            string imageDataURL = string.Format("data:image/jpg;base64, {0}", imageBase64Data);
-
-            ViewBag.ImageTitle = img.ImageTitle;
-            ViewBag.ImageDataURL = imageDataURL;
-            return View("Index");
-        }
-
 
         // GET: ClothingEnthusiasts/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -243,9 +165,6 @@ namespace RefreshMyStyleApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId", person.EventId);
-            ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId", person.FriendsListId);
-            ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId", person.ImageId);
             return View(person);
         }
 
@@ -281,9 +200,6 @@ namespace RefreshMyStyleApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId", person.EventId);
-            ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId", person.FriendsListId);
-            ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId", person.ImageId);
             return View(person);
         }
 
@@ -296,9 +212,6 @@ namespace RefreshMyStyleApp.Controllers
             }
 
             var person = await _context.People
-                .Include(c => c.Event)
-                .Include(c => c.FriendsList)
-                .Include(c => c.Image)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (person == null)
             {

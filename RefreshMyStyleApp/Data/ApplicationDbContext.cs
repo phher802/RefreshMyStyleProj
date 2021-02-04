@@ -10,7 +10,7 @@ namespace RefreshMyStyleApp.Data
 {
     public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
-        public DbSet<ProfileImage> ProfileImages { get; set; }
+        
         public DbSet<Image> Images { get; set; }
         public DbSet<Person> People { get; set; }
 

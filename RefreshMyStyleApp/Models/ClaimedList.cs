@@ -13,15 +13,5 @@ namespace RefreshMyStyleApp.Models
         public int? ClaimedListId { get; set; }
 
 
-        [ForeignKey("ClothingEnthusiast")]
-        public int UserId { get; set; }
-        public Person User { get; set; }
-
-
-        [ForeignKey("Image")]
-        public int? ImageId { get; set; }
-        public Image Image { get; set; }
-
-
     }
 }

@@ -28,5 +28,9 @@ namespace RefreshMyStyleApp.Models
         public int? EventListId { get; set; }
         public EventList EvenList { get; set; }
 
+        [ForeignKey("Person")]
+        public int? Id { get; set; }
+        public Person Person { get; set; }
+
     }
 }

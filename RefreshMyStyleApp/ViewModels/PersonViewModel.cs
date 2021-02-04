@@ -31,22 +31,19 @@ namespace RefreshMyStyleApp.ViewModels
         public string PhoneNumber { get; set; }
 
         [Display(Name = "Profile Picture")]
+        [Required(ErrorMessage = "Please choose profile image")]
         public IFormFile ProfileImage { get; set; }
 
 
-        [ForeignKey("Image")]
-        public int? ImageId { get; set; }
-        public Models.Image Image { get; set; }
+        [ForeignKey("ClaimedList")]
+        public int? ClaimedListId { get; set; }
+        public ClaimedList ClaimedList { get; set; }
 
 
-        [ForeignKey("Event")]
-        public int? EventId { get; set; }
-        public Event Event { get; set; }
+        [ForeignKey("LikedList")]
+        public int? LikedListId { get; set; }
+        public LikedList LikedList { get; set; }
 
-
-        [ForeignKey("FriendsList")]
-        public int? FriendsListId { get; set; }
-        public FriendsList FriendsList { get; set; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }

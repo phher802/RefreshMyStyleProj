@@ -13,9 +13,7 @@ namespace RefreshMyStyleApp.Models
         public int? EventListId { get; set; }
 
 
-        [ForeignKey("ClothingEnthusiast")]
-        public int UserId { get; set; }
-        public Person User { get; set; }
+
 
     }
 }
