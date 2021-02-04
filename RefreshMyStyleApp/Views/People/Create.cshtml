@@ -15,7 +15,7 @@
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" method="post"  asp-controller="People">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="FName" class="control-label"></label>
@@ -37,30 +37,18 @@
                 <select asp-for="IdentityUserId" class="form-control" asp-items="ViewBag.IdentityUserId"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" asp-controller="People" asp-action="RetrieveProfileImage" />
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<form method="post" enctype="multipart/form-data" asp-controller="People"
-      asp-action="UploadFiles">
-    <div class="form-group">
-        <div class="col-md-10">
-            <p>Upload one or more files using this form:</p>
-            <input type="file" name="files" multiple />
-        </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-10">
-            <input type="submit" value="Upload" />
-        </div>
-    </div>
-</form>
+
 
 
 <div>
     <a asp-action="Index">Back to List</a>
+    <a asp-action="UploadFiles">Upload Profile Picture</a>
 </div>
 
 @section Scripts {

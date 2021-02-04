@@ -6,9 +6,13 @@
 }
 
 <h1>Index</h1>
-<h1>@ViewBag.Message</h1>
-<h1 style="display: none">@ViewBag.ProfileImageTitle</h1>
-<img src="@ViewBag.ProfileImageDataUrl" />
+
+@*<a class="btn btn-primary popup" data-url="User/CreateEdit" data-toggle="modal" data-target="#modal-create-edit-user" id="UserModel">Add New User <i class="fa fa-plus"></i></a>
+<partial name="_Modal" />*@
+@section Scripts{
+  
+   
+}
 <div>
     <h4>Person</h4>
     <hr />
@@ -40,7 +44,7 @@
     </dl>
 </div>
 <div>
-    @*<a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-        <a asp-action="UploadProfileImage" asp-route-id="@Model.Id">Upload Profile Image</a>*@
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="UploadProfileImage" asp-route-id="@Model.Id">Upload Profile Image</a>
     <a asp-action="Index">Back to List</a>
 </div>
