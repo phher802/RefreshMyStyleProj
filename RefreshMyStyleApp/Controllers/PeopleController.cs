@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -16,7 +17,6 @@ namespace RefreshMyStyleApp.Controllers
 {
     public class PeopleController : Controller
     {
-
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _env;
 
@@ -36,15 +36,14 @@ namespace RefreshMyStyleApp.Controllers
             {
                 return RedirectToAction(nameof(Create));
             }
+        
 
             return View(person);
 
-            //var applicationDbContext = _context.ClothingEnthusiast.Include(c => c.Event).Include(c => c.FriendsList).Include(c => c.Image).Include(c => c.ProfileImage);
-            //return View(await applicationDbContext.ToListAsync());
 
         }
 
-        // GET: ClothingEnthusiasts/Details/5
+        // GET: People/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -62,43 +61,11 @@ namespace RefreshMyStyleApp.Controllers
             return View(person);
         }
 
-        [HttpPost]
-        public IActionResult UploadFiles(List<IFormFile> files)
-        {
-            long size = files.Sum(f => f.Length);
-
-            // full path to file in temp location
-            var filePath = Path.GetTempFileName();
-
-            foreach (var formFile in files)
-            {
-                var uploads = Path.Combine(_env.WebRootPath, "images");
-                var fullPath = Path.Combine(uploads, GetUniqueFileName(formFile.FileName));
-                formFile.CopyTo(new FileStream(fullPath, FileMode.Create));
-
-            }
-            //return Ok(new { count = files.Count, size, filePath });
-            return View();
-        }
-
-        private string GetUniqueFileName(string fileName)
-        {
-            fileName = Path.GetFileName(fileName);
-            return Path.GetFileNameWithoutExtension(fileName)
-                      + "_"
-                      + Guid.NewGuid().ToString().Substring(0, 4)
-                      + Path.GetExtension(fileName);
-        }
-
         // GET: People/Create
         public IActionResult Create()
         {
             Person person = new Person();
             return View(person);
-            // ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId");
-            //ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId");
-            //ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId");
-            //ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId");
 
         }
 
@@ -107,32 +74,71 @@ namespace RefreshMyStyleApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("FName,LName,PhoneNumber,ProfileImage")] Person person)
+        public IActionResult Create([Bind("FName,LName,PhoneNumber,ImageName")] Person person)
         {
             if (ModelState.IsValid)
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 person.IdentityUserId = userId;
-
                 _context.Add(person);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
- 
+
             return View(person);
-            
-            //if (ModelState.IsValid)
+
+        }
+
+        public IActionResult Uploadfiles()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadFiles([Bind("Id, ImageName")] List<IFormFile> files)
+        {
+            long size = files.Sum(f => f.Length);
+
+            // full path to file in temp location
+            var filePath = Path.GetTempFileName();
+
+            //foreach (var formFile in files)
             //{
-            //    _context.Add(clothingEnthusiast);
-            //    await _context.SaveChangesAsync();
-            //    return RedirectToAction(nameof(Index));
+            //var uniqueName = GetUniqueFileName(formFile.FileName);
+            //var uploads = Path.Combine(_env.WebRootPath, "images/profileImages");
+            //var ImageName = Path.Combine(uploads, uniqueName);
+            //await formFile.CopyToAsync(new FileStream(ImageName, FileMode.Create));
             //}
-            //ViewData["EventId"] = new SelectList(_context.Set<Event>(), "EventId", "EventId", clothingEnthusiast.EventId);
-            //ViewData["FriendsListId"] = new SelectList(_context.Set<FriendsList>(), "FriendsListId", "FriendsListId", clothingEnthusiast.FriendsListId);
-            //ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId", clothingEnthusiast.ImageId);
-            //ViewData["ProfileImageId"] = new SelectList(_context.profileImages, "ProfileImageId", "ProfileImageId", clothingEnthusiast.ProfileImageId);
+            var uniqueName = GetUniqueFileName(files[0].FileName);
+            var uploads = Path.Combine(_env.WebRootPath, "images/profileImages");
+            var ImageName = Path.Combine(uploads, uniqueName);
+            await files[0].CopyToAsync(new FileStream(ImageName, FileMode.Create));
 
 
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+
+            person.ImageName = uniqueName;
+
+
+            _context.Update(person);      
+            _context.SaveChanges();
+            //_context.Entry(person).Property("ImageName").IsModified = true;
+            return RedirectToAction(nameof(Index));
+            //return View("Index");
+        }
+        private string GetUniqueFileName(string fileName)
+        {
+            if (fileName.Length > 0)
+            {
+                fileName = Path.GetFileName(fileName);
+                return Path.GetFileNameWithoutExtension(fileName)
+                          + "_"
+                          + Guid.NewGuid().ToString().Substring(0, 4)
+                          + Path.GetExtension(fileName);
+            }
+            return string.Empty;
+  
         }
 
         // GET: ClothingEnthusiasts/Edit/5
@@ -148,7 +154,6 @@ namespace RefreshMyStyleApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["ImageId"] = new SelectList(_context.Images, "ImageId", "ImageId");
             return View(person);
         }
 

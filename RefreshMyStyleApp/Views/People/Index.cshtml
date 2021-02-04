@@ -6,15 +6,11 @@
 }
 
 <h1>Index</h1>
+<p>
+    <img src="~/images/profileImages/@Model.ImageName" />
 
-@*<a class="btn btn-primary popup" data-url="User/CreateEdit" data-toggle="modal" data-target="#modal-create-edit-user" id="UserModel">Add New User <i class="fa fa-plus"></i></a>
-<partial name="_Modal" />*@
-@section Scripts{
-  
-   
-}
+</p>
 <div>
-    <h4>Person</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -35,16 +31,16 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PhoneNumber)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-2" style="display: none">
             @Html.DisplayNameFor(model => model.IdentityUser)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10" style="display: none">
             @Html.DisplayFor(model => model.IdentityUser.Id)
         </dd>
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="UploadProfileImage" asp-route-id="@Model.Id">Upload Profile Image</a>
+    <a asp-action="UploadFiles" asp-controller="People" asp-route-id="@Model.Id">Upload Profile Image</a> |
     <a asp-action="Index">Back to List</a>
 </div>

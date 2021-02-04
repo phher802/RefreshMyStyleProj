@@ -1,5 +1,6 @@
 ﻿@model RefreshMyStyleApp.Models.Person
-
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@addTagHelper *, AuthoringTagHelpers
 @{
     ViewData["Title"] = "UploadFiles";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -15,8 +16,9 @@
               asp-action="UploadFiles">
             <div class="form-group">
                 <div class="col-md-10">
-                    <p>Upload one or more files using this form:</p>
-                    <input type="file" name="files" multiple />
+                    <p>Upload pofile picture:</p>
+                    <input asp-for="ProfileImage" type="file" name="files" accept="image/*" multiple />
+                    <span asp-validation-for="ProfileImage" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group">

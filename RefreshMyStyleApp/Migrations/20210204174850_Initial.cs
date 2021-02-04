@@ -219,8 +219,9 @@ namespace RefreshMyStyleApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FName = table.Column<string>(nullable: true),
                     LName = table.Column<string>(nullable: true),
+                    FullName = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
-                    ProfileImageFilePath = table.Column<string>(nullable: true),
+                    ImageName = table.Column<string>(nullable: true),
                     ClaimedListId = table.Column<int>(nullable: true),
                     LikedListId = table.Column<int>(nullable: true),
                     IdentityUserId = table.Column<string>(nullable: true)
@@ -292,7 +293,7 @@ namespace RefreshMyStyleApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "95d2a10d-e2e1-4128-af87-ec63e0df589f", "b9985efa-fa4d-4acf-b234-9492472933e3", "Person", "PERSON" });
+                values: new object[] { "52947037-c6de-4b31-a704-06ca96f8a936", "fc8d3b85-0ded-4a54-9f77-bfeadb2040e2", "Person", "PERSON" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

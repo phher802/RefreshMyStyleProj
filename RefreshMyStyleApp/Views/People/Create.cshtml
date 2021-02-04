@@ -36,19 +36,33 @@
                 <label asp-for="IdentityUserId" class="control-label"></label>
                 <select asp-for="IdentityUserId" class="form-control" asp-items="ViewBag.IdentityUserId"></select>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+        @*<form method="post" enctype="multipart/form-data" asp-controller="People"
+              asp-action="UploadFiles">
+            <div class="form-group">
+                <div class="col-md-10">
+                    <p>Upload pofile picture:</p>
+                    <input asp-for="ProfileImage" type="file" name="files" accept="image/*" multiple />
+                    <span asp-validation-for="ProfileImage" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input type="submit" value="Upload" />
+                </div>
+            </div>
+        </form>*@
     </div>
 </div>
 
 
 
-
 <div>
     <a asp-action="Index">Back to List</a>
-    <a asp-action="UploadFiles">Upload Profile Picture</a>
 </div>
 
 @section Scripts {

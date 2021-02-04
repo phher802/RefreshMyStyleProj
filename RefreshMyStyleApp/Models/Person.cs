@@ -20,14 +20,16 @@ namespace RefreshMyStyleApp.Models
         [Display(Name = "Last Name")]
         public string LName { get; set; }
 
+        [Display(Name = "Full Name")]
+        public string FullName { get; set; }
 
         [Display(Name = "Primary Phone Number")]
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
         public string PhoneNumber { get; set; }
-
-        public string ProfileImageFilePath{ get; set; }
-
+   
+        public string ImageName { get; set; }
+      
         [NotMapped]
         public IFormFile ProfileImage { get; set; }
 
@@ -40,6 +42,7 @@ namespace RefreshMyStyleApp.Models
         [ForeignKey("LikedList")]
         public int? LikedListId { get; set; }
         public LikedList LikedList { get; set; }
+
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }

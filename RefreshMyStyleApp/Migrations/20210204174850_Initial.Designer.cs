@@ -10,7 +10,7 @@ using RefreshMyStyleApp.Data;
 namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210204041707_Initial")]
+    [Migration("20210204174850_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,8 +50,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "95d2a10d-e2e1-4128-af87-ec63e0df589f",
-                            ConcurrencyStamp = "b9985efa-fa4d-4acf-b234-9492472933e3",
+                            Id = "52947037-c6de-4b31-a704-06ca96f8a936",
+                            ConcurrencyStamp = "fc8d3b85-0ded-4a54-9f77-bfeadb2040e2",
                             Name = "Person",
                             NormalizedName = "PERSON"
                         });
@@ -355,8 +355,14 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<string>("FName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("FullName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LName")
                         .HasColumnType("nvarchar(max)");
@@ -365,9 +371,6 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProfileImageFilePath")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
