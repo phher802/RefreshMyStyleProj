@@ -37,10 +37,7 @@ namespace RefreshMyStyleApp.Controllers
                 return RedirectToAction(nameof(Create));
             }
         
-
             return View(person);
-
-
         }
 
         // GET: People/Details/5
@@ -89,26 +86,19 @@ namespace RefreshMyStyleApp.Controllers
 
         }
 
-        public IActionResult Uploadfiles()
+        public IActionResult UploadProfilefiles()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadFiles([Bind("Id, ImageName")] List<IFormFile> files)
+        public async Task<IActionResult> UploadProfileFiles([Bind("Id, ImageName")] List<IFormFile> files)
         {
             long size = files.Sum(f => f.Length);
 
             // full path to file in temp location
             var filePath = Path.GetTempFileName();
 
-            //foreach (var formFile in files)
-            //{
-            //var uniqueName = GetUniqueFileName(formFile.FileName);
-            //var uploads = Path.Combine(_env.WebRootPath, "images/profileImages");
-            //var ImageName = Path.Combine(uploads, uniqueName);
-            //await formFile.CopyToAsync(new FileStream(ImageName, FileMode.Create));
-            //}
             var uniqueName = GetUniqueFileName(files[0].FileName);
             var uploads = Path.Combine(_env.WebRootPath, "images/profileImages");
             var ImageName = Path.Combine(uploads, uniqueName);
@@ -120,12 +110,10 @@ namespace RefreshMyStyleApp.Controllers
 
             person.ImageName = uniqueName;
 
-
             _context.Update(person);      
             _context.SaveChanges();
-            //_context.Entry(person).Property("ImageName").IsModified = true;
             return RedirectToAction(nameof(Index));
-            //return View("Index");
+            
         }
         private string GetUniqueFileName(string fileName)
         {

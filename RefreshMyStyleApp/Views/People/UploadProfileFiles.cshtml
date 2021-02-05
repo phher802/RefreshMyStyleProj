@@ -2,7 +2,7 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, AuthoringTagHelpers
 @{
-    ViewData["Title"] = "UploadFiles";
+    ViewData["Title"] = "UploadProfileFiles";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -13,10 +13,10 @@
 <div class="row">
     <div class="col-md-4">
         <form method="post" enctype="multipart/form-data" asp-controller="People"
-              asp-action="UploadFiles">
+              asp-action="UploadProfileFiles">
             <div class="form-group">
                 <div class="col-md-10">
-                    <p>Upload pofile picture:</p>
+                    <p>Upload profile picture:</p>
                     <input asp-for="ProfileImage" type="file" name="files" accept="image/*" multiple />
                     <span asp-validation-for="ProfileImage" class="text-danger"></span>
                 </div>
