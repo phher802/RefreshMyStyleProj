@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace RefreshMyStyleApp.Models
 {
@@ -15,6 +16,9 @@ namespace RefreshMyStyleApp.Models
         public string ImageTitle { get; set; }
 
         public string FilePath { get; set; }
+
+        [NotMapped]
+        public IFormFile ImageFile { get; set; }
 
         [Display(Name = "Category")]
         public string ClothingCategory { get; set; }

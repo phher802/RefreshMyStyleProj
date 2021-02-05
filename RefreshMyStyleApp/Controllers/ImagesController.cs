@@ -7,15 +7,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RefreshMyStyleApp.Data;
 using RefreshMyStyleApp.Models;
 
 namespace RefreshMyStyleApp.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ImagesController : ControllerBase
+    public class ImagesController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _env;
@@ -26,87 +25,94 @@ namespace RefreshMyStyleApp.Controllers
             _env = env;
         }
 
-        // GET: api/Images
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<Image>>> GetImages()
+        // GET: Images
+        public async Task<IActionResult> Index()
         {
-            return await _context.Images.ToListAsync();
+            var applicationDbContext = _context.Images.Include(i => i.ClaimedList).Include(i => i.LikedList).Include(i => i.Person);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: api/Images/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Image>> GetImage(int? id)
+        // GET: Images/Details/5
+        public async Task<IActionResult> Details(int? id)
         {
-            var image = await _context.Images.FindAsync(id);
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            var image = await _context.Images
+                .Include(i => i.ClaimedList)
+                .Include(i => i.LikedList)
+                .Include(i => i.Person)
+                .FirstOrDefaultAsync(m => m.ImageId == id);
             if (image == null)
             {
                 return NotFound();
             }
 
-            return image;
+            return View(image);
         }
 
-        // PUT: api/Images/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutImage(int? id, Image image)
+        // GET: Images/Create
+        public IActionResult Create()
         {
-            if (id != image.ImageId)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(image).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ImageExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            ViewData["ClaimedListId"] = new SelectList(_context.Set<ClaimedList>(), "ClaimedListId", "ClaimedListId");
+            ViewData["LikedListId"] = new SelectList(_context.Set<LikedList>(), "LikedListId", "LikedListId");
+            ViewData["Id"] = new SelectList(_context.People, "Id", "Id");
+            return View();
         }
 
-        // POST: api/Images
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        // POST: Images/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<ActionResult<Image>> PostImage([Bind("Id, ImageName")]Image image, List<IFormFile> files)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("ImageId,ImageTitle,FilePath,ClothingCategory,Color,Size,Description,ToShare,ToGiveAway,Id,LikedListId,ClaimedListId")] Image image)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(image);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["ClaimedListId"] = new SelectList(_context.Set<ClaimedList>(), "ClaimedListId", "ClaimedListId", image.ClaimedListId);
+            ViewData["LikedListId"] = new SelectList(_context.Set<LikedList>(), "LikedListId", "LikedListId", image.LikedListId);
+            ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.Id);
+            return View(image);
+        }
+
+        public IActionResult PostImage()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostImage([Bind("Id, ImageTitle")] List<IFormFile> files)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var img = _context.Images.Where(i => i.ImageId == person.Id).FirstOrDefault();
 
             long size = files.Sum(f => f.Length);
 
             // full path to file in temp location
-            var filePath = Path.GetTempFileName();
+            var filePaths = Path.GetTempFileName();
 
-            for (int i = 0; i < files.Count; i++)
+            foreach ( var formfile in files)
             {
-                var uniqueName = GetUniqueFileName(files[i].FileName);
+                var uniqueName = GetUniqueFileName(files[0].FileName);
                 var uploads = Path.Combine(_env.WebRootPath, "images/items");
-                var ImageName = Path.Combine(uploads, uniqueName);
-                await files[i].CopyToAsync(new FileStream(ImageName, FileMode.Create));
-                person.ImageName = uniqueName;
+                var imgTitle = Path.Combine(uploads, uniqueName);
+                await files[0].CopyToAsync(new FileStream(imgTitle, FileMode.Create));
+                img.ImageTitle = uniqueName;
+                
             }
-          
-            _context.Update(person);
+
+            _context.Update(img);
             await _context.SaveChangesAsync();
             //return RedirectToAction(nameof(Index));
- 
-            return CreatedAtAction("GetImage", new { id = image.ImageId }, image);
+            return View();
+            //return CreatedAtAction("GetImage", new { id = image.ImageId }, image);
         }
 
         private string GetUniqueFileName(string fileName)
@@ -123,20 +129,93 @@ namespace RefreshMyStyleApp.Controllers
 
         }
 
-        // DELETE: api/Images/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Image>> DeleteImage(int? id)
+        // GET: Images/Edit/5
+        public async Task<IActionResult> Edit(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             var image = await _context.Images.FindAsync(id);
             if (image == null)
             {
                 return NotFound();
             }
+            ViewData["ClaimedListId"] = new SelectList(_context.Set<ClaimedList>(), "ClaimedListId", "ClaimedListId", image.ClaimedListId);
+            ViewData["LikedListId"] = new SelectList(_context.Set<LikedList>(), "LikedListId", "LikedListId", image.LikedListId);
+            ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.Id);
+            return View(image);
+        }
 
+        // POST: Images/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int? id, [Bind("ImageId,ImageTitle,FilePath,ClothingCategory,Color,Size,Description,ToShare,ToGiveAway,Id,LikedListId,ClaimedListId")] Image image)
+        {
+            if (id != image.ImageId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(image);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ImageExists(image.ImageId))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["ClaimedListId"] = new SelectList(_context.Set<ClaimedList>(), "ClaimedListId", "ClaimedListId", image.ClaimedListId);
+            ViewData["LikedListId"] = new SelectList(_context.Set<LikedList>(), "LikedListId", "LikedListId", image.LikedListId);
+            ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.Id);
+            return View(image);
+        }
+
+        // GET: Images/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var image = await _context.Images
+                .Include(i => i.ClaimedList)
+                .Include(i => i.LikedList)
+                .Include(i => i.Person)
+                .FirstOrDefaultAsync(m => m.ImageId == id);
+            if (image == null)
+            {
+                return NotFound();
+            }
+
+            return View(image);
+        }
+
+        // POST: Images/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int? id)
+        {
+            var image = await _context.Images.FindAsync(id);
             _context.Images.Remove(image);
             await _context.SaveChangesAsync();
-
-            return image;
+            return RedirectToAction(nameof(Index));
         }
 
         private bool ImageExists(int? id)

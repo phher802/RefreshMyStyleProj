@@ -86,6 +86,9 @@ namespace RefreshMyStyleApp.Controllers
 
         }
 
+      
+
+
         public IActionResult UploadProfilefiles()
         {
             return View();

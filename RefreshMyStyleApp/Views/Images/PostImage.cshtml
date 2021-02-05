@@ -11,6 +11,21 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data" asp-controller="Images"
+              asp-action="PostImage">
+            <div class="form-group">
+                <div class="col-md-10">
+                    <p>Upload profile picture:</p>
+                    <input asp-for="ImageFile" type="file" name="files" accept="image/*" multiple />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10">
+                    <input type="submit" value="Upload" />
+                </div>
+            </div>
+        </form>
         <form asp-action="PostImage">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -55,15 +70,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="Id" class="control-label"></label>
-                <select asp-for="Id" class ="form-control" asp-items="ViewBag.Id"></select>
+                <select asp-for="Id" class="form-control" asp-items="ViewBag.Id"></select>
             </div>
             <div class="form-group">
                 <label asp-for="LikedListId" class="control-label"></label>
-                <select asp-for="LikedListId" class ="form-control" asp-items="ViewBag.LikedListId"></select>
+                <select asp-for="LikedListId" class="form-control" asp-items="ViewBag.LikedListId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="ClaimedListId" class="control-label"></label>
-                <select asp-for="ClaimedListId" class ="form-control" asp-items="ViewBag.ClaimedListId"></select>
+                <select asp-for="ClaimedListId" class="form-control" asp-items="ViewBag.ClaimedListId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
