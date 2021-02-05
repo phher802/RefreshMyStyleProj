@@ -10,16 +10,16 @@ namespace RefreshMyStyleApp.Models
 {
     public class Friendship
     {
-        [Key]
-        public int? FriendshipId { get; set; }
 
-        [ForeignKey("Person")]
+
+        [Key]
         public int MeId { get; set; }
         public Person Me { get; set; }
 
-        [ForeignKey("Person")]
+        [Key]
         public int? FriendId { get; set; }
+
         public Person Friend { get; set; }
- 
+       
     }
 }

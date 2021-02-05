@@ -10,7 +10,7 @@ namespace RefreshMyStyleApp.Models
     public class Event
     {
         [Key]
-        public int? EventId { get; set; }
+        public int? Id { get; set; }
 
         [Display(Name = "Date Event Was Posted")]
         public DateTime? DatePosted { get; set; }

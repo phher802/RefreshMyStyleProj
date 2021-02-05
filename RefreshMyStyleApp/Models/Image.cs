@@ -11,7 +11,9 @@ namespace RefreshMyStyleApp.Models
     public class Image
     {
         [Key]
-        public int? ImageId { get; set; }
+        public int? Id { get; set; }
+
+        public string Img { get; set; }
 
         public string ImageTitle { get; set; }
 
@@ -37,10 +39,10 @@ namespace RefreshMyStyleApp.Models
 
         public bool IsLiked { get; set; }
 
-        public ICollection<Like> LikedList { get; set; }
+        public ICollection<Like> Likes { get; set; }
 
         [ForeignKey("Person")]
-        public int Id { get; set; }
+        public int PersonId { get; set; }
         public Person Person { get; set; }
 
   

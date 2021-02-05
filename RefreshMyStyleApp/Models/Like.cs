@@ -10,13 +10,15 @@ namespace RefreshMyStyleApp.Models
     public class Like
     {
         [Key]
-        public int? LikeId { get; set; }
+        public int? Id { get; set; }
 
 
         [ForeignKey("Image")]
         public int? ImageId { get; set; }
         public Image Image { get; set; }
 
-       
+    
+
+
     }
 }

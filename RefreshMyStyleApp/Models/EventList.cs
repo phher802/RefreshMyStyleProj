@@ -10,10 +10,10 @@ namespace RefreshMyStyleApp.Models
     public class EventList
     {
         [Key]
-        public int? EventListId { get; set; }
+        public int? Id { get; set; }
 
         [ForeignKey("Person")]
-        public int Id { get; set; }
+        public int PersonId { get; set; }
         public Person Person { get; set; }
 
 

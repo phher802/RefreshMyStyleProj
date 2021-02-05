@@ -28,7 +28,7 @@ namespace RefreshMyStyleApp.Controllers
         // GET: Images
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Images.Include(i => i.LikedList).Include(i => i.Person);
+            var applicationDbContext = _context.Images.Include(i => i.Likes).Include(i => i.Person);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -42,7 +42,7 @@ namespace RefreshMyStyleApp.Controllers
 
             var image = await _context.Images
                 .Include(i => i.Person)
-                .FirstOrDefaultAsync(m => m.ImageId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (image == null)
             {
                 return NotFound();
@@ -71,7 +71,7 @@ namespace RefreshMyStyleApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.Id);
+            ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.PersonId);
             return View(image);
         }
 
@@ -85,7 +85,7 @@ namespace RefreshMyStyleApp.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            var img = _context.Images.Where(i => i.ImageId == person.Id).FirstOrDefault();
+            var img = _context.Images.Where(i => i.Id == person.Id).FirstOrDefault();
 
             long size = files.Sum(f => f.Length);
 
@@ -136,7 +136,7 @@ namespace RefreshMyStyleApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.Id);
+            ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.PersonId);
             return View(image);
         }
 
@@ -147,7 +147,7 @@ namespace RefreshMyStyleApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int? id, [Bind("ImageId,ImageTitle,FilePath,ClothingCategory,Color,Size,Description,ToShare,ToGiveAway,Id")] Image image)
         {
-            if (id != image.ImageId)
+            if (id != image.Id)
             {
                 return NotFound();
             }
@@ -161,7 +161,7 @@ namespace RefreshMyStyleApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ImageExists(image.ImageId))
+                    if (!ImageExists(image.Id))
                     {
                         return NotFound();
                     }
@@ -172,7 +172,7 @@ namespace RefreshMyStyleApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.Id);
+            ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.PersonId);
             return View(image);
         }
 
@@ -186,7 +186,7 @@ namespace RefreshMyStyleApp.Controllers
 
             var image = await _context.Images
                 .Include(i => i.Person)
-                .FirstOrDefaultAsync(m => m.ImageId == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (image == null)
             {
                 return NotFound();
@@ -208,7 +208,7 @@ namespace RefreshMyStyleApp.Controllers
 
         private bool ImageExists(int? id)
         {
-            return _context.Images.Any(e => e.ImageId == id);
+            return _context.Images.Any(e => e.Id == id);
         }
     }
 }

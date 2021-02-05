@@ -36,15 +36,7 @@ namespace RefreshMyStyleApp.Models
         [NotMapped]
         public IFormFile ProfileImage { get; set; }
 
-        public ICollection<Friendship> Friends { get; set; }
-
-        public ICollection<Image> ClaimedImages { get; set; }
-
-        public ICollection<Image> LikedImages { get; set; }
-
-        public ICollection<Event> Events { get; set; }
-
-
+   
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
