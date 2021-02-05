@@ -11,6 +11,7 @@ namespace RefreshMyStyleApp.Models
 {
     public class Person
     {
+
         [Key]
         public int Id { get; set; }
 
@@ -29,19 +30,19 @@ namespace RefreshMyStyleApp.Models
         public string PhoneNumber { get; set; }
    
         public string ImageName { get; set; }
+
+        public bool IsGoing { get; set; }
       
         [NotMapped]
         public IFormFile ProfileImage { get; set; }
 
+        public ICollection<Friendship> Friends { get; set; }
 
-        [ForeignKey("ClaimedList")]
-        public int? ClaimedListId { get; set; }
-        public ClaimedList ClaimedList { get; set; }
+        public ICollection<Image> ClaimedImages { get; set; }
 
+        public ICollection<Image> LikedImages { get; set; }
 
-        [ForeignKey("LikedList")]
-        public int? LikedListId { get; set; }
-        public LikedList LikedList { get; set; }
+        public ICollection<Event> Events { get; set; }
 
 
         [ForeignKey("IdentityUser")]

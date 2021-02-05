@@ -56,8 +56,8 @@ namespace RefreshMyStyleApp.Controllers
         // GET: Images/Create
         public IActionResult Create()
         {
-            ViewData["ClaimedListId"] = new SelectList(_context.Set<ClaimedList>(), "ClaimedListId", "ClaimedListId");
-            ViewData["LikedListId"] = new SelectList(_context.Set<LikedList>(), "LikedListId", "LikedListId");
+            ViewData["ClaimedListId"] = new SelectList(_context.Set<ClaimedItems>(), "ClaimedListId", "ClaimedListId");
+            ViewData["LikedListId"] = new SelectList(_context.Set<LIkedList>(), "LikedListId", "LikedListId");
             ViewData["Id"] = new SelectList(_context.People, "Id", "Id");
             return View();
         }
@@ -75,8 +75,8 @@ namespace RefreshMyStyleApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClaimedListId"] = new SelectList(_context.Set<ClaimedList>(), "ClaimedListId", "ClaimedListId", image.ClaimedListId);
-            ViewData["LikedListId"] = new SelectList(_context.Set<LikedList>(), "LikedListId", "LikedListId", image.LikedListId);
+            ViewData["ClaimedListId"] = new SelectList(_context.Set<ClaimedItems>(), "ClaimedListId", "ClaimedListId", image.ClaimedListId);
+            ViewData["LikedListId"] = new SelectList(_context.Set<LIkedList>(), "LikedListId", "LikedListId", image.LikedListId);
             ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.Id);
             return View(image);
         }
@@ -142,8 +142,8 @@ namespace RefreshMyStyleApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClaimedListId"] = new SelectList(_context.Set<ClaimedList>(), "ClaimedListId", "ClaimedListId", image.ClaimedListId);
-            ViewData["LikedListId"] = new SelectList(_context.Set<LikedList>(), "LikedListId", "LikedListId", image.LikedListId);
+            ViewData["ClaimedListId"] = new SelectList(_context.Set<ClaimedItems>(), "ClaimedListId", "ClaimedListId", image.ClaimedListId);
+            ViewData["LikedListId"] = new SelectList(_context.Set<LIkedList>(), "LikedListId", "LikedListId", image.LikedListId);
             ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.Id);
             return View(image);
         }
@@ -180,8 +180,8 @@ namespace RefreshMyStyleApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClaimedListId"] = new SelectList(_context.Set<ClaimedList>(), "ClaimedListId", "ClaimedListId", image.ClaimedListId);
-            ViewData["LikedListId"] = new SelectList(_context.Set<LikedList>(), "LikedListId", "LikedListId", image.LikedListId);
+            ViewData["ClaimedListId"] = new SelectList(_context.Set<ClaimedItems>(), "ClaimedListId", "ClaimedListId", image.ClaimedListId);
+            ViewData["LikedListId"] = new SelectList(_context.Set<LIkedList>(), "LikedListId", "LikedListId", image.LikedListId);
             ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.Id);
             return View(image);
         }

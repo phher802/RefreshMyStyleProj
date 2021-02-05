@@ -7,13 +7,16 @@ using System.Threading.Tasks;
 
 namespace RefreshMyStyleApp.Models
 {
-    public class ClaimedList
+    public class Like
     {
         [Key]
-        public int? ClaimedListId { get; set; }
+        public int? LikeId { get; set; }
 
 
+        [ForeignKey("Image")]
+        public int? ImageId { get; set; }
+        public Image Image { get; set; }
 
-
+       
     }
 }

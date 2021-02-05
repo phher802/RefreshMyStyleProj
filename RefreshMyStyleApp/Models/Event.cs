@@ -23,6 +23,11 @@ namespace RefreshMyStyleApp.Models
 
         public string Message { get; set; }
 
+        public bool IsGoing { get; set; }
+
+        public string Invite { get; set; }
+        public bool IsInvted { get; set; }
+
 
         [ForeignKey("EventList")]
         public int? EventListId { get; set; }

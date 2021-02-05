@@ -35,18 +35,16 @@ namespace RefreshMyStyleApp.Models
         [Display(Name ="Give")]
         public bool ToGiveAway { get; set; }
 
+        public bool IsLiked { get; set; }
+
+        public ICollection<Like> LikedList { get; set; }
 
         [ForeignKey("Person")]
         public int Id { get; set; }
         public Person Person { get; set; }
 
-        [ForeignKey("LikedList")]
-        public int? LikedListId { get; set; }
-        public LikedList LikedList { get; set; }
+  
 
-        [ForeignKey("ClaimedList")]
-        public int? ClaimedListId { get; set; }
-        public ClaimedList ClaimedList { get; set; }
 
     }
 }
