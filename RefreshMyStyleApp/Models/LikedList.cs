@@ -12,7 +12,7 @@ namespace RefreshMyStyleApp.Models
         [Key]
         public int? LikedListId { get; set; }
 
-
+        public bool IsLiked { get; set; }
        
     }
 }
