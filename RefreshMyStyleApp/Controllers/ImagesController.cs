@@ -28,7 +28,7 @@ namespace RefreshMyStyleApp.Controllers
         // GET: Images
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Images.Include(i => i.ClaimedList).Include(i => i.LikedList).Include(i => i.Person);
+            var applicationDbContext = _context.Images.Include(i => i.LikedList).Include(i => i.Person);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -41,8 +41,6 @@ namespace RefreshMyStyleApp.Controllers
             }
 
             var image = await _context.Images
-                .Include(i => i.ClaimedList)
-                .Include(i => i.LikedList)
                 .Include(i => i.Person)
                 .FirstOrDefaultAsync(m => m.ImageId == id);
             if (image == null)
@@ -56,8 +54,6 @@ namespace RefreshMyStyleApp.Controllers
         // GET: Images/Create
         public IActionResult Create()
         {
-            ViewData["ClaimedListId"] = new SelectList(_context.Set<ClaimedItems>(), "ClaimedListId", "ClaimedListId");
-            ViewData["LikedListId"] = new SelectList(_context.Set<LIkedList>(), "LikedListId", "LikedListId");
             ViewData["Id"] = new SelectList(_context.People, "Id", "Id");
             return View();
         }
@@ -67,7 +63,7 @@ namespace RefreshMyStyleApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ImageId,ImageTitle,FilePath,ClothingCategory,Color,Size,Description,ToShare,ToGiveAway,Id,LikedListId,ClaimedListId")] Image image)
+        public async Task<IActionResult> Create([Bind("ImageId,ImageTitle,FilePath,ClothingCategory,Color,Size,Description,ToShare,ToGiveAway,Id")] Image image)
         {
             if (ModelState.IsValid)
             {
@@ -75,8 +71,6 @@ namespace RefreshMyStyleApp.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClaimedListId"] = new SelectList(_context.Set<ClaimedItems>(), "ClaimedListId", "ClaimedListId", image.ClaimedListId);
-            ViewData["LikedListId"] = new SelectList(_context.Set<LIkedList>(), "LikedListId", "LikedListId", image.LikedListId);
             ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.Id);
             return View(image);
         }
@@ -142,8 +136,6 @@ namespace RefreshMyStyleApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClaimedListId"] = new SelectList(_context.Set<ClaimedItems>(), "ClaimedListId", "ClaimedListId", image.ClaimedListId);
-            ViewData["LikedListId"] = new SelectList(_context.Set<LIkedList>(), "LikedListId", "LikedListId", image.LikedListId);
             ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.Id);
             return View(image);
         }
@@ -153,7 +145,7 @@ namespace RefreshMyStyleApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, [Bind("ImageId,ImageTitle,FilePath,ClothingCategory,Color,Size,Description,ToShare,ToGiveAway,Id,LikedListId,ClaimedListId")] Image image)
+        public async Task<IActionResult> Edit(int? id, [Bind("ImageId,ImageTitle,FilePath,ClothingCategory,Color,Size,Description,ToShare,ToGiveAway,Id")] Image image)
         {
             if (id != image.ImageId)
             {
@@ -180,8 +172,6 @@ namespace RefreshMyStyleApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClaimedListId"] = new SelectList(_context.Set<ClaimedItems>(), "ClaimedListId", "ClaimedListId", image.ClaimedListId);
-            ViewData["LikedListId"] = new SelectList(_context.Set<LIkedList>(), "LikedListId", "LikedListId", image.LikedListId);
             ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.Id);
             return View(image);
         }
@@ -195,8 +185,6 @@ namespace RefreshMyStyleApp.Controllers
             }
 
             var image = await _context.Images
-                .Include(i => i.ClaimedList)
-                .Include(i => i.LikedList)
                 .Include(i => i.Person)
                 .FirstOrDefaultAsync(m => m.ImageId == id);
             if (image == null)
