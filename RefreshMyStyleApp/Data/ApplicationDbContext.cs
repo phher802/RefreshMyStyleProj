@@ -34,19 +34,6 @@ namespace RefreshMyStyleApp.Data
                     NormalizedName = "PERSON"
                 });
 
-            //builder.Entity<Friendship>(f =>
-            //{
-            //    f.HasKey(f => new { f.MeId, f.FriendId });
-            //    f
-            //        .HasOne(f => f.Me)
-            //        .WithMany(u => u.Friends)
-            //        .HasForeignKey(f => f.MeId);
-
-            //    f
-            //        .HasOne(f => f.Friend)
-            //        .WithMany(u => u.Friends)
-            //        .HasForeignKey(f => f.FriendId);
-            //});
 
           
             
