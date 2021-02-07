@@ -15,6 +15,7 @@ using Microsoft.Extensions.Hosting;
 using System.Security.Claims;
 using RefreshMyStyleApp.ActionFilters;
 using Microsoft.AspNetCore.Http;
+using RefreshMyStyleApp.Hubs;
 
 namespace RefreshMyStyleApp
 {
@@ -46,7 +47,8 @@ namespace RefreshMyStyleApp
 
             services.AddControllersWithViews();
             services.AddRazorPages();
-
+            services.AddSignalR();
+         
       
 
         }
@@ -79,6 +81,7 @@ namespace RefreshMyStyleApp
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
+                endpoints.MapHub<NotificationHub>("/NotificationHub");
             });
         }
     }

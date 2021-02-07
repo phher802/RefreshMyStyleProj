@@ -14,6 +14,8 @@ namespace RefreshMyStyleApp.Data
         public DbSet<Image> Images { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Event> Events { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<NotificationUser> UserNotifications { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -34,9 +36,10 @@ namespace RefreshMyStyleApp.Data
                     NormalizedName = "PERSON"
                 });
 
+            builder.Entity<NotificationUser>()
+                  .HasKey(k => new { k.NotificationId, k.PersonId });
 
-          
-            
+
 
         }
     }
