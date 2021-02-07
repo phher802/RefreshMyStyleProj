@@ -47,6 +47,19 @@ namespace RefreshMyStyleApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Notifications",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Text = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notifications", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -226,6 +239,31 @@ namespace RefreshMyStyleApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserNotifications",
+                columns: table => new
+                {
+                    NotificationId = table.Column<int>(nullable: false),
+                    PersonId = table.Column<int>(nullable: false),
+                    IsRead = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserNotifications", x => new { x.NotificationId, x.PersonId });
+                    table.ForeignKey(
+                        name: "FK_UserNotifications_Notifications_NotificationId",
+                        column: x => x.NotificationId,
+                        principalTable: "Notifications",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserNotifications_People_PersonId",
+                        column: x => x.PersonId,
+                        principalTable: "People",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Events",
                 columns: table => new
                 {
@@ -273,7 +311,7 @@ namespace RefreshMyStyleApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "278ee438-d872-4ff8-9f5b-1539489dd621", "bba8ab8b-3147-4870-a7d9-38d8b81c51cb", "Person", "PERSON" });
+                values: new object[] { "f51a5077-b165-4b7f-bedb-b1c23a38659c", "42553730-8ec4-4f53-b9d9-0959ee0eb15d", "Person", "PERSON" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -338,6 +376,11 @@ namespace RefreshMyStyleApp.Migrations
                 name: "IX_People_IdentityUserId",
                 table: "People",
                 column: "IdentityUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserNotifications_PersonId",
+                table: "UserNotifications",
+                column: "PersonId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -364,6 +407,9 @@ namespace RefreshMyStyleApp.Migrations
                 name: "Like");
 
             migrationBuilder.DropTable(
+                name: "UserNotifications");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
@@ -371,6 +417,9 @@ namespace RefreshMyStyleApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "Images");
+
+            migrationBuilder.DropTable(
+                name: "Notifications");
 
             migrationBuilder.DropTable(
                 name: "People");
