@@ -8,9 +8,9 @@ using RefreshMyStyleApp.Models;
 namespace RefreshMyStyleApp.ViewModels
 {
 
-    public class PersonViewModel
+    public class ApplicationUserImageViewModel
     {
-        public Person Person { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
         public Image Image { get; set; }
 
         public List<Image> Images {get; set;}

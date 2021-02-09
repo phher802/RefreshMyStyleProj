@@ -115,7 +115,7 @@ namespace RefreshMyStyleApp.Controllers
         public IActionResult GetNotification()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault().ToString();
+            var person = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault().ToString();
            
             var notification = GetUserNotifications(person);
             return Ok(new { UserNotification = notification, Count = notification.Count });

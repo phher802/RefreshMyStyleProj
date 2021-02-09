@@ -41,11 +41,11 @@ namespace RefreshMyStyleApp.Models
 
         public bool IsClaimed { get; set; }
 
-        public ICollection<Like> Likes { get; set; }
+        public List<Like> Likes { get; set; }
 
         [ForeignKey("Person")]
         public int PersonId { get; set; }
-        public Person Person { get; set; }
+        public ApplicationUser Person { get; set; }
 
   
 

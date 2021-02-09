@@ -14,12 +14,12 @@ namespace RefreshMyStyleApp.Models
 
         [Key]
         public int MeId { get; set; }
-        public Person Me { get; set; }
+        public ApplicationUser Me { get; set; }
 
         [Key]
         public int? FriendId { get; set; }
 
-        public Person Friend { get; set; }
+        public ApplicationUser Friend { get; set; }
        
     }
 }

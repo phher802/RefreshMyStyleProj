@@ -18,7 +18,7 @@ using RefreshMyStyleApp.ViewModels;
 
 namespace RefreshMyStyleApp.Controllers
 {
-    public class PeopleController : Controller
+    public class ApplicationUserController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _env;
@@ -26,7 +26,7 @@ namespace RefreshMyStyleApp.Controllers
         //private readonly Notification _Notification;
 
 
-        public PeopleController(ApplicationDbContext context, IWebHostEnvironment env)
+        public ApplicationUserController(ApplicationDbContext context, IWebHostEnvironment env)
         {
             _context = context;
             _env = env;
@@ -35,7 +35,7 @@ namespace RefreshMyStyleApp.Controllers
 
         }
 
-        public void GetPersonLoggedIn(Person person)
+        public void GetPersonLoggedIn(ApplicationUser person)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             person.IdentityUserId = userId;
@@ -43,9 +43,9 @@ namespace RefreshMyStyleApp.Controllers
         // GET: People
         public IActionResult Index()
         {
-            Person person = new Person();
+            ApplicationUser person = new ApplicationUser();
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            person = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
 
         
             person.FullName = person.FName + " " + person.LName;
@@ -70,11 +70,11 @@ namespace RefreshMyStyleApp.Controllers
         public IActionResult Details(int? id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var person = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
 
             PersonViewModel personViewModel = new PersonViewModel
             {
-                Person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
+                Person = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
                 Image = _context.Images.Where(i => i.Id == id).FirstOrDefault()
             };
 
@@ -99,7 +99,7 @@ namespace RefreshMyStyleApp.Controllers
     // GET: People/Create
     public IActionResult Create()
     {
-        Person person = new Person();
+        ApplicationUser person = new ApplicationUser();
         return View(person);
 
     }
@@ -109,14 +109,14 @@ namespace RefreshMyStyleApp.Controllers
     // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create([Bind("FName,LName,PhoneNumber,ImageName")] Person person)
+    public IActionResult Create([Bind("FName,LName,PhoneNumber,ImageName")] ApplicationUser person)
     {
         if (ModelState.IsValid)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             person.IdentityUserId = userId;
 
-            _context.People.Add(person);
+            _context.ApplicationUsers.Add(person);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
@@ -146,11 +146,11 @@ namespace RefreshMyStyleApp.Controllers
 
 
         var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+        var person = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
 
         person.ProfileImageName = uniqueName;
 
-        _context.People.Update(person);
+        _context.ApplicationUsers.Update(person);
         _context.SaveChanges();
         return RedirectToAction(nameof(Index));
 
@@ -178,7 +178,7 @@ namespace RefreshMyStyleApp.Controllers
             return NotFound();
         }
 
-        var person = await _context.People.FindAsync(id);
+        var person = await _context.ApplicationUsers.FindAsync(id);
         if (person == null)
         {
             return NotFound();
@@ -191,7 +191,7 @@ namespace RefreshMyStyleApp.Controllers
     // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("UserId,FName,LName,PhoneNumber,ProfileImageId,ImageId,EventId,FriendsListId")] Person person)
+    public async Task<IActionResult> Edit(int id, [Bind("UserId,FName,LName,PhoneNumber,ProfileImageId,ImageId,EventId,FriendsListId")] ApplicationUser person)
     {
         if (id != person.Id)
         {
@@ -229,7 +229,7 @@ namespace RefreshMyStyleApp.Controllers
             return NotFound();
         }
 
-        var person = await _context.People
+        var person = await _context.ApplicationUsers
             .FirstOrDefaultAsync(m => m.Id == id);
         if (person == null)
         {
@@ -244,15 +244,15 @@ namespace RefreshMyStyleApp.Controllers
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var person = await _context.People.FindAsync(id);
-        _context.People.Remove(person);
+        var person = await _context.ApplicationUsers.FindAsync(id);
+        _context.ApplicationUsers.Remove(person);
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
     private bool PeopleExists(int id)
     {
-        return _context.People.Any(e => e.Id == id);
+        return _context.ApplicationUsers.Any(e => e.Id == id);
     }
 }
 }

@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace RefreshMyStyleApp.Models
 {
-    public class Person
+    public class ApplicationUser
     {
 
         [Key]
