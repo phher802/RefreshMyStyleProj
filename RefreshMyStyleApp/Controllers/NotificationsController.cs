@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using ClientNotifications;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.SignalR;
@@ -15,13 +17,15 @@ namespace RefreshMyStyleApp.Controllers
     public class NotificationsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly IHubContext<NotificationHub> _hubContext; 
-        
+        private readonly IHubContext<NotificationHub> _hubContext;
+      
+
 
         public NotificationsController(ApplicationDbContext context, IHubContext<NotificationHub> hubContext)
         {
             _context = context;
             _hubContext = hubContext;
+           
         }
 
         // GET: Notifications
@@ -59,34 +63,77 @@ namespace RefreshMyStyleApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Text")] Notification notification)
+        public async Task<IActionResult> Create([Bind("Id,Text")] Notification notification, int id)
         {
             _context.Notifications.Add(notification);
             _context.SaveChanges();
 
             //TODO: Assign notification to users
-            var watchlists = _watchlistRepository.GetWatchlistFromPetId(petId);
-            foreach (var watchlist in watchlists)
+            var likeLists = _context.Likes.Where(l => l.PersonId == id).ToList();
+            var claimLists = _context.Claims.Where(l => l.PersonId == id).ToList();
+
+            foreach (var likeList in likeLists)
             {
-                var userNotification = new NotificationApplicationUser();
-                userNotification.ApplicationUserId = watchlist.UserId;
+                var userNotification = new NotificationUser();
+                userNotification.PersonId = likeList.PersonId;
                 userNotification.NotificationId = notification.Id;
 
                 _context.UserNotifications.Add(userNotification);
                 _context.SaveChanges();
             }
 
-            _hubContext.Clients.All.InvokeAsync("displayNotification", "");
-
-            if (ModelState.IsValid)
+            foreach (var claimList in claimLists)
             {
-                _context.Add(notification);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var userNotification = new NotificationUser();
+                userNotification.PersonId = claimList.PersonId;
+                userNotification.NotificationId = notification.Id;
+
+                _context.UserNotifications.Add(userNotification);
+                _context.SaveChanges();
+
             }
+              await _hubContext.Clients.All.SendAsync("displayNotification","");
+          
+
+            //if (ModelState.IsValid)
+            //{
+            //    _context.Add(notification);
+            //    await _context.SaveChangesAsync();
+            //    return RedirectToAction(nameof(Index));
+            //}
             return View(notification);
         }
 
+        public List<NotificationUser> GetUserNotifications(string id)
+        {
+            var getUserNoti = _context.UserNotifications.Where(u => u.PersonId.Equals(id) && !u.IsRead)
+                .Include(n => n.Notification).ToList();
+
+            return getUserNoti; 
+        }
+
+        public IActionResult GetNotification()
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault().ToString();
+           
+            var notification = GetUserNotifications(person);
+            return Ok(new { UserNotification = notification, Count = notification.Count });
+        }
+
+        public IActionResult ReadNotification(int notificationId, string id)
+        {
+            var notification = _context.UserNotifications
+                                        .FirstOrDefault(n => n.PersonId.Equals(id)
+                                        && n.NotificationId == notificationId);
+
+            notification.IsRead = true;
+            _context.UserNotifications.Update(notification);
+            _context.SaveChanges();
+
+
+            return Ok();
+        }
         // GET: Notifications/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

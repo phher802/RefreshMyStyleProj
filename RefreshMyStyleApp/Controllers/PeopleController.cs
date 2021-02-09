@@ -5,8 +5,10 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using ClientNotifications;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -19,11 +21,17 @@ namespace RefreshMyStyleApp.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _env;
+        //private readonly IClientNotification _clientNotification;
+        //private readonly Notification _Notification;
+
 
         public PeopleController(ApplicationDbContext context, IWebHostEnvironment env)
         {
             _context = context;
             _env = env;
+            //_clientNotification = clientNotification;
+            //_Notification = notification;
+                
         }
 
         // GET: People
@@ -58,6 +66,7 @@ namespace RefreshMyStyleApp.Controllers
             return View(person);
         }
 
+
         // GET: People/Create
         public IActionResult Create()
         {
@@ -77,7 +86,7 @@ namespace RefreshMyStyleApp.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 person.IdentityUserId = userId;
-                _context.Add(person);
+                _context.People.Add(person);
                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
@@ -87,15 +96,13 @@ namespace RefreshMyStyleApp.Controllers
         }
 
       
-
-
         public IActionResult UploadProfilefiles()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadProfileFiles([Bind("Id, ImageName")] List<IFormFile> files)
+        public async Task<IActionResult> UploadProfileFiles([Bind("Id, ProfileImageName")] List<IFormFile> files)
         {
             long size = files.Sum(f => f.Length);
 
@@ -111,9 +118,9 @@ namespace RefreshMyStyleApp.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault();
 
-            person.ImageName = uniqueName;
+            person.ProfileImageName = uniqueName;
 
-            _context.Update(person);      
+            _context.People.Update(person);      
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
             
@@ -131,6 +138,7 @@ namespace RefreshMyStyleApp.Controllers
             return string.Empty;
   
         }
+
 
         // GET: ClothingEnthusiasts/Edit/5
         public async Task<IActionResult> Edit(int? id)

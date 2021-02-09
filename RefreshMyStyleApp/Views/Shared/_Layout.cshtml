@@ -7,10 +7,12 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <link href="~/notification/notification.css" rel="stylesheet" />
+    <link href="toastr.css" rel="stylesheet" />
 
 
 </head>
 <body>
+    @*@await Component.InvokeAsync("ClientNotifications.Notify")*@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
@@ -51,6 +53,8 @@
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/jquery.min.js"></script>
+    <script src="toastr.js"></script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

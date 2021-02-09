@@ -29,12 +29,16 @@ namespace RefreshMyStyleApp.Models
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
         public string PhoneNumber { get; set; }
    
-        public string ImageName { get; set; }
+        public string ProfileImageName { get; set; }
 
         public bool IsGoing { get; set; }
       
         [NotMapped]
         public IFormFile ProfileImage { get; set; }
+
+        public List<Like> Likes { get; set; }
+
+        public List<NotificationUser> NotificationUsers { get; set; }
 
    
         [ForeignKey("IdentityUser")]

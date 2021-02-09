@@ -1,7 +1,7 @@
 ﻿@model RefreshMyStyleApp.Models.Image
 
 @{
-    ViewData["Title"] = "PostImage";
+    ViewData["Title"] = "PostNewImage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -11,21 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post" enctype="multipart/form-data" asp-controller="Images"
-              asp-action="PostImage">
-            <div class="form-group">
-                <div class="col-md-10">
-                    <p>Upload profile picture:</p>
-                    <input asp-for="ImageFile" type="file" name="files" accept="image/*" multiple />
-                    <span asp-validation-for="ImageFile" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    <input type="submit" value="Upload" />
-                </div>
-            </div>
-        </form>
+
         <form asp-action="PostImage">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -34,13 +20,8 @@
                 <span asp-validation-for="ImageTitle" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="FilePath" class="control-label"></label>
-                <input asp-for="FilePath" class="form-control" />
-                <span asp-validation-for="FilePath" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="ClothingCategory" class="control-label"></label>
-                <input asp-for="ClothingCategory" class="form-control" />
+                <Select asp-for="ClothingCategory" class="form-control" asp-items="ViewBag.ClothingCategory"></Select>
                 <span asp-validation-for="ClothingCategory" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -68,14 +49,30 @@
                     <input class="form-check-input" asp-for="ToGiveAway" /> @Html.DisplayNameFor(model => model.ToGiveAway)
                 </label>
             </div>
-            <div class="form-group">
-                <label asp-for="PersonId" class="control-label"></label>
-                <select asp-for="PersonId" class="form-control" asp-items="ViewBag.Id"></select>
-            </div>
+           
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+        @if ("ImageTitle" != null)
+        {
+            <form method="post" enctype="multipart/form-data" asp-controller="Images"
+                  asp-action="PostNewImage">
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <p>Upload profile picture:</p>
+                        <input asp-for="ImageFile" type="file" name="files" accept="image/*" multiple />
+                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <input type="submit" value="Upload" />
+                    </div>
+                </div>
+            </form>
+        }
+
     </div>
 </div>
 

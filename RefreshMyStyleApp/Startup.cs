@@ -39,7 +39,7 @@ namespace RefreshMyStyleApp
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
 
-            services.AddScoped<ClaimsPrincipal>(s => s.GetService <IHttpContextAccessor>().HttpContext.User);
+            services.AddScoped<ClaimsPrincipal>(s => s.GetService<IHttpContextAccessor>().HttpContext.User);
             services.AddControllers(config =>
             {
                 config.Filters.Add(typeof(GlobalRouting));
@@ -47,9 +47,10 @@ namespace RefreshMyStyleApp
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
             services.AddSignalR();
-         
-      
+
+            //services.AddToastNotification();
 
         }
 

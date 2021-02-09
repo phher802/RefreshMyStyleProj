@@ -54,7 +54,8 @@ namespace RefreshMyStyleApp.Controllers
         // GET: Images/Create
         public IActionResult Create()
         {
-            ViewData["Id"] = new SelectList(_context.People, "Id", "Id");
+           // ViewData["Id"] = new SelectList(_context.People, "Id", "Id");
+            ViewData["ClothingCategory"] = ClothingCategory();
             return View();
         }
 
@@ -65,47 +66,68 @@ namespace RefreshMyStyleApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ImageId,ImageTitle,FilePath,ClothingCategory,Color,Size,Description,ToShare,ToGiveAway,Id")] Image image)
         {
+           
             if (ModelState.IsValid)
             {
-                _context.Add(image);
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+
+                var img = _context.Images.Where(i => i.Id == person.Id).FirstOrDefault();
+
+                _context.Add(img);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.PersonId);
+
+            //ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.PersonId);
+
+         
             return View(image);
         }
 
-        public IActionResult PostImage()
+        public List<SelectListItem> ClothingCategory()
         {
+            List<SelectListItem> category = new List<SelectListItem>();
+            category.Add(new SelectListItem { Text = "Casual", Value = "Casual" });
+            category.Add(new SelectListItem { Text = "Special Occasion", Value = "Special Occasion" });
+            category.Add(new SelectListItem { Text = "Shoes", Value = "Shoes" });
+            category.Add(new SelectListItem { Text = "Hats", Value = "Hats" });
+            category.Add(new SelectListItem { Text = "Jewelry", Value = "Jewelry"});
+            return category;
+        }
+
+        public IActionResult PostNewImage()
+        {
+         
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostImage([Bind("Id, ImageTitle")] List<IFormFile> files)
+        public async Task<IActionResult> PostNewImage([Bind("Id, ImageTitle")] List<IFormFile> files)
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            var img = _context.Images.Where(i => i.Id == person.Id).FirstOrDefault();
-
             long size = files.Sum(f => f.Length);
 
             // full path to file in temp location
-            var filePaths = Path.GetTempFileName();
+            var filePath = Path.GetTempFileName();
 
-            foreach ( var formfile in files)
-            {
-                var uniqueName = GetUniqueFileName(files[0].FileName);
-                var uploads = Path.Combine(_env.WebRootPath, "images/items");
-                var imgTitle = Path.Combine(uploads, uniqueName);
-                await files[0].CopyToAsync(new FileStream(imgTitle, FileMode.Create));
-                img.ImageTitle = uniqueName;
-                
-            }
+            var uniqueName = GetUniqueFileName(files[0].FileName);
+            var uploads = Path.Combine(_env.WebRootPath, "images/items");
+            var ImageName = Path.Combine(uploads, uniqueName);
+            await files[0].CopyToAsync(new FileStream(ImageName, FileMode.Create));
 
-            _context.Update(img);
-            await _context.SaveChangesAsync();
+            Image newImage = new Image();
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            newImage = _context.Images.Where(i => i.Id == person.Id).FirstOrDefault();
+
+            newImage.ImageTitle = uniqueName;
+
+            _context.People.Update(person);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+
             //return RedirectToAction(nameof(Index));
-            return View();
+           // return View();
             //return CreatedAtAction("GetImage", new { id = image.ImageId }, image);
         }
 

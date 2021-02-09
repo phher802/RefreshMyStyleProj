@@ -17,6 +17,10 @@ namespace RefreshMyStyleApp.Data
         public DbSet<Notification> Notifications { get; set; }
         public DbSet<NotificationUser> UserNotifications { get; set; }
 
+        public DbSet<Like> Likes { get; set; }
+        
+        public DbSet<Claim> Claims { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {

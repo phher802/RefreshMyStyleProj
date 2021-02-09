@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RefreshMyStyleApp.Models
 {
-    public class Like
+    public class Claim
     {
         [Key]
         public int? Id { get; set; }
@@ -20,6 +20,5 @@ namespace RefreshMyStyleApp.Models
         [ForeignKey("Person")]
         public int PersonId { get; set; }
         public Person Person { get; set; }
-
     }
 }
