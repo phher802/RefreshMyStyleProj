@@ -64,19 +64,26 @@ namespace RefreshMyStyleApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ImageId,ImageTitle,FilePath,ClothingCategory,Color,Size,Description,ToShare,ToGiveAway,Id")] Image image)
+        public async Task<IActionResult> Create([Bind("ImageId,ImageTitle,FilePath,ClothingCategory,Color," +
+                                                        "Size,Description,ToShare,ToGiveAway,Id")] Image image)
         {
            
             if (ModelState.IsValid)
             {
+                Image imgInDb = new Image();
+                imgInDb.ImageName = image.ImageName;
+                imgInDb.ClothingCategory = image.ClothingCategory;
+                imgInDb.Color = image.Color;
+                imgInDb.Description = image.Description;
+                imgInDb.Size = image.Size;
+
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-
-                var img = _context.Images.Where(i => i.Id == person.Id).FirstOrDefault();
-
-                _context.Add(img);
+                imgInDb.PersonId = person.Id;
+                             
+                _context.Images.Add(imgInDb);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(PostNewImage));
             }
 
             //ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.PersonId);
@@ -103,7 +110,7 @@ namespace RefreshMyStyleApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostNewImage([Bind("Id, ImageTitle")] List<IFormFile> files)
+        public async Task<IActionResult> PostNewImage([Bind("Id, ImageTitle")] List<IFormFile> files, Image newImage)
         {
             long size = files.Sum(f => f.Length);
 
@@ -115,14 +122,14 @@ namespace RefreshMyStyleApp.Controllers
             var ImageName = Path.Combine(uploads, uniqueName);
             await files[0].CopyToAsync(new FileStream(ImageName, FileMode.Create));
 
-            Image newImage = new Image();
+            //Image newImage = new Image();
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            newImage = _context.Images.Where(i => i.Id == person.Id).FirstOrDefault();
+            newImage.PersonId = person.Id;
 
             newImage.ImageTitle = uniqueName;
 
-            _context.People.Update(person);
+            _context.Images.Update(newImage);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
 

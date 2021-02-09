@@ -1,0 +1,30 @@
+﻿@model RefreshMyStyleApp.ViewModels.PersonViewModel
+
+@{
+    ViewData["Title"] = "Detail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Detail</h1>
+
+<div>
+    <h4>Person</h4>
+    <hr />
+    <dl class="row">
+     
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Person.FullName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Person.FullName)
+        </dd>
+        <dd>
+            @Html.DisplayNameFor(model => model.Image.ImageName)
+        </dd>
+      
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

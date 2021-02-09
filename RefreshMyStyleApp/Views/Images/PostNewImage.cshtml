@@ -11,51 +11,6 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-
-        <form asp-action="PostImage">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="ImageTitle" class="control-label"></label>
-                <input asp-for="ImageTitle" class="form-control" />
-                <span asp-validation-for="ImageTitle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ClothingCategory" class="control-label"></label>
-                <Select asp-for="ClothingCategory" class="form-control" asp-items="ViewBag.ClothingCategory"></Select>
-                <span asp-validation-for="ClothingCategory" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Color" class="control-label"></label>
-                <input asp-for="Color" class="form-control" />
-                <span asp-validation-for="Color" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Size" class="control-label"></label>
-                <input asp-for="Size" class="form-control" />
-                <span asp-validation-for="Size" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="ToShare" /> @Html.DisplayNameFor(model => model.ToShare)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="ToGiveAway" /> @Html.DisplayNameFor(model => model.ToGiveAway)
-                </label>
-            </div>
-           
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-        @if ("ImageTitle" != null)
-        {
             <form method="post" enctype="multipart/form-data" asp-controller="Images"
                   asp-action="PostNewImage">
                 <div class="form-group">
@@ -71,8 +26,6 @@
                     </div>
                 </div>
             </form>
-        }
-
     </div>
 </div>
 

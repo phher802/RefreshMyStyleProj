@@ -13,7 +13,7 @@ namespace RefreshMyStyleApp.Models
         [Key]
         public int? Id { get; set; }
 
-        public string Img { get; set; }
+        public string ImageName { get; set; }
 
         public string ImageTitle { get; set; }
 
@@ -38,6 +38,8 @@ namespace RefreshMyStyleApp.Models
         public bool ToGiveAway { get; set; }
 
         public bool IsLiked { get; set; }
+
+        public bool IsClaimed { get; set; }
 
         public ICollection<Like> Likes { get; set; }
 

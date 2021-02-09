@@ -215,7 +215,7 @@ namespace RefreshMyStyleApp.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Img = table.Column<string>(nullable: true),
+                    ImageName = table.Column<string>(nullable: true),
                     ImageTitle = table.Column<string>(nullable: true),
                     FilePath = table.Column<string>(nullable: true),
                     ClothingCategory = table.Column<string>(nullable: true),
@@ -225,6 +225,7 @@ namespace RefreshMyStyleApp.Migrations
                     ToShare = table.Column<bool>(nullable: false),
                     ToGiveAway = table.Column<bool>(nullable: false),
                     IsLiked = table.Column<bool>(nullable: false),
+                    IsClaimed = table.Column<bool>(nullable: false),
                     PersonId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -344,7 +345,7 @@ namespace RefreshMyStyleApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "c3513d76-f376-4a4b-9d5d-95150a613b2b", "29e7c05e-12f1-46e7-9589-c02f2a56e903", "Person", "PERSON" });
+                values: new object[] { "65dbd4dc-d692-4e19-92b4-c04bd30f169d", "9701f5d4-336b-4ed2-a24c-32a4d7685af3", "Person", "PERSON" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",

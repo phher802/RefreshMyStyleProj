@@ -48,8 +48,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c3513d76-f376-4a4b-9d5d-95150a613b2b",
-                            ConcurrencyStamp = "29e7c05e-12f1-46e7-9589-c02f2a56e903",
+                            Id = "65dbd4dc-d692-4e19-92b4-c04bd30f169d",
+                            ConcurrencyStamp = "9701f5d4-336b-4ed2-a24c-32a4d7685af3",
                             Name = "Person",
                             NormalizedName = "PERSON"
                         });
@@ -320,11 +320,14 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<string>("FilePath")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ImageTitle")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Img")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<bool>("IsClaimed")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsLiked")
                         .HasColumnType("bit");

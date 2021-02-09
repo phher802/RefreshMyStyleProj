@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RefreshMyStyleApp.Models;
+using RefreshMyStyleApp.ViewModels;
 
 namespace RefreshMyStyleApp.Data
 {
@@ -44,6 +45,7 @@ namespace RefreshMyStyleApp.Data
                   .HasKey(k => new { k.NotificationId, k.PersonId });
 
 
+              
 
         }
     }
