@@ -54,8 +54,9 @@ namespace RefreshMyStyleApp.Controllers
         // GET: Images/Create
         public IActionResult Create()
         {
-           // ViewData["Id"] = new SelectList(_context.People, "Id", "Id");
+            // ViewData["Id"] = new SelectList(_context.People, "Id", "Id");
             ViewData["ClothingCategory"] = ClothingCategory();
+            ViewData["ItemStatus"] = ItemStatus();
             return View();
         }
 
@@ -67,7 +68,7 @@ namespace RefreshMyStyleApp.Controllers
         public async Task<IActionResult> Create([Bind("ImageId,ImageTitle,FilePath,ClothingCategory,Color," +
                                                         "Size,Description,ToShare,ToGiveAway,Id")] Image image)
         {
-           
+
             if (ModelState.IsValid)
             {
                 Image imgInDb = new Image();
@@ -80,7 +81,7 @@ namespace RefreshMyStyleApp.Controllers
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
                 imgInDb.ApplicationUserId = applicationUser.Id;
-                             
+
                 _context.Images.Add(imgInDb);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(PostNewImage));
@@ -88,7 +89,7 @@ namespace RefreshMyStyleApp.Controllers
 
             //ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.PersonId);
 
-         
+
             return View(image);
         }
 
@@ -99,13 +100,21 @@ namespace RefreshMyStyleApp.Controllers
             category.Add(new SelectListItem { Text = "Special Occasion", Value = "Special Occasion" });
             category.Add(new SelectListItem { Text = "Shoes", Value = "Shoes" });
             category.Add(new SelectListItem { Text = "Hats", Value = "Hats" });
-            category.Add(new SelectListItem { Text = "Jewelry", Value = "Jewelry"});
+            category.Add(new SelectListItem { Text = "Jewelry", Value = "Jewelry" });
             return category;
+        }
+
+        public List<SelectListItem> ItemStatus()
+        {
+            List<SelectListItem> itemStatus = new List<SelectListItem>();
+            itemStatus.Add(new SelectListItem { Text = "Share", Value = "Share" });
+            itemStatus.Add(new SelectListItem { Text = "Give", Value = "Give" });
+            return itemStatus;
         }
 
         public IActionResult PostNewImage()
         {
-         
+
             return View();
         }
 
@@ -124,17 +133,17 @@ namespace RefreshMyStyleApp.Controllers
 
             //Image newImage = new Image();
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var person = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            newImage.ApplicationUserId = person.Id;
+            var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            newImage.ApplicationUserId = applicationUser.Id;
 
             newImage.ImageTitle = uniqueName;
 
             _context.Images.Update(newImage);
             _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "ApplicationUsers");
 
             //return RedirectToAction(nameof(Index));
-           // return View();
+            // return View();
             //return CreatedAtAction("GetImage", new { id = image.ImageId }, image);
         }
 
@@ -229,7 +238,16 @@ namespace RefreshMyStyleApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int? id)
         {
-            var image = await _context.Images.FindAsync(id);
+
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var image = _context.Images.Where(i => i.ApplicationUserId == applicationUser.Id).FirstOrDefault();
+            image = await _context.Images.FindAsync(id);
+
+            var imagePath = Path.Combine(_env.WebRootPath, "images/items", image.ImageTitle);
+            if (System.IO.File.Exists(imagePath))
+                System.IO.File.Delete(imagePath);
+
             _context.Images.Remove(image);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

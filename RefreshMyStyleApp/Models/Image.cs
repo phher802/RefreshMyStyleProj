@@ -31,11 +31,7 @@ namespace RefreshMyStyleApp.Models
 
         public string Description { get; set; }
 
-        [Display(Name = "Share")]
-        public bool ToShare { get; set; }
-
-        [Display(Name ="Give")]
-        public bool ToGiveAway { get; set; }
+        public string ItemStatus { get; set; }
 
         public bool IsLiked { get; set; }
 

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RefreshMyStyleApp.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Initital : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -265,8 +265,7 @@ namespace RefreshMyStyleApp.Migrations
                     Color = table.Column<string>(nullable: true),
                     Size = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true),
-                    ToShare = table.Column<bool>(nullable: false),
-                    ToGiveAway = table.Column<bool>(nullable: false),
+                    ItemStatus = table.Column<string>(nullable: true),
                     IsLiked = table.Column<bool>(nullable: false),
                     IsClaimed = table.Column<bool>(nullable: false),
                     ApplicationUserId = table.Column<int>(nullable: false)
@@ -388,7 +387,7 @@ namespace RefreshMyStyleApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "40067054-74cd-413d-8377-4db75dac182a", "7a757a97-1e93-45a9-bed2-648d84df8ee8", "ApplicationUser", "APPLICATIONUSER" });
+                values: new object[] { "e317b773-1ef6-4d99-9bab-bb9eaeedca26", "d9aae60e-f771-43ad-985c-30cf807fb3d3", "ApplicationUser", "APPLICATIONUSER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationUsers_IdentityUserId",

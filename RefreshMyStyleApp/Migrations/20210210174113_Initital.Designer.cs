@@ -10,8 +10,8 @@ using RefreshMyStyleApp.Data;
 namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210210065049_Initial")]
-    partial class Initial
+    [Migration("20210210174113_Initital")]
+    partial class Initital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,8 +50,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "40067054-74cd-413d-8377-4db75dac182a",
-                            ConcurrencyStamp = "7a757a97-1e93-45a9-bed2-648d84df8ee8",
+                            Id = "e317b773-1ef6-4d99-9bab-bb9eaeedca26",
+                            ConcurrencyStamp = "d9aae60e-f771-43ad-985c-30cf807fb3d3",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -413,14 +413,11 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<bool>("IsLiked")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Size")
+                    b.Property<string>("ItemStatus")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("ToGiveAway")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("ToShare")
-                        .HasColumnType("bit");
+                    b.Property<string>("Size")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

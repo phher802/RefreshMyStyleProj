@@ -13,5 +13,7 @@ namespace RefreshMyStyleApp.ViewModels
         public ApplicationUser ApplicationUser { get; set; }
 
         public List<Image> Images { get; set; }
+
+
     }
 }
