@@ -10,8 +10,8 @@ using RefreshMyStyleApp.Data;
 namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210210174113_Initital")]
-    partial class Initital
+    [Migration("20210210221749_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,8 +50,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e317b773-1ef6-4d99-9bab-bb9eaeedca26",
-                            ConcurrencyStamp = "d9aae60e-f771-43ad-985c-30cf807fb3d3",
+                            Id = "17ce8a4e-da54-46ef-8884-d3d4e5afd5fb",
+                            ConcurrencyStamp = "8c18408e-ed4a-456a-86b0-ae3fa0053c4f",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });

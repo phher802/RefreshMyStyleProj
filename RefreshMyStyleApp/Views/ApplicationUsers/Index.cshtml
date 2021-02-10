@@ -8,7 +8,7 @@
 <h1> @Model.ApplicationUser.FullName</h1>
 <p>
     <img src="~/images/profileImages/@Model.ApplicationUser.ProfileImageName" />
-    
+
 </p>
 
 
@@ -16,20 +16,23 @@
     <hr />
     @if (Model.Images != null)
     {
-       @foreach(var item in Model.Images)
+        @foreach (var item in Model.Images)
         {
             <dl class="row">
                 <div class="card" style="width: 18rem;">
                     <img src="~/images/items/@item.ImageTitle" class="card-img-top" alt="@item.ImageName">
                     <div class="card-body">
                         <h5 class="card-title">@item.ImageName</h5>
-                        <p class="card-text">@item.Description</p>
+                        <p class="card-text"> @item.Description</p>                    
                     </div>
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Color: @item.Color</li>
-                        <li class="list-group-item">Size: @item.Size</li>                   
-                        <li class="list-group-item">Status: @item.ItemStatus</li>                   
-                    </ul>
+                    <div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Color: @item.Color</li>
+                            <li class="list-group-item">Size: @item.Size</li>
+                            <li class="list-group-item">Status: @item.ItemStatus</li>
+                        </ul>
+                    </div>
+
                     <div class="card-body">
                         <a href="#" class="card-link">Card link</a>
                         <a href="#" class="card-link">Another link</a>
@@ -42,7 +45,7 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ApplicationUser.Id">Edit</a> |
     <a asp-action="UploadProfileFiles" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">Upload Profile Image</a> |
-    <a asp-action="Create" asp-controller="Images" asp-route-id="@Model.ApplicationUser.Id">Upload pictures</a>
+    <a asp-action="PostNewImage" asp-controller="Images" asp-route-id="@Model.ApplicationUser.Id">Upload pictures</a>
     <a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">Details</a>
     <a asp-action="Index">Back to List</a>
 </div>

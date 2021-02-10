@@ -51,6 +51,7 @@ namespace RefreshMyStyleApp.Controllers
             return View(image);
         }
 
+       
         // GET: Images/Create
         public IActionResult Create()
         {
@@ -68,29 +69,64 @@ namespace RefreshMyStyleApp.Controllers
         public async Task<IActionResult> Create([Bind("ImageId,ImageTitle,FilePath,ClothingCategory,Color," +
                                                         "Size,Description,ToShare,ToGiveAway,Id")] Image image)
         {
-
             if (ModelState.IsValid)
             {
                 Image imgInDb = new Image();
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+                
+                imgInDb.ApplicationUserId = applicationUser.Id;
                 imgInDb.ImageName = image.ImageName;
                 imgInDb.ClothingCategory = image.ClothingCategory;
                 imgInDb.Color = image.Color;
                 imgInDb.Description = image.Description;
                 imgInDb.Size = image.Size;
-
-                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-                imgInDb.ApplicationUserId = applicationUser.Id;
+               // imgInDb.ImageTitle = image.
 
                 _context.Images.Add(imgInDb);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(PostNewImage));
+                return RedirectToAction("Index", "ApplicationUsers");
             }
 
-            //ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.PersonId);
-
-
             return View(image);
+        }
+
+        public IActionResult PostNewImage()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostNewImage(List<IFormFile> files)
+        {
+            long size = files.Sum(f => f.Length);
+
+            // full path to file in temp location
+            var filePath = Path.GetTempFileName();
+
+            var uniqueName = GetUniqueFileName(files[0].FileName);
+            var uploads = Path.Combine(_env.WebRootPath, "images/items");
+            var ImageName = Path.Combine(uploads, uniqueName);
+            await files[0].CopyToAsync(new FileStream(ImageName, FileMode.Create));
+
+            Image newImage = new Image();
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+           // var findImage = _context.Images.
+            newImage.ApplicationUserId = applicationUser.Id;
+            var images = _context.Images.Where(i => i.Id == applicationUser.Id)
+                .Include(t => t.ImageTitle).FirstOrDefault();
+            newImage.ImageTitle = uniqueName;
+
+
+            _context.Images.Update(newImage);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Create));
+
+            //return RedirectToAction(nameof(Index));
+            // return View();
+            //return CreatedAtAction("GetImage", new { id = image.ImageId }, image);
         }
 
         public List<SelectListItem> ClothingCategory()
@@ -112,40 +148,7 @@ namespace RefreshMyStyleApp.Controllers
             return itemStatus;
         }
 
-        public IActionResult PostNewImage()
-        {
 
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> PostNewImage([Bind("Id, ImageTitle")] List<IFormFile> files, Image newImage)
-        {
-            long size = files.Sum(f => f.Length);
-
-            // full path to file in temp location
-            var filePath = Path.GetTempFileName();
-
-            var uniqueName = GetUniqueFileName(files[0].FileName);
-            var uploads = Path.Combine(_env.WebRootPath, "images/items");
-            var ImageName = Path.Combine(uploads, uniqueName);
-            await files[0].CopyToAsync(new FileStream(ImageName, FileMode.Create));
-
-            //Image newImage = new Image();
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            newImage.ApplicationUserId = applicationUser.Id;
-
-            newImage.ImageTitle = uniqueName;
-
-            _context.Images.Update(newImage);
-            _context.SaveChanges();
-            return RedirectToAction("Index", "ApplicationUsers");
-
-            //return RedirectToAction(nameof(Index));
-            // return View();
-            //return CreatedAtAction("GetImage", new { id = image.ImageId }, image);
-        }
 
         private string GetUniqueFileName(string fileName)
         {
@@ -242,7 +245,7 @@ namespace RefreshMyStyleApp.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             var image = _context.Images.Where(i => i.ApplicationUserId == applicationUser.Id).FirstOrDefault();
-            image = await _context.Images.FindAsync(id);
+            //image = await _context.Images.FindAsync(id);
 
             var imagePath = Path.Combine(_env.WebRootPath, "images/items", image.ImageTitle);
             if (System.IO.File.Exists(imagePath))

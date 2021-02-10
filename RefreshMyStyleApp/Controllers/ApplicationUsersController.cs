@@ -52,14 +52,14 @@ namespace RefreshMyStyleApp.Controllers
             //Image image = new Image();
             //image.ApplicationUserId = applicationUser.Id;
 
-            ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
+            ApplicationUserImageViewModel applicationUserImageViewModel = new ApplicationUserImageViewModel
             {
                 ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
                 Images = _context.Images.Where(i => i.ApplicationUserId == applicationUser.Id).ToList(),
                               
             };
 
-            return View(personViewModel);
+            return View(applicationUserImageViewModel);
 
             //return View(applicationUser);
         }

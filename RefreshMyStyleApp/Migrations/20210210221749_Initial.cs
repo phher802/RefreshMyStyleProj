@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RefreshMyStyleApp.Migrations
 {
-    public partial class Initital : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -387,7 +387,7 @@ namespace RefreshMyStyleApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "e317b773-1ef6-4d99-9bab-bb9eaeedca26", "d9aae60e-f771-43ad-985c-30cf807fb3d3", "ApplicationUser", "APPLICATIONUSER" });
+                values: new object[] { "17ce8a4e-da54-46ef-8884-d3d4e5afd5fb", "8c18408e-ed4a-456a-86b0-ae3fa0053c4f", "ApplicationUser", "APPLICATIONUSER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationUsers_IdentityUserId",
