@@ -43,9 +43,9 @@ namespace RefreshMyStyleApp.Models
 
         public List<Like> Likes { get; set; }
 
-        [ForeignKey("Person")]
-        public int PersonId { get; set; }
-        public ApplicationUser Person { get; set; }
+        [ForeignKey("ApplicationUser")]
+        public int ApplicationUserId { get; set; }
+        public ApplicationUser ApplicationUser { get; set; }
 
   
 

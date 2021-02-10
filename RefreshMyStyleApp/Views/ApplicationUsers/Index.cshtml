@@ -1,0 +1,48 @@
+﻿@model RefreshMyStyleApp.ViewModels.ApplicationUserImageViewModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1> @Html.DisplayNameFor(model => model.ApplicationUser.FullName)</h1>
+<p>
+    <img src="~/images/profileImages/@Model.ApplicationUser.ProfileImageName" />
+    
+</p>
+
+
+<div>
+    <hr />
+    @if (Model.Images != null)
+    {
+       @foreach (var item in Model.Images)
+        {
+            <dl class="row">
+                <div class="card" style="width: 18rem;">
+                    <img src="~/images/items/@item.ImageTitle" class="card-img-top" alt="@item.ImageName">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.ImageName</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item"></li>
+                        <li class="list-group-item">Dapibus ac facilisis in</li>
+                        <li class="list-group-item">Vestibulum at eros</li>
+                    </ul>
+                    <div class="card-body">
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>
+                    </div>
+                </div>
+
+            </dl>
+        }}
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.ApplicationUser.Id">Edit</a> |
+    <a asp-action="UploadProfileFiles" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">Upload Profile Image</a> |
+    <a asp-action="Create" asp-controller="Images" asp-route-id="@Model.ApplicationUser.Id">Upload pictures</a>
+    <a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">Details</a>
+    <a asp-action="Index">Back to List</a>
+</div>

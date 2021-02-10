@@ -6,13 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20210210011541_Initital.cs" />
-    <Compile Remove="Migrations\20210210011541_Initital.Designer.cs" />
-    <Compile Remove="Migrations\20210210012152_Initial.cs" />
-    <Compile Remove="Migrations\20210210012152_Initial.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="bootstrap" Version="4.6.0" />
     <PackageReference Include="ClientNotifications" Version="1.17.1" />
     <PackageReference Include="Dapper" Version="2.0.78" />

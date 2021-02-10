@@ -10,7 +10,7 @@ using RefreshMyStyleApp.Data;
 namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210210014442_Initial")]
+    [Migration("20210210065049_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,8 +50,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "60de4123-c83f-4429-8b96-ecbeb5f3be01",
-                            ConcurrencyStamp = "35337c40-1be0-4330-943f-8652b39af654",
+                            Id = "40067054-74cd-413d-8377-4db75dac182a",
+                            ConcurrencyStamp = "7a757a97-1e93-45a9-bed2-648d84df8ee8",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -268,17 +268,17 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ImageId")
+                    b.Property<int>("ApplicationUserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PersonId")
+                    b.Property<int?>("ImageId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ImageId");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("PersonId");
+                    b.HasIndex("ImageId");
 
                     b.ToTable("Claims");
                 });
@@ -328,12 +328,12 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("PersonId")
+                    b.Property<int>("ApplicationUserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("EventList");
                 });
@@ -386,6 +386,9 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("ApplicationUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("ClothingCategory")
                         .HasColumnType("nvarchar(max)");
 
@@ -410,9 +413,6 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<bool>("IsLiked")
                         .HasColumnType("bit");
 
-                    b.Property<int>("PersonId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Size")
                         .HasColumnType("nvarchar(max)");
 
@@ -424,7 +424,7 @@ namespace RefreshMyStyleApp.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("Images");
                 });
@@ -436,17 +436,17 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ImageId")
+                    b.Property<int>("ApplicationUserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PersonId")
+                    b.Property<int?>("ImageId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ImageId");
+                    b.HasIndex("ApplicationUserId");
 
-                    b.HasIndex("PersonId");
+                    b.HasIndex("ImageId");
 
                     b.ToTable("Likes");
                 });
@@ -471,15 +471,15 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<int>("NotificationId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PersonId")
+                    b.Property<int>("ApplicationUserId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
 
-                    b.HasKey("NotificationId", "PersonId");
+                    b.HasKey("NotificationId", "ApplicationUserId");
 
-                    b.HasIndex("PersonId");
+                    b.HasIndex("ApplicationUserId");
 
                     b.ToTable("UserNotifications");
                 });
@@ -544,15 +544,15 @@ namespace RefreshMyStyleApp.Migrations
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Claim", b =>
                 {
+                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("RefreshMyStyleApp.Models.Image", "Image")
                         .WithMany()
                         .HasForeignKey("ImageId");
-
-                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "Person")
-                        .WithMany()
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Event", b =>
@@ -564,9 +564,9 @@ namespace RefreshMyStyleApp.Migrations
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.EventList", b =>
                 {
-                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "Person")
+                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("PersonId")
+                        .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -592,37 +592,37 @@ namespace RefreshMyStyleApp.Migrations
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Image", b =>
                 {
-                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "Person")
+                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("Images")
-                        .HasForeignKey("PersonId")
+                        .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Like", b =>
                 {
+                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany("Likes")
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("RefreshMyStyleApp.Models.Image", "Image")
                         .WithMany("Likes")
                         .HasForeignKey("ImageId");
-
-                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "Person")
-                        .WithMany("Likes")
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.NotificationUser", b =>
                 {
-                    b.HasOne("RefreshMyStyleApp.Models.Notification", "Notification")
+                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
                         .WithMany("NotificationUsers")
-                        .HasForeignKey("NotificationId")
+                        .HasForeignKey("ApplicationUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "Person")
+                    b.HasOne("RefreshMyStyleApp.Models.Notification", "Notification")
                         .WithMany("NotificationUsers")
-                        .HasForeignKey("PersonId")
+                        .HasForeignKey("NotificationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

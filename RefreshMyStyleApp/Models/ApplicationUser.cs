@@ -15,11 +15,11 @@ namespace RefreshMyStyleApp.Models
         [Key]
         public int Id { get; set; }
 
-        public ApplicationUser()
-        {
-            SentFriendRequests = new List<Friend>();
-            ReceievedFriendRequests = new List<Friend>();
-        }
+        //public ApplicationUser()
+        //{
+        //    SentFriendRequests = new List<Friend>();
+        //    ReceievedFriendRequests = new List<Friend>();
+        //}
 
         [Display(Name = "First Name")]
         public string FName { get; set; }
@@ -48,15 +48,8 @@ namespace RefreshMyStyleApp.Models
         public List<NotificationUser> NotificationUsers { get; set; }
 
         [NotMapped]
-        public virtual List<Friend> Friends
-        {
-            get
-            {
-                var friends = SentFriendRequests.Where(x => x.Approved).ToList();
-                friends.AddRange(ReceievedFriendRequests.Where(x => x.Approved));
-                return friends;
-            }
-        }
+        public virtual List<Friend> Friends { get; set; }
+   
 
         [InverseProperty("RequestedBy")]
         public virtual List<Friend> RequestedBy { get; set; }

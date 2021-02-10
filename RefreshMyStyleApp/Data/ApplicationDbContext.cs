@@ -42,7 +42,7 @@ namespace RefreshMyStyleApp.Data
                 });
 
             builder.Entity<NotificationUser>()
-                .HasKey(k => new { k.NotificationId, k.PersonId });
+                .HasKey(k => new { k.NotificationId, k.ApplicationUserId });
 
 
 

@@ -18,7 +18,7 @@ using RefreshMyStyleApp.ViewModels;
 
 namespace RefreshMyStyleApp.Controllers
 {
-    public class ApplicationUserController : Controller
+    public class ApplicationUsersController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _env;
@@ -26,7 +26,7 @@ namespace RefreshMyStyleApp.Controllers
         //private readonly Notification _Notification;
 
 
-        public ApplicationUserController(ApplicationDbContext context, IWebHostEnvironment env)
+        public ApplicationUsersController(ApplicationDbContext context, IWebHostEnvironment env)
         {
             _context = context;
             _env = env;
@@ -35,47 +35,45 @@ namespace RefreshMyStyleApp.Controllers
 
         }
 
-        public void GetPersonLoggedIn(ApplicationUser person)
-        {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            person.IdentityUserId = userId;
-        }
+
         // GET: People
-        public IActionResult Index()
-        {
-            ApplicationUser person = new ApplicationUser();
+        public IActionResult Index(int id)
+        {       
+            ApplicationUser applicationUser = new ApplicationUser();
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            person = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
 
-        
-            person.FullName = person.FName + " " + person.LName;
-
-
-            if (person == null)
+            if (applicationUser == null)
             {
                 return RedirectToAction(nameof(Create));
             }
 
-            //PersonViewModel personViewModel = new PersonViewModel
-            //{
+            applicationUser.FullName = applicationUser.FName + " " + applicationUser.LName;
+            //Image image = new Image();
+            //image.ApplicationUserId = applicationUser.Id;
 
-              
+            ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
+            {
+                ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
+                Images = _context.Images.Where(i => i.ApplicationUserId == applicationUser.Id).ToList(),
+                              
+            };
 
-            //};
+            return View(personViewModel);
 
-            return View(person);
+            //return View(applicationUser);
         }
 
         // GET: People/Details/5
         public IActionResult Details(int? id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var person = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
 
             ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
             {
                 ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
-                Image = _context.Images.Where(i => i.Id == id).FirstOrDefault()
+                Images = _context.Images.Where(i => i.ApplicationUserId == applicationUser.Id).ToList()
             };
 
             return View(personViewModel);
@@ -99,8 +97,8 @@ namespace RefreshMyStyleApp.Controllers
     // GET: People/Create
     public IActionResult Create()
     {
-        ApplicationUser person = new ApplicationUser();
-        return View(person);
+        ApplicationUser applicationUser = new ApplicationUser();
+        return View(applicationUser);
 
     }
 
@@ -109,19 +107,19 @@ namespace RefreshMyStyleApp.Controllers
     // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Create([Bind("FName,LName,PhoneNumber,ImageName")] ApplicationUser person)
+    public IActionResult Create([Bind("FName,LName,PhoneNumber,ImageName")] ApplicationUser applicationUser)
     {
         if (ModelState.IsValid)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            person.IdentityUserId = userId;
+            applicationUser.IdentityUserId = userId;
 
-            _context.ApplicationUsers.Add(person);
+            _context.ApplicationUsers.Add(applicationUser);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
-        return View(person);
+        return View(applicationUser);
 
     }
 
@@ -146,11 +144,11 @@ namespace RefreshMyStyleApp.Controllers
 
 
         var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-        var person = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+        var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
 
-        person.ProfileImageName = uniqueName;
+        applicationUser.ProfileImageName = uniqueName;
 
-        _context.ApplicationUsers.Update(person);
+        _context.ApplicationUsers.Update(applicationUser);
         _context.SaveChanges();
         return RedirectToAction(nameof(Index));
 
@@ -178,12 +176,12 @@ namespace RefreshMyStyleApp.Controllers
             return NotFound();
         }
 
-        var person = await _context.ApplicationUsers.FindAsync(id);
-        if (person == null)
+        var applicationUser = await _context.ApplicationUsers.FindAsync(id);
+        if (applicationUser == null)
         {
             return NotFound();
         }
-        return View(person);
+        return View(applicationUser);
     }
 
     // POST: ClothingEnthusiasts/Edit/5
@@ -191,9 +189,9 @@ namespace RefreshMyStyleApp.Controllers
     // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, [Bind("UserId,FName,LName,PhoneNumber,ProfileImageId,ImageId,EventId,FriendsListId")] ApplicationUser person)
+    public async Task<IActionResult> Edit(int id, [Bind("UserId,FName,LName,PhoneNumber,ProfileImageId,ImageId,EventId,FriendsListId")] ApplicationUser applicationUser)
     {
-        if (id != person.Id)
+        if (id != applicationUser.Id)
         {
             return NotFound();
         }
@@ -202,12 +200,12 @@ namespace RefreshMyStyleApp.Controllers
         {
             try
             {
-                _context.Update(person);
+                _context.Update(applicationUser);
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!PeopleExists(person.Id))
+                if (!ApplicationUsersExists(applicationUser.Id))
                 {
                     return NotFound();
                 }
@@ -218,7 +216,7 @@ namespace RefreshMyStyleApp.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-        return View(person);
+        return View(applicationUser);
     }
 
     // GET: ClothingEnthusiasts/Delete/5
@@ -229,14 +227,14 @@ namespace RefreshMyStyleApp.Controllers
             return NotFound();
         }
 
-        var person = await _context.ApplicationUsers
+        var applicationUser = await _context.ApplicationUsers
             .FirstOrDefaultAsync(m => m.Id == id);
-        if (person == null)
+        if (applicationUser == null)
         {
             return NotFound();
         }
 
-        return View(person);
+        return View(applicationUser);
     }
 
     // POST: ClothingEnthusiasts/Delete/5
@@ -244,13 +242,13 @@ namespace RefreshMyStyleApp.Controllers
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var person = await _context.ApplicationUsers.FindAsync(id);
-        _context.ApplicationUsers.Remove(person);
+        var applicationUser = await _context.ApplicationUsers.FindAsync(id);
+        _context.ApplicationUsers.Remove(applicationUser);
         await _context.SaveChangesAsync();
         return RedirectToAction(nameof(Index));
     }
 
-    private bool PeopleExists(int id)
+    private bool ApplicationUsersExists(int id)
     {
         return _context.ApplicationUsers.Any(e => e.Id == id);
     }

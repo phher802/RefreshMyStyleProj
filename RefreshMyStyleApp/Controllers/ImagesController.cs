@@ -28,7 +28,7 @@ namespace RefreshMyStyleApp.Controllers
         // GET: Images
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Images.Include(i => i.Likes).Include(i => i.Person);
+            var applicationDbContext = _context.Images.Include(i => i.Likes).Include(i => i.ApplicationUser);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -41,7 +41,7 @@ namespace RefreshMyStyleApp.Controllers
             }
 
             var image = await _context.Images
-                .Include(i => i.Person)
+                .Include(i => i.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (image == null)
             {
@@ -78,8 +78,8 @@ namespace RefreshMyStyleApp.Controllers
                 imgInDb.Size = image.Size;
 
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var person = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-                imgInDb.PersonId = person.Id;
+                var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+                imgInDb.ApplicationUserId = applicationUser.Id;
                              
                 _context.Images.Add(imgInDb);
                 await _context.SaveChangesAsync();
@@ -125,7 +125,7 @@ namespace RefreshMyStyleApp.Controllers
             //Image newImage = new Image();
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var person = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            newImage.PersonId = person.Id;
+            newImage.ApplicationUserId = person.Id;
 
             newImage.ImageTitle = uniqueName;
 
@@ -165,7 +165,7 @@ namespace RefreshMyStyleApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["Id"] = new SelectList(_context.ApplicationUsers, "Id", "Id", image.PersonId);
+            ViewData["Id"] = new SelectList(_context.ApplicationUsers, "Id", "Id", image.ApplicationUserId);
             return View(image);
         }
 
@@ -201,7 +201,7 @@ namespace RefreshMyStyleApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id"] = new SelectList(_context.ApplicationUsers, "Id", "Id", image.PersonId);
+            ViewData["Id"] = new SelectList(_context.ApplicationUsers, "Id", "Id", image.ApplicationUserId);
             return View(image);
         }
 
@@ -214,7 +214,7 @@ namespace RefreshMyStyleApp.Controllers
             }
 
             var image = await _context.Images
-                .Include(i => i.Person)
+                .Include(i => i.ApplicationUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (image == null)
             {

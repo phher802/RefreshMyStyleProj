@@ -69,13 +69,13 @@ namespace RefreshMyStyleApp.Controllers
             _context.SaveChanges();
 
             //TODO: Assign notification to users
-            var likeLists = _context.Likes.Where(l => l.PersonId == id).ToList();
-            var claimLists = _context.Claims.Where(l => l.PersonId == id).ToList();
+            var likeLists = _context.Likes.Where(l => l.ApplicationUserId == id).ToList();
+            var claimLists = _context.Claims.Where(l => l.ApplicationUserId == id).ToList();
 
             foreach (var likeList in likeLists)
             {
                 var userNotification = new NotificationUser();
-                userNotification.PersonId = likeList.PersonId;
+                userNotification.ApplicationUserId = likeList.ApplicationUserId;
                 userNotification.NotificationId = notification.Id;
 
                 _context.UserNotifications.Add(userNotification);
@@ -85,7 +85,7 @@ namespace RefreshMyStyleApp.Controllers
             foreach (var claimList in claimLists)
             {
                 var userNotification = new NotificationUser();
-                userNotification.PersonId = claimList.PersonId;
+                userNotification.ApplicationUserId = claimList.ApplicationUserId;
                 userNotification.NotificationId = notification.Id;
 
                 _context.UserNotifications.Add(userNotification);
@@ -106,7 +106,7 @@ namespace RefreshMyStyleApp.Controllers
 
         public List<NotificationUser> GetUserNotifications(string id)
         {
-            var getUserNoti = _context.UserNotifications.Where(u => u.PersonId.Equals(id) && !u.IsRead)
+            var getUserNoti = _context.UserNotifications.Where(u => u.ApplicationUserId.Equals(id) && !u.IsRead)
                 .Include(n => n.Notification).ToList();
 
             return getUserNoti; 
@@ -124,7 +124,7 @@ namespace RefreshMyStyleApp.Controllers
         public IActionResult ReadNotification(int notificationId, string id)
         {
             var notification = _context.UserNotifications
-                                        .FirstOrDefault(n => n.PersonId.Equals(id)
+                                        .FirstOrDefault(n => n.ApplicationUserId.Equals(id)
                                         && n.NotificationId == notificationId);
 
             notification.IsRead = true;
