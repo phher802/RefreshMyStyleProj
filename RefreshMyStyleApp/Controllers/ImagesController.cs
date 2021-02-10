@@ -78,7 +78,7 @@ namespace RefreshMyStyleApp.Controllers
                 imgInDb.Size = image.Size;
 
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+                var person = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
                 imgInDb.PersonId = person.Id;
                              
                 _context.Images.Add(imgInDb);
@@ -124,7 +124,7 @@ namespace RefreshMyStyleApp.Controllers
 
             //Image newImage = new Image();
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var person = _context.People.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var person = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             newImage.PersonId = person.Id;
 
             newImage.ImageTitle = uniqueName;
@@ -165,7 +165,7 @@ namespace RefreshMyStyleApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.PersonId);
+            ViewData["Id"] = new SelectList(_context.ApplicationUsers, "Id", "Id", image.PersonId);
             return View(image);
         }
 
@@ -201,7 +201,7 @@ namespace RefreshMyStyleApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["Id"] = new SelectList(_context.People, "Id", "Id", image.PersonId);
+            ViewData["Id"] = new SelectList(_context.ApplicationUsers, "Id", "Id", image.PersonId);
             return View(image);
         }
 

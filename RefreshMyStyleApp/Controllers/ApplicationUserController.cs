@@ -72,9 +72,9 @@ namespace RefreshMyStyleApp.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var person = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
 
-            PersonViewModel personViewModel = new PersonViewModel
+            ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
             {
-                Person = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
+                ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
                 Image = _context.Images.Where(i => i.Id == id).FirstOrDefault()
             };
 
