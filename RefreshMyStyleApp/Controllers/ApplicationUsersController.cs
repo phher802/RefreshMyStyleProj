@@ -37,7 +37,7 @@ namespace RefreshMyStyleApp.Controllers
 
 
         // GET: People
-        public IActionResult Index(int id)
+        public IActionResult Index()
         {       
             ApplicationUser applicationUser = new ApplicationUser();
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);

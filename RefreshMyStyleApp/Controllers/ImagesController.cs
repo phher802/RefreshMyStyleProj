@@ -51,14 +51,14 @@ namespace RefreshMyStyleApp.Controllers
             return View(image);
         }
 
-       
+
         // GET: Images/Create
-        public IActionResult Create()
+        public IActionResult Create(Image image, int imageId)
         {
-            // ViewData["Id"] = new SelectList(_context.People, "Id", "Id");
+       
             ViewData["ClothingCategory"] = ClothingCategory();
             ViewData["ItemStatus"] = ItemStatus();
-            return View();
+            return View(image);
         }
 
         // POST: Images/Create
@@ -66,26 +66,15 @@ namespace RefreshMyStyleApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ImageId,ImageTitle,FilePath,ClothingCategory,Color," +
-                                                        "Size,Description,ToShare,ToGiveAway,Id")] Image image)
+        public async Task<IActionResult> Create(Image image)
         {
+            
             if (ModelState.IsValid)
             {
-                Image imgInDb = new Image();
-                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-                
-                imgInDb.ApplicationUserId = applicationUser.Id;
-                imgInDb.ImageName = image.ImageName;
-                imgInDb.ClothingCategory = image.ClothingCategory;
-                imgInDb.Color = image.Color;
-                imgInDb.Description = image.Description;
-                imgInDb.Size = image.Size;
-               // imgInDb.ImageTitle = image.
 
-                _context.Images.Add(imgInDb);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "ApplicationUsers");
+                _context.Images.Update(image);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Index", "ApplicationUsers");
             }
 
             return View(image);
@@ -98,7 +87,7 @@ namespace RefreshMyStyleApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostNewImage(List<IFormFile> files)
+        public async Task<IActionResult> PostNewImage([Bind("Id, ImageTitle")]List<IFormFile> files)
         {
             long size = files.Sum(f => f.Length);
 
@@ -113,22 +102,33 @@ namespace RefreshMyStyleApp.Controllers
             Image newImage = new Image();
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-           // var findImage = _context.Images.
+            // var findImage = _context.Images.
             newImage.ApplicationUserId = applicationUser.Id;
-            var images = _context.Images.Where(i => i.Id == applicationUser.Id)
-                .Include(t => t.ImageTitle).FirstOrDefault();
             newImage.ImageTitle = uniqueName;
 
+            //var image = _context.Images.Where(i => i.Id == applicationUser.Id)
+            //             .Include(t => t.ImageTitle).FirstOrDefault();
 
-            _context.Images.Update(newImage);
+            _context.Images.Add(newImage);
             _context.SaveChanges();
-            return RedirectToAction(nameof(Create));
+            return RedirectToAction("Create", newImage);
 
-            //return RedirectToAction(nameof(Index));
-            // return View();
-            //return CreatedAtAction("GetImage", new { id = image.ImageId }, image);
+       
         }
 
+        private string GetUniqueFileName(string fileName)
+        {
+            if (fileName.Length > 0)
+            {
+                fileName = Path.GetFileName(fileName);
+                return Path.GetFileNameWithoutExtension(fileName)
+                          + "_"
+                          + Guid.NewGuid().ToString().Substring(0, 4)
+                          + Path.GetExtension(fileName);
+            }
+            return string.Empty;
+
+        }
         public List<SelectListItem> ClothingCategory()
         {
             List<SelectListItem> category = new List<SelectListItem>();
@@ -148,21 +148,7 @@ namespace RefreshMyStyleApp.Controllers
             return itemStatus;
         }
 
-
-
-        private string GetUniqueFileName(string fileName)
-        {
-            if (fileName.Length > 0)
-            {
-                fileName = Path.GetFileName(fileName);
-                return Path.GetFileNameWithoutExtension(fileName)
-                          + "_"
-                          + Guid.NewGuid().ToString().Substring(0, 4)
-                          + Path.GetExtension(fileName);
-            }
-            return string.Empty;
-
-        }
+ 
 
         // GET: Images/Edit/5
         public async Task<IActionResult> Edit(int? id)

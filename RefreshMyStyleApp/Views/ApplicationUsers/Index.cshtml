@@ -12,36 +12,43 @@
 </p>
 
 
-<div>
-    <hr />
-    @if (Model.Images != null)
-    {
-        @foreach (var item in Model.Images)
+<div class="container">
+    <div class="row">
+        @if (Model.Images != null)
         {
-            <dl class="row">
-                <div class="card" style="width: 18rem;">
-                    <img src="~/images/items/@item.ImageTitle" class="card-img-top" alt="@item.ImageName">
-                    <div class="card-body">
-                        <h5 class="card-title">@item.ImageName</h5>
-                        <p class="card-text"> @item.Description</p>                    
-                    </div>
-                    <div>
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">Color: @item.Color</li>
-                            <li class="list-group-item">Size: @item.Size</li>
-                            <li class="list-group-item">Status: @item.ItemStatus</li>
-                        </ul>
-                    </div>
+            @foreach (var item in Model.Images)
+            {
 
-                    <div class="card-body">
-                        <a href="#" class="card-link">Card link</a>
-                        <a href="#" class="card-link">Another link</a>
+                <div class="col">
+                    <div class="card h-100" style="width: 15rem; display: flex">
+                        <img src="~/images/items/@item.ImageTitle" class="card-img-top" alt="@item.ImageName">
+                        <div class="card-body">
+                            <h5 class="card-title">@item.ClothingCategory</h5>
+                            <p class="card-text"> @item.Description</p>
+                        </div>
+                        <div>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Color: @item.Color</li>
+                                <li class="list-group-item">Size: @item.Size</li>
+                                <li class="list-group-item">Status: @item.ItemStatus</li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <a href="#" class="card-link">Card link</a>
+                            <a href="#" class="card-link">Another link</a>
+                        </div>
                     </div>
                 </div>
 
-            </dl>
-        }}
+
+
+            }
+        }
+    </div>
 </div>
+
+
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.ApplicationUser.Id">Edit</a> |
     <a asp-action="UploadProfileFiles" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">Upload Profile Image</a> |
