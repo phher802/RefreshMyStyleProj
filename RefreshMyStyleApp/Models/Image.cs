@@ -17,7 +17,10 @@ namespace RefreshMyStyleApp.Models
 
         public string ImageTitle { get; set; }
 
-        public string FilePath { get; set; }
+        [Display(Name = "Search your style")]
+        public string SearchImages { get; set; }
+
+        //public string FilePath { get; set; }
 
         [NotMapped]
         public IFormFile ImageFile { get; set; }
@@ -37,6 +40,7 @@ namespace RefreshMyStyleApp.Models
 
         public bool IsClaimed { get; set; }
 
+        public List<Claimed> Claimed { get; set; }
         public List<Like> Likes { get; set; }
 
         [ForeignKey("ApplicationUser")]

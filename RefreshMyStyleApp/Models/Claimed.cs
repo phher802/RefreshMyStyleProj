@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 
 namespace RefreshMyStyleApp.Models
 {
-    public class Claim
+    public class Claimed
     {
         [Key]
         public int? Id { get; set; }
+        
+        public bool IsClaimed { get; set; }
 
+        public DateTime? DateClaimed { get; set; }
 
         [ForeignKey("Image")]
         public int? ImageId { get; set; }

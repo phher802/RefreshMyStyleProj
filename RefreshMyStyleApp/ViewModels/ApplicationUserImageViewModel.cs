@@ -12,8 +12,9 @@ namespace RefreshMyStyleApp.ViewModels
     {
         public ApplicationUser ApplicationUser { get; set; }
 
+        public List<ApplicationUser> SearchUsers { get; set; }
         public List<Image> Images { get; set; }
 
-
+        public List<Friend> Friends { get; set; }
     }
 }

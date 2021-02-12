@@ -21,7 +21,7 @@ namespace RefreshMyStyleApp.Data
         public DbSet<Friend> Friends { get; set; }
         public DbSet<Like> Likes { get; set; }
 
-        public DbSet<Claim> Claims { get; set; }
+        public DbSet<Claimed> Claims { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Notification> Notifications { get; set; }
 

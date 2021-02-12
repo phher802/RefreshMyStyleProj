@@ -87,10 +87,9 @@ namespace RefreshMyStyleApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostNewImage([Bind("Id, ImageTitle")]List<IFormFile> files)
+        public async Task<IActionResult> PostNewImage(List<IFormFile> files)
         {
             long size = files.Sum(f => f.Length);
-
             // full path to file in temp location
             var filePath = Path.GetTempFileName();
 
@@ -101,19 +100,13 @@ namespace RefreshMyStyleApp.Controllers
 
             Image newImage = new Image();
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            // var findImage = _context.Images.
+            var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();         
             newImage.ApplicationUserId = applicationUser.Id;
             newImage.ImageTitle = uniqueName;
 
-            //var image = _context.Images.Where(i => i.Id == applicationUser.Id)
-            //             .Include(t => t.ImageTitle).FirstOrDefault();
-
             _context.Images.Add(newImage);
             _context.SaveChanges();
-            return RedirectToAction("Create", newImage);
-
-       
+            return RedirectToAction("Create", newImage);       
         }
 
         private string GetUniqueFileName(string fileName)
@@ -127,7 +120,33 @@ namespace RefreshMyStyleApp.Controllers
                           + Path.GetExtension(fileName);
             }
             return string.Empty;
+        }
 
+        public IActionResult LikedImage(int imageId)
+        {
+            //get image
+            //get appUser that liked image
+            //add image and appUser to like table
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            Image likeImage = _context.Images.Where(i => i.Id == imageId).SingleOrDefault();
+            Like likeInDb = new Like();
+
+            likeInDb.Id = likeImage.Id;
+            likeInDb.ApplicationUserId = applicationUser.Id;
+            likeInDb.IsLiked = true;
+            likeInDb.DateLiked = DateTime.Now;
+
+            _context.Likes.Update(likeInDb);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "ApplicationUsers");
+
+        }
+
+        public List<Like> GetLikes()
+        {
+            List<Like> likes = _context.Likes.Where(l => l.Id > 0).ToList();
+            return likes.OrderByDescending(l => l.ImageId).ThenBy(l => l.DateLiked).ToList();
         }
         public List<SelectListItem> ClothingCategory()
         {
@@ -147,8 +166,6 @@ namespace RefreshMyStyleApp.Controllers
             itemStatus.Add(new SelectListItem { Text = "Give", Value = "Give" });
             return itemStatus;
         }
-
- 
 
         // GET: Images/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -172,7 +189,7 @@ namespace RefreshMyStyleApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, [Bind("ImageId,ImageTitle,FilePath,ClothingCategory,Color,Size,Description,ToShare,ToGiveAway,Id")] Image image)
+        public async Task<IActionResult> Edit(int? id, Image image)
         {
             if (id != image.Id)
             {
@@ -202,6 +219,15 @@ namespace RefreshMyStyleApp.Controllers
             ViewData["Id"] = new SelectList(_context.ApplicationUsers, "Id", "Id", image.ApplicationUserId);
             return View(image);
         }
+
+      
+
+        public List<Claimed> GetClaims()
+        {
+            List<Claimed> claimed = _context.Claims.Where(c => c.Id > 0).ToList();
+            return claimed.OrderByDescending(c => c.ImageId).ThenBy(c => c.DateClaimed).ToList();
+        }
+
 
         // GET: Images/Delete/5
         public async Task<IActionResult> Delete(int? id)

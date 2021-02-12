@@ -40,6 +40,14 @@ namespace RefreshMyStyleApp.Models
        
     }
 
+    public enum FriendRequestFlag
+    {
+        None,
+        Approved,
+        Rejected,
+        Blocked,
+        Spam
+    }
 }
 
 

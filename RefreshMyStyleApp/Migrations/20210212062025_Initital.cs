@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RefreshMyStyleApp.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Initital : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -92,11 +92,19 @@ namespace RefreshMyStyleApp.Migrations
                     PhoneNumber = table.Column<string>(nullable: true),
                     ProfileImageName = table.Column<string>(nullable: true),
                     IsGoing = table.Column<bool>(nullable: false),
-                    IdentityUserId = table.Column<string>(nullable: true)
+                    SearchUsers = table.Column<string>(nullable: true),
+                    IdentityUserId = table.Column<string>(nullable: true),
+                    ApplicationUserId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ApplicationUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ApplicationUsers_ApplicationUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "ApplicationUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ApplicationUsers_AspNetUsers_IdentityUserId",
                         column: x => x.IdentityUserId,
@@ -260,7 +268,7 @@ namespace RefreshMyStyleApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ImageName = table.Column<string>(nullable: true),
                     ImageTitle = table.Column<string>(nullable: true),
-                    FilePath = table.Column<string>(nullable: true),
+                    SearchImages = table.Column<string>(nullable: true),
                     ClothingCategory = table.Column<string>(nullable: true),
                     Color = table.Column<string>(nullable: true),
                     Size = table.Column<string>(nullable: true),
@@ -338,6 +346,8 @@ namespace RefreshMyStyleApp.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    IsClaimed = table.Column<bool>(nullable: false),
+                    DateClaimed = table.Column<DateTime>(nullable: true),
                     ImageId = table.Column<int>(nullable: true),
                     ApplicationUserId = table.Column<int>(nullable: false)
                 },
@@ -364,6 +374,8 @@ namespace RefreshMyStyleApp.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    IsLiked = table.Column<bool>(nullable: false),
+                    DateLiked = table.Column<DateTime>(nullable: true),
                     ImageId = table.Column<int>(nullable: true),
                     ApplicationUserId = table.Column<int>(nullable: false)
                 },
@@ -387,7 +399,12 @@ namespace RefreshMyStyleApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "17ce8a4e-da54-46ef-8884-d3d4e5afd5fb", "8c18408e-ed4a-456a-86b0-ae3fa0053c4f", "ApplicationUser", "APPLICATIONUSER" });
+                values: new object[] { "c405f302-0b67-4977-ae52-0a0429825a89", "36c36dc7-8652-4e10-b77d-8da4b654a18c", "ApplicationUser", "APPLICATIONUSER" });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ApplicationUsers_ApplicationUserId",
+                table: "ApplicationUsers",
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationUsers_IdentityUserId",

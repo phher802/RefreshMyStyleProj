@@ -10,8 +10,8 @@ using RefreshMyStyleApp.Data;
 namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210210221749_Initial")]
-    partial class Initial
+    [Migration("20210212062025_Initital")]
+    partial class Initital
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,8 +50,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "17ce8a4e-da54-46ef-8884-d3d4e5afd5fb",
-                            ConcurrencyStamp = "8c18408e-ed4a-456a-86b0-ae3fa0053c4f",
+                            Id = "c405f302-0b67-4977-ae52-0a0429825a89",
+                            ConcurrencyStamp = "36c36dc7-8652-4e10-b77d-8da4b654a18c",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -233,6 +233,9 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int?>("ApplicationUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("FName")
                         .HasColumnType("nvarchar(max)");
 
@@ -254,14 +257,19 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<string>("ProfileImageName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("SearchUsers")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("IdentityUserId");
 
                     b.ToTable("ApplicationUsers");
                 });
 
-            modelBuilder.Entity("RefreshMyStyleApp.Models.Claim", b =>
+            modelBuilder.Entity("RefreshMyStyleApp.Models.Claimed", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -271,8 +279,14 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<int>("ApplicationUserId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("DateClaimed")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("ImageId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsClaimed")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -398,9 +412,6 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FilePath")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ImageName")
                         .HasColumnType("nvarchar(max)");
 
@@ -414,6 +425,9 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ItemStatus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SearchImages")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Size")
@@ -436,8 +450,14 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<int>("ApplicationUserId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("DateLiked")
+                        .HasColumnType("datetime2");
+
                     b.Property<int?>("ImageId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsLiked")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -534,12 +554,16 @@ namespace RefreshMyStyleApp.Migrations
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.ApplicationUser", b =>
                 {
+                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", null)
+                        .WithMany("SearchResults")
+                        .HasForeignKey("ApplicationUserId");
+
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
                         .HasForeignKey("IdentityUserId");
                 });
 
-            modelBuilder.Entity("RefreshMyStyleApp.Models.Claim", b =>
+            modelBuilder.Entity("RefreshMyStyleApp.Models.Claimed", b =>
                 {
                     b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
@@ -548,7 +572,7 @@ namespace RefreshMyStyleApp.Migrations
                         .IsRequired();
 
                     b.HasOne("RefreshMyStyleApp.Models.Image", "Image")
-                        .WithMany()
+                        .WithMany("Claimed")
                         .HasForeignKey("ImageId");
                 });
 

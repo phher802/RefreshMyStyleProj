@@ -38,6 +38,11 @@ namespace RefreshMyStyleApp.Models
         public string ProfileImageName { get; set; }
 
         public bool IsGoing { get; set; }
+
+        [Display(Name = "Search for friends")]
+        public string SearchUsers { get; set; }
+        
+        public List<ApplicationUser> SearchResults { get; set; }
       
         [NotMapped]
         public IFormFile ProfileImage { get; set; }

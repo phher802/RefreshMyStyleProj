@@ -11,6 +11,9 @@ namespace RefreshMyStyleApp.Models
     {
         [Key]
         public int? Id { get; set; }
+        public bool IsLiked { get; set; }
+
+        public DateTime? DateLiked { get; set; }
 
 
         [ForeignKey("Image")]
