@@ -8,69 +8,67 @@
 <h1>SearchUsers</h1>
 <div class="container-fluid">
     <div class="row">
-        @foreach (var user in Model.SearchResults)
-        {
-            <div>
-                @*<form asp-action="SearchUser" asp-controller="ApplicationUser">*@
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                @*<input type="hidden" asp-for="SentFriendRequests" />*@
-                <input type="hidden" asp-for="Id" />
-                <input type="hidden" asp-for="ProfileImageName" />
-                <div class="form-group">
-                    <label asp-for="SearchUsers" class="control-label"></label>
-                    <input name="searchString" type="text" class="form-control" />
-                    @*<span asp-validation-for="ApplicationUser.Friends" class="text-danger"></span>*@
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
-                </div>
-                @*</form>*@
-            </div>
-            @if (Model.SearchUsers.Any())
-            {
 
-                <div>
+        <form asp-action="SearchUsers" asp-controller="ApplicationUsers">
 
-                    <hr />
-                    <dl class="row">
-                        @*<div>
-                            <img src="~/images/profileImages/@Model.ProfileImageName" />
-                        </div>*@
-                        <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.FName)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.FName)
-                        </dd>
-                        <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.LName)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.LName)
-                        </dd>
-                        <dt class="col-sm-2">
-                            @Html.DisplayNameFor(model => model.FullName)
-                        </dt>
-                        <dd class="col-sm-10">
-                            @Html.DisplayFor(model => model.FullName)
-                        </dd>
-                        <dt class="col-sm-2" style="display: none">
-                            @Html.DisplayNameFor(model => model.IdentityUser)
-                        </dt>
-                        <dd class="col-sm-10" style="display: none">
-                            @Html.DisplayFor(model => model.IdentityUser.Id)
-                        </dd>
-                    </dl>
-                </div>
-            }
-        }
+            <input name="searchString" type="text" class="form-control" />
+            <input type="submit" value="Search" class="btn btn-primary" />
 
-
+        </form>
     </div>
 
-</div="">
-
-
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.LName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FullName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PhoneNumber)
+                </th>
+                <th>
+                    
+                    @Html.DisplayNameFor(model => model.ProfileImageName)
+                </th>
+               
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.SearchResults)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhoneNumber)
+                    </td>
+                    <td>
+                        <a href="@Model.ProfileImage"> <img src="~/images/profileImages/@item.ProfileImageName" height="50" width="50" /></a>    
+                    </td>
+                 
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 <div>
     <a asp-action="Edit">Edit</a> |

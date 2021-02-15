@@ -39,7 +39,7 @@ namespace RefreshMyStyleApp.Models
 
         public bool IsGoing { get; set; }
 
-        [Display(Name = "Search for friends")]
+        [Display(Name = "Search friends")]
         public string SearchUsers { get; set; }
         
         public List<ApplicationUser> SearchResults { get; set; }
@@ -69,5 +69,18 @@ namespace RefreshMyStyleApp.Models
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
    
+        
+    }
+    public class FindUser
+    {
+        public int Id { get; set; }
+
+        public string FName { get; set; }
+
+        public string LName { get; set; }
+
+        public bool IsFound { get; set; }
+
+
     }
 }

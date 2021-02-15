@@ -36,40 +36,39 @@ namespace RefreshMyStyleApp.Controllers
         }
 
         // GET: People
-        public IActionResult Index(string searchString)
+        public IActionResult Index()
         {
-            ApplicationUser applicationUser = new ApplicationUser();
+            ApplicationUser applicationUserLoggedIn = new ApplicationUser();
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-
-            if (applicationUser == null)
+            applicationUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            if (applicationUserLoggedIn == null)
             {
                 return RedirectToAction(nameof(Create));
             }
-
-            applicationUser.FullName = applicationUser.FName + " " + applicationUser.LName;
-            _context.ApplicationUsers.Update(applicationUser);
+            applicationUserLoggedIn.FullName = applicationUserLoggedIn.FName + " " + applicationUserLoggedIn.LName;
+            _context.ApplicationUsers.Update(applicationUserLoggedIn);
             _context.SaveChanges();
 
-            var users = from m in _context.ApplicationUsers select m;
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                users = users.Where(x => x.FName.Contains(searchString.ToLower()) ||
-                                       x.LName.Contains(searchString.ToLower()));
-            }
-            //return View(user.ToList());
+            //var searchUsers = SearchUsers(searchString);
+            //var users = from m in _context.ApplicationUsers select m;
+
+            //if (!String.IsNullOrEmpty(searchString))
+            //{
+            //    if (searchString != applicationUserLoggedIn.FName || searchString != applicationUserLoggedIn.LName)
+            //    {
+            //        users = users.Where(x => x.FName.Contains(searchString.ToLower()) ||
+            //                          x.LName.Contains(searchString.ToLower()));
+            //    }
+            //}
 
             ApplicationUserImageViewModel applicationUserImageViewModel = new ApplicationUserImageViewModel
             {
                 ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
-                Images = _context.Images.Where(i => i.ApplicationUserId == applicationUser.Id).ToList(),
-                Friends = _context.Friends.Where(f => f.Id == applicationUser.Id).ToList(),
-                SearchUsers = users.ToList(),
+                Images = _context.Images.Where(i => i.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
+                Friends = _context.Friends.Where(f => f.Id == applicationUserLoggedIn.Id).ToList(),
+                //SearchUsers = users.ToList(),
             };
-
             return View(applicationUserImageViewModel);
-
-            //return View(applicationUser);
         }
 
         // GET: People/Details/5
@@ -118,24 +117,38 @@ namespace RefreshMyStyleApp.Controllers
 
         }
 
-        //public IActionResult SearchUsers(ApplicationUser user, int userId)
-        //{
-        //    user = _context.ApplicationUsers.FirstOrDefault(u => u.Id == userId);
-        //    return View(user);
+        public IActionResult SearchUsers()
+        {
+            var user1 = _context.ApplicationUsers.Where(a => a.IdentityUserId == this.User.FindFirstValue(ClaimTypes.NameIdentifier)).Single();
+            user1.SearchResults = _context.ApplicationUsers.ToList();
+          
+            return View(user1);
 
-        //}
-        //public IActionResult SearchUsers(string searchString) 
-        //{
-        //    //var user = _context.ApplicationUsers.Select(x => x.Id).FirstOrDefault();
-        //    var user = from m in _context.ApplicationUsers select m;
-        //    if (!String.IsNullOrEmpty(searchString))
-        //    {
-        //        user = user.Where(x => x.FName.Contains(searchString.ToLower()) ||
-        //                               x.LName.Contains(searchString.ToLower()));
-               
-        //    }
-        //    return View(user.ToList());       
-        //}
+        }
+
+        [HttpPost]
+        public IActionResult SearchUsers(string searchString)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var userLoggedIn = _context.ApplicationUsers.Where(f => f.IdentityUserId == userId).FirstOrDefault();
+
+            var searchUsers = from m in _context.ApplicationUsers select m;
+            //var searchUsers = _context.ApplicationUsers.Where(x => x.IdentityUserId != userId).FirstOrDefault();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                if (searchString != userLoggedIn.FName || searchString != userLoggedIn.LName)
+                {
+                    searchUsers = searchUsers.Where(x => x.FName.Contains(searchString.ToLower()) ||
+                                      x.LName.Contains(searchString.ToLower()));
+                                     
+                }
+            }
+          
+            userLoggedIn.SearchResults = searchUsers.ToList();
+             return View(userLoggedIn);
+           
+        }
 
         //GET
         public IActionResult SearchImages()
@@ -151,6 +164,7 @@ namespace RefreshMyStyleApp.Controllers
             if (!String.IsNullOrEmpty(searchString))
             {              
                 image = image.Where(x => x.ImageName.Contains(searchString.ToLower()));
+                
             }
 
             return View(image.ToList());
@@ -194,10 +208,7 @@ namespace RefreshMyStyleApp.Controllers
             friends.AddRange(applicationUser.ReceievedFriendRequests.Where(x => x.Approved));
 
             return friends;
-
         } 
-
-
 
         public IActionResult UploadProfilefiles()
         {
