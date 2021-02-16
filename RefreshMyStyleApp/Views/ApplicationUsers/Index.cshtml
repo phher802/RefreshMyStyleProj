@@ -14,6 +14,7 @@
 
 <div class="container-fluid">
     <div class="row">
+      
         <div>
             @if (Model.Images != null)
             {
@@ -23,9 +24,8 @@
                     <div class="col-md">
 
                         <div class="card h-100" style="width: 15rem; display: flex">
-
-                            <img src="~/images/items/@item.ImageTitle" class="card-img-top img-fluid img-thumbnail" alt="@item.ImageName">
-
+                            <img src="~/images/items/@item.ImageTitle" class="card-img-top img-fluid img-thumbnail" alt="@item.ImageName" />
+                         
                             <div class="card-body">
                                 <h5 class="card-title">@item.ImageName</h5>
                                 <h6 class="card-subtitle mb-2 text-muted">@item.ClothingCategory</h6>
@@ -40,6 +40,10 @@
                             </div>
 
                         </div>
+                    </div>
+                    <div class="panel-body">
+                     
+                     
                     </div>
 
                 }

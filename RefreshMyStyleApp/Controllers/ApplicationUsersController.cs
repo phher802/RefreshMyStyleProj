@@ -121,9 +121,8 @@ namespace RefreshMyStyleApp.Controllers
         {
             var user1 = _context.ApplicationUsers.Where(a => a.IdentityUserId == this.User.FindFirstValue(ClaimTypes.NameIdentifier)).Single();
             user1.SearchResults = _context.ApplicationUsers.ToList();
-          
-            return View(user1);
 
+            return View(user1);
         }
 
         [HttpPost]
@@ -140,14 +139,11 @@ namespace RefreshMyStyleApp.Controllers
                 if (searchString != userLoggedIn.FName || searchString != userLoggedIn.LName)
                 {
                     searchUsers = searchUsers.Where(x => x.FName.Contains(searchString.ToLower()) ||
-                                      x.LName.Contains(searchString.ToLower()));
-                                     
+                                      x.LName.Contains(searchString.ToLower()));                                    
                 }
-            }
-          
+            }         
             userLoggedIn.SearchResults = searchUsers.ToList();
-             return View(userLoggedIn);
-           
+             return View(userLoggedIn);           
         }
 
         //GET
@@ -166,36 +162,33 @@ namespace RefreshMyStyleApp.Controllers
                 image = image.Where(x => x.ImageName.Contains(searchString.ToLower()));
                 
             }
-
             return View(image.ToList());
-
         }
 
-        //GET
-        public IActionResult AddFriendRequest()
-        {
-            return View();
-        }
+        ////GET
+        //public IActionResult AddFriendRequest()
+        //{
+        //    return View();
+        //}
 
         //POST
         public IActionResult AddFriendRequest(ApplicationUser user, ApplicationUser friendUser)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             user = _context.ApplicationUsers.Where(f => f.IdentityUserId == userId).FirstOrDefault();
-           // friendUser = _context.ApplicationUsers.Select(x => x.Id);
+            //friendUser = _context.ApplicationUsers.Select(x => x.Id);
 
-            //var friendRequest = new Friend()
-            //{
-            //    RequestedBy = user,
-            //    RequestedTo = friendUser,
-            //    RequestTime = DateTime.Now,
-            //    FriendRequestFlag = FriendRequestFlag.None
-            //};
-            //user.SentFriendRequests.Add(friendRequest);
+            var friendRequest = new Friend()
+            {
+                RequestedBy = user,
+                RequestedTo = friendUser,
+                RequestTime = DateTime.Now,
+                FriendRequestFlag = FriendRequestFlag.None
+            };
+            user.SentFriendRequests.Add(friendRequest);
 
-            return View();
-           
-           
+            return View("SearchUsers", friendRequest);
+                    
         }
 
         public async Task<List<Friend>> Friend()
@@ -253,6 +246,21 @@ namespace RefreshMyStyleApp.Controllers
 
         }
 
+        public IActionResult LikeImage(int imageId)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            Image likedImage = _context.Images.Where(c => c.Id == imageId).SingleOrDefault();
+            Like newLike = new Like();
+            newLike.ImageId = likedImage.Id;
+            newLike.ApplicationUserId = applicationUser.Id;
+            newLike.IsLiked = true;
+            newLike.DateLiked = DateTime.Now;
+
+            _context.Update(newLike);
+            _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
         // GET: ClothingEnthusiasts/Edit/5
         public async Task<IActionResult> Edit(int? id)

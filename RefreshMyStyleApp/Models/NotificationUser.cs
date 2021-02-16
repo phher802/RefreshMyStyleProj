@@ -16,5 +16,7 @@ namespace RefreshMyStyleApp.Models
         [ForeignKey("ApplicationUser")]
         public int ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
+
+
     }
 }

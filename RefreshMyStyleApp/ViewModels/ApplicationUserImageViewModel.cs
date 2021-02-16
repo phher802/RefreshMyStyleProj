@@ -14,7 +14,9 @@ namespace RefreshMyStyleApp.ViewModels
 
         public List<ApplicationUser> SearchUsers { get; set; }
         public List<Image> Images { get; set; }
-
+        
+        public int? ImageId { get; set; }
+        public List<Like> Likes { get; set; }
         public List<Friend> Friends { get; set; }
     }
 }

@@ -26,7 +26,6 @@ namespace RefreshMyStyleApp.Models
         public virtual ApplicationUser RequestedTo { get; set; }
 
 
-
         public DateTime? RequestTime { get; set; }
 
         public DateTime? BecameFriendsTime { get; set; }
