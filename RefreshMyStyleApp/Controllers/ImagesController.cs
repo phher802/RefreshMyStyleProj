@@ -12,17 +12,20 @@ using Microsoft.EntityFrameworkCore;
 using RefreshMyStyleApp.Data;
 using RefreshMyStyleApp.Models;
 
+
 namespace RefreshMyStyleApp.Controllers
 {
     public class ImagesController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _env;
+      
 
         public ImagesController(ApplicationDbContext context, IWebHostEnvironment env)
         {
             _context = context;
             _env = env;
+    ;
         }
 
         // GET: Images
@@ -55,7 +58,7 @@ namespace RefreshMyStyleApp.Controllers
         // GET: Images/Create
         public IActionResult Create(Image image, int imageId)
         {
-       
+
             ViewData["ClothingCategory"] = ClothingCategory();
             ViewData["ItemStatus"] = ItemStatus();
             return View(image);
@@ -68,13 +71,13 @@ namespace RefreshMyStyleApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Image image)
         {
-            
+
             if (ModelState.IsValid)
             {
 
                 _context.Images.Update(image);
-            await _context.SaveChangesAsync();
-            return RedirectToAction("Index", "ApplicationUsers");
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "ApplicationUsers");
             }
 
             return View(image);
@@ -100,13 +103,14 @@ namespace RefreshMyStyleApp.Controllers
 
             Image newImage = new Image();
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();         
+            var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             newImage.ApplicationUserId = applicationUser.Id;
             newImage.ImageTitle = uniqueName;
 
+         
             _context.Images.Add(newImage);
             _context.SaveChanges();
-            return RedirectToAction("Create", newImage);       
+            return RedirectToAction("Create", newImage);
         }
 
         private string GetUniqueFileName(string fileName)
@@ -122,13 +126,13 @@ namespace RefreshMyStyleApp.Controllers
             return string.Empty;
         }
 
-        public IActionResult LikedImage(int imageId)
+        public IActionResult LikedImage(int imageId, int id)
         {
             //get image
             //get appUser that liked image
             //add image and appUser to like table
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+           // var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var applicationUser = _context.ApplicationUsers.Where(c => c.Id == id).FirstOrDefault();
             Image likeImage = _context.Images.Where(i => i.Id == imageId).SingleOrDefault();
             Like likeInDb = new Like();
 
@@ -220,7 +224,7 @@ namespace RefreshMyStyleApp.Controllers
             return View(image);
         }
 
-      
+
 
         public List<Claimed> GetClaims()
         {

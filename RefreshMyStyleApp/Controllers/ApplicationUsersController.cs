@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RefreshMyStyleApp.Data;
 using RefreshMyStyleApp.Models;
+
 using RefreshMyStyleApp.ViewModels;
 
 namespace RefreshMyStyleApp.Controllers
@@ -22,16 +23,13 @@ namespace RefreshMyStyleApp.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _env;
-        //private readonly IClientNotification _clientNotification;
-        //private readonly Notification _Notification;
+
 
 
         public ApplicationUsersController(ApplicationDbContext context, IWebHostEnvironment env)
         {
             _context = context;
             _env = env;
-            //_clientNotification = clientNotification;
-            //_Notification = notification;
 
         }
 
@@ -48,18 +46,6 @@ namespace RefreshMyStyleApp.Controllers
             applicationUserLoggedIn.FullName = applicationUserLoggedIn.FName + " " + applicationUserLoggedIn.LName;
             _context.ApplicationUsers.Update(applicationUserLoggedIn);
             _context.SaveChanges();
-
-            //var searchUsers = SearchUsers(searchString);
-            //var users = from m in _context.ApplicationUsers select m;
-
-            //if (!String.IsNullOrEmpty(searchString))
-            //{
-            //    if (searchString != applicationUserLoggedIn.FName || searchString != applicationUserLoggedIn.LName)
-            //    {
-            //        users = users.Where(x => x.FName.Contains(searchString.ToLower()) ||
-            //                          x.LName.Contains(searchString.ToLower()));
-            //    }
-            //}
 
             ApplicationUserImageViewModel applicationUserImageViewModel = new ApplicationUserImageViewModel
             {
@@ -256,6 +242,13 @@ namespace RefreshMyStyleApp.Controllers
             newLike.ApplicationUserId = applicationUser.Id;
             newLike.IsLiked = true;
             newLike.DateLiked = DateTime.Now;
+
+            //var notification = new Notification
+            //{
+            //    Text = $"{applicationUser} posted {newLike.IsLiked}"
+            //};
+
+            //_notificationRepo.Create(notification, imageId);
 
             _context.Update(newLike);
             _context.SaveChangesAsync();

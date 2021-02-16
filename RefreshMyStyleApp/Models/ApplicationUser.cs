@@ -50,7 +50,6 @@ namespace RefreshMyStyleApp.Models
         public List<Like> Likes { get; set; }
         public List<Image> Images { get; set; }
 
-        public List<NotificationUser> NotificationUsers { get; set; }
 
         [NotMapped]
         public virtual List<Friend> Friends { get; set; }
