@@ -11,8 +11,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using RefreshMyStyleApp.Data;
+using RefreshMyStyleApp.Hubs;
 using RefreshMyStyleApp.Models;
 
 using RefreshMyStyleApp.ViewModels;
@@ -23,14 +25,14 @@ namespace RefreshMyStyleApp.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _env;
+        private readonly IHubContext<NotificationHub> _notiHubContext;
 
 
-
-        public ApplicationUsersController(ApplicationDbContext context, IWebHostEnvironment env)
+        public ApplicationUsersController(ApplicationDbContext context, IWebHostEnvironment env, IHubContext<NotificationHub> notificationHubContext)
         {
             _context = context;
             _env = env;
-
+            _notiHubContext = notificationHubContext;
         }
 
         // GET: People
@@ -52,22 +54,26 @@ namespace RefreshMyStyleApp.Controllers
                 ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
                 Images = _context.Images.Where(i => i.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
                 Friends = _context.Friends.Where(f => f.Id == applicationUserLoggedIn.Id).ToList(),
-                //SearchUsers = users.ToList(),
+                Likes = _context.Likes.Where(x => x.ImageId == applicationUserLoggedIn.Id).ToList(),
             };
             return View(applicationUserImageViewModel);
         }
 
+        
         // GET: People/Details/5
         public IActionResult Details(int? id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var applicationUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var appUserNotLoggedIn = _context.ApplicationUsers.Where(x => x.Id == id).FirstOrDefault();
+
 
             ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
             {
-                ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
-                Images = _context.Images.Where(i => i.ApplicationUserId == applicationUser.Id).ToList(),
-       
+                ApplicationUser = _context.ApplicationUsers.Where(c => c.Id == appUserNotLoggedIn.Id).SingleOrDefault(),
+                //ApplicationUsers = _context.ApplicationUsers.Where(c => c.Id != appUserNotLoggedIn.Id).ToList(),
+                Images = _context.Images.Where(i => i.ApplicationUserId == appUserNotLoggedIn.Id).ToList(),
+                //SearchUsers = _context.ApplicationUsers.Where(x => x.Id == appUserNotLoggedIn.Id).ToList(),
             };
 
             return View(personViewModel);
@@ -132,6 +138,7 @@ namespace RefreshMyStyleApp.Controllers
              return View(userLoggedIn);           
         }
 
+  
         //GET
         public IActionResult SearchImages()
         {
@@ -243,17 +250,13 @@ namespace RefreshMyStyleApp.Controllers
             newLike.IsLiked = true;
             newLike.DateLiked = DateTime.Now;
 
-            //var notification = new Notification
-            //{
-            //    Text = $"{applicationUser} posted {newLike.IsLiked}"
-            //};
-
-            //_notificationRepo.Create(notification, imageId);
 
             _context.Update(newLike);
             _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+    
 
         // GET: ClothingEnthusiasts/Edit/5
         public async Task<IActionResult> Edit(int? id)

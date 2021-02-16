@@ -8,8 +8,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using RefreshMyStyleApp.Data;
+using RefreshMyStyleApp.Hubs;
 using RefreshMyStyleApp.Models;
 
 
@@ -19,13 +21,15 @@ namespace RefreshMyStyleApp.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _env;
-      
+        private readonly IHubContext<NotificationHub> _notiHubContext;
 
-        public ImagesController(ApplicationDbContext context, IWebHostEnvironment env)
+
+        public ImagesController(ApplicationDbContext context, IWebHostEnvironment env, IHubContext<NotificationHub> notificationHubContext)
         {
             _context = context;
             _env = env;
-    ;
+            _notiHubContext = notificationHubContext;
+    
         }
 
         // GET: Images
@@ -34,6 +38,7 @@ namespace RefreshMyStyleApp.Controllers
             var applicationDbContext = _context.Images.Include(i => i.Likes).Include(i => i.ApplicationUser);
             return View(await applicationDbContext.ToListAsync());
         }
+
 
         // GET: Images/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -126,7 +131,16 @@ namespace RefreshMyStyleApp.Controllers
             return string.Empty;
         }
 
-        public IActionResult LikedImage(int imageId, int id)
+        public IActionResult AddLike()
+        {
+            var user1 = _context.ApplicationUsers.Where(a => a.IdentityUserId == this.User.FindFirstValue(ClaimTypes.NameIdentifier)).Single();
+            var image = _context.Images.Where(x => x.Id == user1.Id).SingleOrDefault();
+            image.Likes = image.Likes.ToList();
+            
+            return View(image);
+        }
+
+        public IActionResult AddLike(int imageId, int id)
         {
             //get image
             //get appUser that liked image
@@ -143,9 +157,11 @@ namespace RefreshMyStyleApp.Controllers
 
             _context.Likes.Update(likeInDb);
             _context.SaveChanges();
-            return RedirectToAction("Index", "ApplicationUsers");
+            return RedirectToAction("Index", "ApplicationUsers", likeInDb);
 
         }
+
+
 
         public List<Like> GetLikes()
         {

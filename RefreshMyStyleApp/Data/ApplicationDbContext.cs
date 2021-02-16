@@ -23,9 +23,7 @@ namespace RefreshMyStyleApp.Data
 
         public DbSet<Claimed> Claims { get; set; }
         public DbSet<Event> Events { get; set; }
-        public DbSet<Notification> Notifications { get; set; }
-
-        public DbSet<NotificationUser> UserNotifications { get; set; }
+    
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -41,15 +39,7 @@ namespace RefreshMyStyleApp.Data
 
                 });
 
-            builder.Entity<NotificationUser>()
-                .HasKey(k => new { k.NotificationId, k.ApplicationUserId });
-
-
-
-            //builder.Entity<Friend>()
-            //  .HasKey(f => new { f.RequestedById, f.RequestedToId });
-
-
+      
 
           
 

@@ -5,10 +5,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
+
 <h1>SearchUsers</h1>
 <div class="container-fluid">
     <div class="row">
         <form asp-action="SearchUsers" asp-controller="ApplicationUsers">
+            <input type="hidden" asp-for="Id" />
             <input name="searchString" type="text" class="form-control" />
             <input type="submit" value="Search" class="btn btn-primary" />
         </form>
@@ -16,6 +19,9 @@
     <table class="table">
         <thead>
             <tr>
+                <th style="display: none">
+                    @Html.DisplayNameFor(model => model.Id)
+                </th>
                 <th>
                     @Html.DisplayNameFor(model => model.FName)
                 </th>
@@ -29,93 +35,46 @@
                     @Html.DisplayNameFor(model => model.PhoneNumber)
                 </th>
                 <th>
-                    
+
                     @Html.DisplayNameFor(model => model.ProfileImageName)
                 </th>
-               
+
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.SearchResults)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FullName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PhoneNumber)
-                    </td>
-                    <td>
-                        <a href="@Model.ProfileImage"> <img src="~/images/profileImages/@item.ProfileImageName" height="50" width="50" /></a>    
-                    </td>
-                 
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
-<div>
-    <table class="table">
-        @*<thead>
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.FullName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FullName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FullName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PhoneNumber)
-                </th>
-                <th>
+                <td style="display: none">
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PhoneNumber)
+                </td>
+                <td>
+                    <a href="@Model.ProfileImage"> <img src="~/images/profileImages/@item.ProfileImageName" height="50" width="50" /></a>
+                </td>
 
-                    @Html.DisplayNameFor(model => model.ProfileImageName)
-                </th>
-
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
             </tr>
-        </thead>*@
-        <tbody>
-            @foreach (var item in Model.SentFriendRequests)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RequestedBy)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RequestedTo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RequestTime)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FriendRequestFlag)
-                    </td>
-               
-
-                    <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                    </td>
-                </tr>
             }
         </tbody>
     </table>
 </div>
+
 
 <div>
     <a asp-action="Edit">Edit</a> |

@@ -8,5 +8,6 @@ namespace RefreshMyStyleApp.Hubs
 {
     public class NotificationHub : Hub
     {
+
     }
 }
