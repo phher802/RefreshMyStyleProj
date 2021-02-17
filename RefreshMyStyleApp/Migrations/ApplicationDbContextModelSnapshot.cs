@@ -48,8 +48,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c405f302-0b67-4977-ae52-0a0429825a89",
-                            ConcurrencyStamp = "36c36dc7-8652-4e10-b77d-8da4b654a18c",
+                            Id = "f6373e0b-3d40-4488-82aa-fe8335b87ba4",
+                            ConcurrencyStamp = "0c58cb5b-72ad-4b95-9cf6-6932f3263486",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -466,39 +466,6 @@ namespace RefreshMyStyleApp.Migrations
                     b.ToTable("Likes");
                 });
 
-            modelBuilder.Entity("RefreshMyStyleApp.Models.Notification", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Text")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Notifications");
-                });
-
-            modelBuilder.Entity("RefreshMyStyleApp.Models.NotificationUser", b =>
-                {
-                    b.Property<int>("NotificationId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ApplicationUserId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsRead")
-                        .HasColumnType("bit");
-
-                    b.HasKey("NotificationId", "ApplicationUserId");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.ToTable("UserNotifications");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -629,21 +596,6 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasOne("RefreshMyStyleApp.Models.Image", "Image")
                         .WithMany("Likes")
                         .HasForeignKey("ImageId");
-                });
-
-            modelBuilder.Entity("RefreshMyStyleApp.Models.NotificationUser", b =>
-                {
-                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany("NotificationUsers")
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RefreshMyStyleApp.Models.Notification", "Notification")
-                        .WithMany("NotificationUsers")
-                        .HasForeignKey("NotificationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

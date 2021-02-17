@@ -4,6 +4,33 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSave").on('click', function () {
+            var Datas=JSON.stringify($('form').serialize());
+        $.ajax({
+            type: "POST",
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            url: '@Url.Action("AddLike","Images")',
+            data:Datas,
+            cache: false,
+            dataType: 'JSON',
+            async: true,
+            success: function (data) {
+
+            },
+            //AddLikes();
+        });
+    });
+
+    //function AddLikes() {
+    //    var likes = "<tr><td>" + $("#imgSubject").val() + "</td><td>";
+
+    }
+
+</script>
+
 
 <h1> @Model.ApplicationUser.FullName</h1>
 <p>
@@ -14,50 +41,138 @@
 
 <div class="container-fluid">
     <div class="row">
-
         <div>
-            @if (Model.Images != null)
+            @foreach (var item in Model.Images)
             {
-                @foreach (var item in Model.Images)
-                {
-
-                    <div class="col-md">
-
-                        <div class="card h-100" style="width: 15rem; display: flex">
-                            <img src="~/images/items/@item.ImageTitle" class="card-img-top img-fluid img-thumbnail" alt="@item.ImageName" />
-                            <div class="panel-body">
-                                <form asp-action="AddLike" asp-controller="Images" class="text-right align-text-top">
-                                    <input type="hidden" asp-for="ImageId" />
-                                    <button asp-action="AddLike" value="@item.Id" type="submit" class="btn btn-sm" style="background-color: #0094ff">
-                                        <span class="glyphicon glyphicon-heart"></span> Like
-                                    </button>
-                                </form>
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">@item.ImageName</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">@item.ClothingCategory</h6>
-                                <p class="card-text"> @item.Description</p>
-                                <p class="card-text">Color: @item.Color</p>
-                                <p class="card-text">Size: @item.Size</p>
-                                <p class="card-text">
-                                    Status: @item.ItemStatus
-                                </p>
-                                <a href="#" class="card-link">Card link</a>
-                                <a href="#" class="card-link">Another link</a>
-                            </div>
-
+                <div class="card-deck" >
+                    <div class="card h-100" style="width: 15rem; height: 10rem; display: flex">
+                        <img src="~/images/items/@item.ImageTitle" class="card-img-top img-fluid" alt="@item.ImageName" id="imgSubject" />
+                        <div class="panel-body">
+                          <form asp-action="AddLike" asp-controller="Images" class="text-right align-text-top">
+                                <input type="hidden" asp-for="@item.IsLiked" value="@item.Id" />
+                                <button asp-action="AddLike" type="submit" class="btn btn-default btn-sm" style="background-color: #808080">
+                                    <span class="glyphicon glyphicon-heart"></span> Like
+                                </button>
+                            </form>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@item.ImageName</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">@item.ClothingCategory</h6>
+                            <p class="card-text"> @item.Description</p>
+                            <p class="card-text">Color: @item.Color</p>
+                            <p class="card-text">Size: @item.Size</p>
+                            <p class="card-text">
+                                Status: @item.ItemStatus
+                            </p>
+                            <a href="#" class="card-link"></a>
+                            <a href="#" class="card-link">Another link</a>
                         </div>
                     </div>
+                </div>
 
-
-                }
             }
+
         </div>
-        
+
     </div>
 </div>
-<div>
-    <table class="table">
+
+@*<div>
+    @if (Model.Image.IsLiked)
+    {
+        <div>
+            @if (Model.Likes != null)
+            {
+                @foreach (var img in Model.Likes)
+                {
+                    @img.ApplicationUser
+                    @img.Image.ImageName
+                }
+            }
+
+        </div>
+
+    }
+</div>*@
+
+@*<script type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSave").click(function () {
+            AddLikes();
+        });
+    });
+
+    function AddLikes() {
+        var likes = "<tr><td>" + $("#txtClothingType").val() + "</td><td>" + $("#txtColor")
+            .val() + "</td><td>" + $("#txtSize").val() + "</td><td>" + $("#txtDate")
+                .val() + "</td><td>";
+        $("#tableAddLikes").last().append(likes);
+        $("#txtClothingType").val("");
+        $("#txtColor").val("");
+        $("#txtSize").val("");
+        $("#txtDate").val("");
+    }
+
+</script>*@
+<!--<!--<div class="container-fluid" style="background-color: aquamarine">
+    <h5>Requests: </h5>
+    <table>
+        <tr>
+            <td>
+                Clothing Type:
+            </td>
+            <td>
+                <input type="text" name="clothingType" value="" id="txtClothingType" />
+            </td>
+            <td>
+                Color:
+            </td>
+            <td>
+                <input type="text" name="color" value="" id="txtColor" />
+            </td>
+            <td>
+                Size:
+            </td>
+            <td>
+                <input type="text" name="size" value="" id="txtSize" />
+            </td>
+            <td>
+                Date Needed:
+            </td>
+            <td>
+                <input type="text" name="Date" value="" id="txtDate" />
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <input type="button" id="btnSave" name="name" value="save" />
+            </td>
+        </tr>
+    </table>
+
+    <table id="tableAddLikes">
+        <thead>
+            <tr>
+                <td>
+                    Clothing Type
+                </td>
+                <td>
+                    Color
+                </td>
+                <td>
+                    Size
+                </td>
+                <td>
+                    Date Needed
+                </td>
+            </tr>
+        </thead>
+
+    </table>
+</div>-->
+
+<!--@*<table class="table">
 
         @foreach (var item in Model.Likes)
         {
@@ -76,8 +191,8 @@
 
         }
 
-    </table>
-</div>
+    </table>*@-->
+
 
 
 
@@ -89,19 +204,4 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-<script type="text/javascript">
 
-
-    <$('#AddLike').click(function () {
-        $.ajax({
-            url: 'AddLike',
-            cache: false,
-            success: function (data) {
-                $('#Table > tbody').append(data);
-            },
-            error: function (a, b, c) {
-                alert(a + " " + b + " " + c);
-            }
-        });
-    });
-</script>

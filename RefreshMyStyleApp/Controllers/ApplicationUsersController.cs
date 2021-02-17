@@ -59,20 +59,21 @@ namespace RefreshMyStyleApp.Controllers
             return View(applicationUserImageViewModel);
         }
 
-        
+
         // GET: People/Details/5
-        public IActionResult Details(int? id)
+        public IActionResult Details(int id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var applicationUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            var appUserNotLoggedIn = _context.ApplicationUsers.Where(x => x.Id == id).FirstOrDefault();
-
+            var appUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            //// var appUsers = _context.ApplicationUsers.Where(x => x.Id == id).FirstOrDefault();
+            ApplicationUser appUserdetails = _context.ApplicationUsers.Find(id);
 
             ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
             {
-                ApplicationUser = _context.ApplicationUsers.Where(c => c.Id == appUserNotLoggedIn.Id).SingleOrDefault(),
-                //ApplicationUsers = _context.ApplicationUsers.Where(c => c.Id != appUserNotLoggedIn.Id).ToList(),
-                Images = _context.Images.Where(i => i.ApplicationUserId == appUserNotLoggedIn.Id).ToList(),
+                //ApplicationUser = _context.ApplicationUsers.Where(c => c.Id == appUserLoggedIn.Id).SingleOrDefault(), 
+                AppUserNotLoggedIn = _context.ApplicationUsers.Find(id),
+                Images = _context.Images.Where(i => i.ApplicationUserId == id).ToList(),
+                //ApplicationUsers = _context.ApplicationUsers.Where(c => c.Id == appUsers.Id).ToList(),
                 //SearchUsers = _context.ApplicationUsers.Where(x => x.Id == appUserNotLoggedIn.Id).ToList(),
             };
 

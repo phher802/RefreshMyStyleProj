@@ -7,9 +7,9 @@
 
 <h1>Details</h1>
 
-<h1> @Model.ApplicationUser.FullName</h1>
+<h1>@Html.DisplayFor(model => model.AppUserNotLoggedIn.FullName)</h1>
 <p>
-    <img src="~/images/profileImages/@Model.ApplicationUser.ProfileImageName" />
+    <img src="~/images/profileImages/@Html.DisplayFor(m => m.AppUserNotLoggedIn.ProfileImageName)" />
 
 </p>
 
@@ -22,7 +22,6 @@
             {
                 @foreach (var item in Model.Images)
                 {
-
                     <div class="col-md">
 
                         <div class="card h-100" style="width: 15rem; display: flex">
@@ -59,82 +58,66 @@
     </div>
 </div>
 @*<div>
-    <table class="table">
+        <table class="table">
 
-        @foreach (var item in Model.Likes)
-        {
-            if (item.IsLiked == true)
+            @foreach (var item in Model.Likes)
             {
-                <tbody>
-                    <tr>
-                        <td>
-                            @item.ApplicationUserId
-                            @item.DateLiked
-                            <a href="@item.Image"> <img src="~/images/items/@item.Image" height="50" width="50" /></a>
-                        </td>
-                    </tr>
-                </tbody>
+                if (item.IsLiked == true)
+                {
+                    <tbody>
+                        <tr>
+                            <td>
+                                @item.ApplicationUserId
+                                @item.DateLiked
+                                <a href="@item.Image"> <img src="~/images/items/@item.Image" height="50" width="50" /></a>
+                            </td>
+                        </tr>
+                    </tbody>
+                }
+
             }
 
-        }
-
-    </table>
-</div>*@
+        </table>
+    </div>*@
 @*<div>
-    <h4>ApplicationUser</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FullName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FullName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ProfileImageName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ProfileImageName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IsGoing)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsGoing)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.SearchUsers)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.SearchUsers)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.IdentityUser)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IdentityUser.Id)
-        </dd>
-    </dl>
-</div>*@
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.ApplicationUser.Id">Edit</a> |
+        <h4>ApplicationUser</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AppUserNotLoggedIn.FName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AppUserNotLoggedIn.FName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AppUserNotLoggedIn.LName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AppUserNotLoggedIn.LName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AppUserNotLoggedIn.FullName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AppUserNotLoggedIn.FullName)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AppUserNotLoggedIn.PhoneNumber)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AppUserNotLoggedIn.PhoneNumber)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.AppUserNotLoggedIn.ProfileImageName)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AppUserNotLoggedIn.ProfileImageName)
+            </dd>
+      
+         
+        </dl>
+    </div>
+<div>*@
+    @*<a asp-action="Edit" asp-route-id="@Model.AppUserNotLoggedIn.Id">Edit</a> |*@
     <a asp-action="Index">Back to List</a>
 </div>

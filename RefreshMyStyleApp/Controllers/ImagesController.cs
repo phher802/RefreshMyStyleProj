@@ -161,8 +161,6 @@ namespace RefreshMyStyleApp.Controllers
 
         }
 
-
-
         public List<Like> GetLikes()
         {
             List<Like> likes = _context.Likes.Where(l => l.Id > 0).ToList();
