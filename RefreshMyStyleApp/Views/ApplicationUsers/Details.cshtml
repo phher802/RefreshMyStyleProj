@@ -18,7 +18,7 @@
     <div class="row">
 
         <div>
-            @if (Model.Images != null)
+            @if(Model.Images != null)
             {
                 @foreach (var item in Model.Images)
                 {
@@ -119,5 +119,5 @@
     </div>
 <div>*@
     @*<a asp-action="Edit" asp-route-id="@Model.AppUserNotLoggedIn.Id">Edit</a> |*@
-    <a asp-action="Index">Back to List</a>
-</div>
+    @*<a asp-action="Index">Back to List</a>
+</div>*@

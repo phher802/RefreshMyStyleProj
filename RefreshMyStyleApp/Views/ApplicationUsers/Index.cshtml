@@ -44,27 +44,28 @@
         <div>
             @foreach (var item in Model.Images)
             {
-                <div class="card-deck" >
+                <div class="card-deck">
                     <div class="card h-100" style="width: 15rem; height: 10rem; display: flex">
-                        <img src="~/images/items/@item.ImageTitle" class="card-img-top img-fluid" alt="@item.ImageName" id="imgSubject" />
-                        <div class="panel-body">
-                          <form asp-action="AddLike" asp-controller="Images" class="text-right align-text-top">
-                                <input type="hidden" asp-for="@item.IsLiked" value="@item.Id" />
-                                <button asp-action="AddLike" type="submit" class="btn btn-default btn-sm" style="background-color: #808080">
-                                    <span class="glyphicon glyphicon-heart"></span> Like
-                                </button>
-                            </form>
-                        </div>
+                        <img src="~/images/items/@item.ImageTitle" class="card-img-top img-fluid" alt="@item.ImageName" />
+
                         <div class="card-body">
                             <h5 class="card-title">@item.ImageName</h5>
                             <h6 class="card-subtitle mb-2 text-muted">@item.ClothingCategory</h6>
                             <p class="card-text"> @item.Description</p>
                             <p class="card-text">Color: @item.Color</p>
                             <p class="card-text">Size: @item.Size</p>
-                            <p class="card-text">
-                                Status: @item.ItemStatus
-                            </p>
-                            <a href="#" class="card-link"></a>
+                            <p class="card-text">Status: @item.ItemStatus</p>
+                            <form asp-action="LikeImage" asp-controller="ApplicationUsers" asp-route-ImageId="@item.Id" class="text-right align-text-top">
+                                <input type="hidden" asp-for="@item.Id" name="imageId" value="" />
+                                <input type="hidden" asp-for="@item.IsLiked" value="" />
+                                <input type="hidden" asp-for="@item.ApplicationUserId" name="name" value="" />
+
+                            </form>
+                            <a asp-action="LikeImage" asp-controller="ApplicationUsers" asp-route-id="@item.Id">
+                                <button type="submit" class="btn btn-default btn-sm" style="background-color: #808080">
+                                    Like
+                                </button>
+                            </a>
                             <a href="#" class="card-link">Another link</a>
                         </div>
                     </div>
@@ -78,42 +79,42 @@
 </div>
 
 @*<div>
-    @if (Model.Image.IsLiked)
-    {
-        <div>
-            @if (Model.Likes != null)
+            @if(Model.Likes != null)
             {
-                @foreach (var img in Model.Likes)
-                {
-                    @img.ApplicationUser
-                    @img.Image.ImageName
-                }
+                <div>
+                    @if (Model.Image.IsLiked)
+                    {
+                        @foreach (var img in Model.Likes)
+                        {
+                            @img.ApplicationUser
+                            @img.Image.ImageName
+                        }
+                    }
+
+                </div>
+
             }
-
-        </div>
-
-    }
-</div>*@
+    </div>*@
 
 @*<script type="text/javascript">
-    $(document).ready(function () {
-        $("#btnSave").click(function () {
-            AddLikes();
+        $(document).ready(function () {
+            $("#btnSave").click(function () {
+                AddLikes();
+            });
         });
-    });
 
-    function AddLikes() {
-        var likes = "<tr><td>" + $("#txtClothingType").val() + "</td><td>" + $("#txtColor")
-            .val() + "</td><td>" + $("#txtSize").val() + "</td><td>" + $("#txtDate")
-                .val() + "</td><td>";
-        $("#tableAddLikes").last().append(likes);
-        $("#txtClothingType").val("");
-        $("#txtColor").val("");
-        $("#txtSize").val("");
-        $("#txtDate").val("");
-    }
+        function AddLikes() {
+            var likes = "<tr><td>" + $("#txtClothingType").val() + "</td><td>" + $("#txtColor")
+                .val() + "</td><td>" + $("#txtSize").val() + "</td><td>" + $("#txtDate")
+                    .val() + "</td><td>";
+            $("#tableAddLikes").last().append(likes);
+            $("#txtClothingType").val("");
+            $("#txtColor").val("");
+            $("#txtSize").val("");
+            $("#txtDate").val("");
+        }
 
-</script>*@
+    </script>*@
 <!--<!--<div class="container-fluid" style="background-color: aquamarine">
     <h5>Requests: </h5>
     <table>
@@ -171,7 +172,6 @@
 
     </table>
 </div>-->
-
 <!--@*<table class="table">
 
         @foreach (var item in Model.Likes)
