@@ -20,6 +20,7 @@ namespace RefreshMyStyleApp.ViewModels
         
         public int? ImageId { get; set; }
         public List<Like> Likes { get; set; }
+        public Like Like { get; set; }
 
         public List<Claimed> Claims { get; set; }
         public List<Friend> Friends { get; set; }

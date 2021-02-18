@@ -236,10 +236,23 @@ namespace RefreshMyStyleApp.Controllers
 
         public IActionResult GetLikes()
         {
-           
-            List<Like> likes = _context.Likes.Where(l => l.Id > 0).ToList();
-            likes.OrderByDescending(l => l.ImageId).ThenBy(l => l.DateLiked).ToList();
-            return View(likes);
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var appUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            // ApplicationUser appUserdetails = _context.ApplicationUsers.Find(id);
+
+            ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
+            {
+                ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
+                Images = _context.Images.Where(i => i.ApplicationUserId == appUserLoggedIn.Id).ToList(),
+                Likes = _context.Likes.Where(x => x.ImageId == appUserLoggedIn.Id).ToList(),
+                Like = _context.Likes.Where(x => x.ImageId == appUserLoggedIn.Id).FirstOrDefault(),
+            };
+
+            return View(personViewModel);
+
+            //List<Like> likes = _context.Likes.Where(l => l.Id > 0).ToList();
+            //likes.OrderByDescending(l => l.ImageId).ThenBy(l => l.DateLiked).ToList();
+            //return View(likes);
         }    
         public IActionResult LikeImage(int id)
         {

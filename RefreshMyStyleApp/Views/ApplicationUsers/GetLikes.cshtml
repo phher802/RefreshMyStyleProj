@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RefreshMyStyleApp.Models.Like>
+﻿@model RefreshMyStyleApp.ViewModels.ApplicationUserImageViewModel
 
 @{
     ViewData["Title"] = "GetLikes";
@@ -8,36 +8,39 @@
 <h1>LikeImage</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Index" asp-controller="ApplicationUsers">Return to Profile</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DateLiked)
+                @Html.DisplayNameFor(m => m.Like.DateLiked)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Image)
+                @Html.DisplayNameFor(m => m.Image)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Image.ApplicationUser.FullName)
+                @Html.DisplayNameFor(m => m.ApplicationUser.FullName)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Likes) {
         <tr>
 
             <td>
-                @Html.DisplayFor(modelItem => item.DateLiked)
+                @Html.DisplayFor(item => item.Like.DateLiked)
             </td>
             <td>
-               <a href="@Html.DisplayFor(modelItem => item.Image.ImageFile)"> <img src="~/images/items/@Html.DisplayFor(modelItem => item.Image.ImageName)" height="50" width="50" /></a>
+                <p>
+                    <img src="~/images/items/@item.Image.ImageTitle" height="100" width="50" />
+                </p>
+                
             </td>
             
             <td>
-                @Html.DisplayFor(modelItem => item.Image.ApplicationUser.FullName)
+                @Html.DisplayFor(item => item.ApplicationUser.FullName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
