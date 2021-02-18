@@ -1,11 +1,11 @@
 ﻿@model RefreshMyStyleApp.ViewModels.ApplicationUserImageViewModel
 
 @{
-    ViewData["Title"] = "GetLikes";
+    ViewData["Title"] = "GetClaims";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Likes</h1>
+<h1>Claims</h1>
 
 <p>
     <a asp-action="Index" asp-controller="ApplicationUsers">Return to Profile</a>
@@ -45,7 +45,7 @@
                 </td>
                 <td>
 
-                    <a asp-action="Details" asp-route-id="@claim.Id">Details</a> |
+                    <a asp-action="Details" asp-route-id="@claim.UserId">Details</a> |
                     <a asp-action="DeleteLikedImage" asp-route-id="@claim.Id">Delete</a>
                 </td>
             </tr>

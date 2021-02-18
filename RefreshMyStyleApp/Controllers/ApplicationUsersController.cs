@@ -296,7 +296,7 @@ namespace RefreshMyStyleApp.Controllers
 
             _context.ClaimItems.Add(newClaim);
             _context.SaveChanges();
-            return RedirectToAction("GetLikes");
+            return RedirectToAction("GetClaims", new { Id = id });
         }
 
 

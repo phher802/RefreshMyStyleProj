@@ -10,7 +10,7 @@ using RefreshMyStyleApp.Data;
 namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210218170056_Initial")]
+    [Migration("20210218213307_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,8 +50,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b302bc40-4fe8-49a2-bdd9-abe05da1fbc6",
-                            ConcurrencyStamp = "8a0f2c17-0fb2-4656-89f0-ca86e3528b5f",
+                            Id = "5629df46-c719-4412-ab98-2ec035174091",
+                            ConcurrencyStamp = "e0359c70-9698-4a72-b960-a654888ca0af",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -290,6 +290,9 @@ namespace RefreshMyStyleApp.Migrations
 
                     b.Property<int?>("ImageId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ImageTitle")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsClaimed")
                         .HasColumnType("bit");
