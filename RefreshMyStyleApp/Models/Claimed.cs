@@ -16,6 +16,11 @@ namespace RefreshMyStyleApp.Models
 
         public DateTime? DateClaimed { get; set; }
 
+        public int UserId { get; set; }
+        public string ClaimImageOwnerFullName { get; set; }
+
+        public string ImageTitle { get; set; }
+
         [ForeignKey("Image")]
         public int? ImageId { get; set; }
         public Image Image { get; set; }

@@ -78,6 +78,7 @@ namespace RefreshMyStyleApp.Migrations
                     FullName = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
                     ProfileImageName = table.Column<string>(nullable: true),
+                    ImageOwnerId = table.Column<int>(nullable: false),
                     IsGoing = table.Column<bool>(nullable: false),
                     SearchUsers = table.Column<string>(nullable: true),
                     IdentityUserId = table.Column<string>(nullable: true),
@@ -303,27 +304,29 @@ namespace RefreshMyStyleApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Claims",
+                name: "ClaimItems",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IsClaimed = table.Column<bool>(nullable: false),
                     DateClaimed = table.Column<DateTime>(nullable: true),
+                    UserId = table.Column<int>(nullable: false),
+                    ClaimImageOwnerFullName = table.Column<string>(nullable: true),
                     ImageId = table.Column<int>(nullable: true),
                     ApplicationUserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Claims", x => x.Id);
+                    table.PrimaryKey("PK_ClaimItems", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Claims_ApplicationUsers_ApplicationUserId",
+                        name: "FK_ClaimItems_ApplicationUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "ApplicationUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Claims_Images_ImageId",
+                        name: "FK_ClaimItems_Images_ImageId",
                         column: x => x.ImageId,
                         principalTable: "Images",
                         principalColumn: "Id",
@@ -337,7 +340,10 @@ namespace RefreshMyStyleApp.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IsLiked = table.Column<bool>(nullable: false),
+                    UserId = table.Column<int>(nullable: false),
                     DateLiked = table.Column<DateTime>(nullable: true),
+                    ImageTitle = table.Column<string>(nullable: true),
+                    LikedImageOwnerFullName = table.Column<string>(nullable: true),
                     ImageId = table.Column<int>(nullable: true),
                     ApplicationUserId = table.Column<int>(nullable: false)
                 },
@@ -361,7 +367,7 @@ namespace RefreshMyStyleApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "f6373e0b-3d40-4488-82aa-fe8335b87ba4", "0c58cb5b-72ad-4b95-9cf6-6932f3263486", "ApplicationUser", "APPLICATIONUSER" });
+                values: new object[] { "b302bc40-4fe8-49a2-bdd9-abe05da1fbc6", "8a0f2c17-0fb2-4656-89f0-ca86e3528b5f", "ApplicationUser", "APPLICATIONUSER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationUsers_ApplicationUserId",
@@ -413,13 +419,13 @@ namespace RefreshMyStyleApp.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Claims_ApplicationUserId",
-                table: "Claims",
+                name: "IX_ClaimItems_ApplicationUserId",
+                table: "ClaimItems",
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Claims_ImageId",
-                table: "Claims",
+                name: "IX_ClaimItems_ImageId",
+                table: "ClaimItems",
                 column: "ImageId");
 
             migrationBuilder.CreateIndex(
@@ -486,7 +492,7 @@ namespace RefreshMyStyleApp.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "Claims");
+                name: "ClaimItems");
 
             migrationBuilder.DropTable(
                 name: "Events");

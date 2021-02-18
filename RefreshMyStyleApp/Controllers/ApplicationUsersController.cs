@@ -53,7 +53,6 @@ namespace RefreshMyStyleApp.Controllers
             {
                 ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
                 Images = _context.Images.Where(i => i.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
-                Friends = _context.Friends.Where(f => f.Id == applicationUserLoggedIn.Id).ToList(),
                 Likes = _context.Likes.Where(x => x.ImageId == applicationUserLoggedIn.Id).ToList(),
             };
             return View(applicationUserImageViewModel);
@@ -94,7 +93,7 @@ namespace RefreshMyStyleApp.Controllers
             if (ModelState.IsValid)
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                applicationUser.IdentityUserId = userId;
+                applicationUser.IdentityUserId = userId;        
 
                 _context.ApplicationUsers.Add(applicationUser);
                 _context.SaveChanges();
@@ -179,18 +178,6 @@ namespace RefreshMyStyleApp.Controllers
                     
         }
 
-        public async Task<List<Friend>> Friend()
-        {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-
-            var friends = applicationUser.SentFriendRequests.Where(x => x.Approved).ToList();
-            //var friends = _context.Friends.Where(x => x.SentFriendRequests == )
-            friends.AddRange(applicationUser.ReceievedFriendRequests.Where(x => x.Approved));
-
-            return friends;
-        } 
-
         public IActionResult UploadProfilefiles()
         {
             return View();
@@ -234,47 +221,84 @@ namespace RefreshMyStyleApp.Controllers
 
         }
 
-        public IActionResult GetLikes()
+        public IActionResult GetLikes(int id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var appUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            // ApplicationUser appUserdetails = _context.ApplicationUsers.Find(id);
-
 
             ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
             {
                 ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
-                Images = _context.Images.Where(i => i.ApplicationUserId == appUserLoggedIn.Id).ToList(),
+                Images = _context.Images.Where(i => i.ApplicationUserId == id).ToList(),
                 Likes = _context.Likes.Where(x => x.ApplicationUserId == appUserLoggedIn.Id).ToList(),
-                Like = _context.Likes.Where(x => x.ApplicationUserId == appUserLoggedIn.Id).FirstOrDefault(),
             };
-
-            return View(personViewModel);
-
-            //List<Like> likes = _context.Likes.Where(l => l.Id > 0).ToList();
-            //likes.OrderByDescending(l => l.ImageId).ThenBy(l => l.DateLiked).ToList();
-            //return View(likes);
+            return View(personViewModel);      
         }    
+
         public IActionResult LikeImage(int id)
         {
             //get image
             //get appUser that liked image
             //add image and appUser to like table
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            Image likedImage = _context.Images.Where(c => c.Id == id).SingleOrDefault();
+            var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var appUser = _context.ApplicationUsers.Where(x => x.Id == id).SingleOrDefault();
+            var imageOwner = _context.Images.Where(x => x.Id.Equals(appUser.Id)).FirstOrDefault();
+            Image likedImage = _context.Images.Where(c => c.ApplicationUserId == appUser.Id).SingleOrDefault();
             Like newLike = new Like();
             newLike.ImageId = likedImage.Id;
-            newLike.ApplicationUserId = applicationUser.Id;
+            newLike.ImageTitle = imageOwner.ImageTitle;
+            newLike.UserId = appUser.Id;
+            newLike.LikedImageOwnerFullName = appUser.FName + " " + appUser.LName;
+            newLike.ApplicationUserId = currentAppUser.Id;
             newLike.IsLiked = true;
             newLike.DateLiked = DateTime.Now;
 
-            _context.Add(newLike);
+            _context.Likes.Add(newLike);
+            _context.SaveChanges();
+            return RedirectToAction("GetLikes", new { Id = id });
+        }
+
+        public IActionResult GetClaims(int id)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var appUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+
+            ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
+            {
+                ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
+                Images = _context.Images.Where(i => i.ApplicationUserId == id).ToList(),
+                Claims = _context.ClaimItems.Where(x => x.ApplicationUserId == appUserLoggedIn.Id).ToList(),
+            };
+
+            return View(personViewModel);
+        }
+
+        public IActionResult ClaimImage(int id)
+        {
+            //get image
+            //get appUser that liked image
+            //add image and appUser to like table
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var appUser = _context.ApplicationUsers.Where(x => x.Id == id).SingleOrDefault();
+            //Image likedImage = _context.Images.Where(c => c.Id == id).SingleOrDefault();
+            var imageOwner = _context.Images.Where(x => x.Id.Equals(appUser.Id)).FirstOrDefault();
+            Image likedImage = _context.Images.Where(c => c.ApplicationUserId == appUser.Id).SingleOrDefault();
+            Claimed newClaim = new Claimed();
+            newClaim.ImageId = likedImage.Id;          
+            newClaim.ImageTitle = imageOwner.ImageTitle;
+            newClaim.UserId = appUser.Id;
+            newClaim.ClaimImageOwnerFullName = appUser.FName + " " + appUser.LName;           
+            newClaim.ApplicationUserId = currentAppUser.Id;
+            newClaim.IsClaimed = true;
+            newClaim.DateClaimed = DateTime.Now;
+
+            _context.ClaimItems.Add(newClaim);
             _context.SaveChanges();
             return RedirectToAction("GetLikes");
         }
 
-    
 
         // GET: ClothingEnthusiasts/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -325,6 +349,14 @@ namespace RefreshMyStyleApp.Controllers
                 return RedirectToAction(nameof(Index));
             }
             return View(applicationUser);
+        }
+
+        public IActionResult DeleteLikedImage(int id)
+        {
+            var likedImageToDelete = _context.Likes.Find(id);
+            _context.Likes.Remove(likedImageToDelete);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(GetLikes));
         }
 
         // GET: ClothingEnthusiasts/Delete/5

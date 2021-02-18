@@ -27,26 +27,26 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var like in Model.Likes)
+        @foreach (var claim in Model.Claims)
         {
             <tr>
 
                 <td>
-                    @like.DateLiked
+                    @claim.DateClaimed
                 </td>
                 <td>
                     <p>
-                       <img src="~/images/items/@like.ImageTitle" height="100" width="50" /> 
+                        <img src="~/images/items/@claim.ImageTitle" height="100" width="50" />
                     </p>
                 </td>
 
                 <td>
-                    @like.LikedImageOwnerFullName
+                    @claim.ClaimImageOwnerFullName
                 </td>
                 <td>
-                 
-                    <a asp-action="Details" asp-route-id="@like.Id">Details</a> |
-                    <a asp-action="DeleteLikedImage" asp-route-id="@like.Id">Delete</a>
+
+                    <a asp-action="Details" asp-route-id="@claim.Id">Details</a> |
+                    <a asp-action="DeleteLikedImage" asp-route-id="@claim.Id">Delete</a>
                 </td>
             </tr>
         }

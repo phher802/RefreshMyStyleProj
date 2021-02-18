@@ -21,7 +21,7 @@ namespace RefreshMyStyleApp.Data
         public DbSet<Friend> Friends { get; set; }
         public DbSet<Like> Likes { get; set; }
 
-        public DbSet<Claimed> Claims { get; set; }
+        public DbSet<Claimed> ClaimItems { get; set; }
         public DbSet<Event> Events { get; set; }
     
 
@@ -39,8 +39,9 @@ namespace RefreshMyStyleApp.Data
 
                 });
 
-      
 
+            //builder.Entity<Like>()
+            //    .HasKey(x => new { x.ApplicationUser, x.ImageOwner });
           
 
         }

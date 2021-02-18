@@ -111,7 +111,7 @@ namespace RefreshMyStyleApp.Controllers
             var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             newImage.ApplicationUserId = applicationUser.Id;
             newImage.ImageTitle = uniqueName;
-
+            
          
             _context.Images.Add(newImage);
             _context.SaveChanges();
@@ -242,7 +242,7 @@ namespace RefreshMyStyleApp.Controllers
 
         public List<Claimed> GetClaims()
         {
-            List<Claimed> claimed = _context.Claims.Where(c => c.Id > 0).ToList();
+            List<Claimed> claimed = _context.ClaimItems.Where(c => c.Id > 0).ToList();
             return claimed.OrderByDescending(c => c.ImageId).ThenBy(c => c.DateClaimed).ToList();
         }
 

@@ -10,7 +10,7 @@ using RefreshMyStyleApp.Data;
 namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210217181714_Initial")]
+    [Migration("20210218170056_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,8 +50,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f6373e0b-3d40-4488-82aa-fe8335b87ba4",
-                            ConcurrencyStamp = "0c58cb5b-72ad-4b95-9cf6-6932f3263486",
+                            Id = "b302bc40-4fe8-49a2-bdd9-abe05da1fbc6",
+                            ConcurrencyStamp = "8a0f2c17-0fb2-4656-89f0-ca86e3528b5f",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -245,6 +245,9 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<string>("IdentityUserId")
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<int>("ImageOwnerId")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsGoing")
                         .HasColumnType("bit");
 
@@ -279,6 +282,9 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<int>("ApplicationUserId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ClaimImageOwnerFullName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("DateClaimed")
                         .HasColumnType("datetime2");
 
@@ -288,13 +294,16 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<bool>("IsClaimed")
                         .HasColumnType("bit");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Claims");
+                    b.ToTable("ClaimItems");
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Event", b =>
@@ -456,8 +465,17 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<int?>("ImageId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ImageTitle")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsLiked")
                         .HasColumnType("bit");
+
+                    b.Property<string>("LikedImageOwnerFullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

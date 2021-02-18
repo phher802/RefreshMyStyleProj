@@ -12,6 +12,8 @@ namespace RefreshMyStyleApp.ViewModels
     {
         public ApplicationUser ApplicationUser { get; set; }
         public ApplicationUser AppUserNotLoggedIn { get; set; }
+
+        public List<ApplicationUser> AppUsersNotLoggedIn { get; set; }
         public List<ApplicationUser> ApplicationUsers { get; set; }
         public Image Image { get; set; }
         public List<ApplicationUser> SearchUsers { get; set; }
