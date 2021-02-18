@@ -240,12 +240,13 @@ namespace RefreshMyStyleApp.Controllers
             var appUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             // ApplicationUser appUserdetails = _context.ApplicationUsers.Find(id);
 
+
             ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
             {
                 ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
                 Images = _context.Images.Where(i => i.ApplicationUserId == appUserLoggedIn.Id).ToList(),
-                Likes = _context.Likes.Where(x => x.ImageId == appUserLoggedIn.Id).ToList(),
-                Like = _context.Likes.Where(x => x.ImageId == appUserLoggedIn.Id).FirstOrDefault(),
+                Likes = _context.Likes.Where(x => x.ApplicationUserId == appUserLoggedIn.Id).ToList(),
+                Like = _context.Likes.Where(x => x.ApplicationUserId == appUserLoggedIn.Id).FirstOrDefault(),
             };
 
             return View(personViewModel);
@@ -261,17 +262,16 @@ namespace RefreshMyStyleApp.Controllers
             //add image and appUser to like table
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            //Image likedImage = _context.Images.Where(c => c.Id == imageId).SingleOrDefault();
+            Image likedImage = _context.Images.Where(c => c.Id == id).SingleOrDefault();
             Like newLike = new Like();
-            newLike.ImageId = id;
+            newLike.ImageId = likedImage.Id;
             newLike.ApplicationUserId = applicationUser.Id;
             newLike.IsLiked = true;
             newLike.DateLiked = DateTime.Now;
 
-
             _context.Add(newLike);
-            _context.SaveChangesAsync();
-            return RedirectToAction("GetLikes", newLike);
+            _context.SaveChanges();
+            return RedirectToAction("GetLikes");
         }
 
     
