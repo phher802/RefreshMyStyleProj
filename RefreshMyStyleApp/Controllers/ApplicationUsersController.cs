@@ -299,6 +299,23 @@ namespace RefreshMyStyleApp.Controllers
             return RedirectToAction("GetClaims", new { Id = id });
         }
 
+        public IActionResult ConfirmClaim(int id)
+        {
+            //var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var image = _context.Images.Where(c => c.ApplicationUserId == id).FirstOrDefault();
+
+
+            if (image.IsClaimed)
+            {
+              //  image.Claimed += 25.00;
+                _context.Update(image);
+                _context.SaveChanges();
+
+            }
+
+            return RedirectToAction("GetClaims");
+        }
 
         // GET: ClothingEnthusiasts/Edit/5
         public async Task<IActionResult> Edit(int? id)

@@ -7,17 +7,23 @@ using System.Threading.Tasks;
 
 namespace RefreshMyStyleApp.Models
 {
-    public class EventList
+    public class Post
     {
         [Key]
-        public int? Id { get; set; }
+        public int Id { set; get; }
+
+        public string PostTitle { get; set; }
+        public string PostContent { get; set; }
+        public string PostByUser { get; set; }
+        public DateTime? DateTimePosted { get; set; }
+
+  
 
         [ForeignKey("ApplicationUser")]
         public int ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
-        [ForeignKey("Event")]
-        public int EventId { get; set; }
-        public Event Event { get; set; }
+
+
     }
 }
