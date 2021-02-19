@@ -4,17 +4,178 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.min.js"></script>
 
 
-<h1> @Model.ApplicationUser.FullName</h1>
+
+
+@*<h1> @Model.ApplicationUser.FullName</h1>*@
 <p>
-    <img src="~/images/profileImages/@Model.ApplicationUser.ProfileImageName" />
+    @*<img src="~/images/profileImages/@Model.ApplicationUser.ProfileImageName" />*@
 
 </p>
 
 
-<div class="container-fluid">
+<!-- Vertical navbar -->
+<div class="vertical-nav bg-white" id="sidebar">
+    <div class="py-4 px-3 mb-4 bg-light">
+        <div class="media d-flex align-items-center">
+            <p>
+                <img src="~/images/profileImages/@Model.ApplicationUser.ProfileImageName" alt="Profile Image" width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+            </p>            
+            <input type="hidden" asp-for="ApplicationUser.ProfileImageName" name="files" value="" />
+            <div class="media-body">
+                <h4 class="m-0"> @Model.ApplicationUser.FullName</h4>
+                <p class="font-weight-light text-muted mb-0">Clothing Enthusiast</p>
+            </div>
+        </div>
+    </div>
+
+    <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">Main</p>
+
+    <ul class="nav flex-column bg-white mb-0">
+        <li class="nav-item">
+            <a href="#" class="nav-link text-dark font-italic bg-light">
+                <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
+                Home
+            </a>
+        </li>
+        <li class="nav-item">
+            <a asp-action="UploadProfileFiles" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
+                <i class="fa fa-address-card mr-3 text-primary fa-fw"></i>
+                Upload Selfie
+            </a>
+        </li>
+        <li class="nav-item">
+            <a asp-action="PostNewImage" asp-controller="Images" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
+                <i class="fa fa-cubes mr-3 text-primary fa-fw"></i>
+                Upload Item
+            </a>
+        </li>
+        <li class="nav-item">
+            <a asp-action="SearchUsers" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
+                <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
+                Search Users
+            </a>
+        </li>
+    </ul>
+
+    <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Lists</p>
+
+    <ul class="nav flex-column bg-white mb-0">
+        <li class="nav-item">
+            <a href="#" class="nav-link text-dark font-italic">
+                <i class="fa fa-area-chart mr-3 text-primary fa-fw"></i>
+                My Likes
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link text-dark font-italic">
+                <i class="fa fa-bar-chart mr-3 text-primary fa-fw"></i>
+                My Claims
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link text-dark font-italic">
+                <i class="fa fa-pie-chart mr-3 text-primary fa-fw"></i>
+                Items Liked
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link text-dark font-italic">
+                <i class="fa fa-line-chart mr-3 text-primary fa-fw"></i>
+                Items Claimed
+            </a>
+        </li>
+    </ul>
+</div>
+<!-- End vertical navbar -->
+<!-- Page content holder -->
+<div class="page-content p-5" id="content">
+    <!-- Toggle button -->
+    <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"><i class="fa fa-bars mr-2"></i><small class="text-uppercase font-weight-bold">Toggle</small></button>
+
+    <div class="col-sm-7">
+        <h3 class="text-dark font-italic">Recent Posts</h3>
+        @foreach (var post in Model.Posts)
+        {
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="well" style="background-color: #F3F4F0">
+
+                        <div class="panel panel-default text-left" style="background-color: #ffffff">
+                            <div class="panel-body">                      
+                                <p style="display: none">@post.PostByUser</p>
+                                <p>Title: @post.PostTitle</p>
+                                <div>
+                                    <p>@post.PostContent</p>
+                                </div>                               
+                                <p class="text-light">Date Posted: @post.DateTimePosted</p>
+
+                                <input type="hidden" asp-for="Post.Id" value="@post.Id" />
+                                <a asp-action="DeletePost" asp-route-id="@post.Id" asp-controller="ApplicationUsers">
+                                    <button type="submit" class="btn btn-default btn-sm" style="background-color: #ABEDE3">
+                                        Delete
+                                    </button>
+                                </a>
+
+                            </div>
+                        </div>
+
+                        @*<div class="panel panel-default text-left" style="background-color: #F3F4F0">
+                                <div class="panel-body">
+                                    @foreach (var comment in Model.Comments)
+                                    {
+                                        if (comment.PostId == post.Id)
+                                        {
+                                            <div class="row">
+                                                <div class=" col-md-2">
+                                                    <p><img src="@comment.Post" class="rounded" height="30" width="30" alt="Avatar"> <strong>@comment.ApplicationUser.FullName</strong></p>
+                                                </div>
+                                                <div class=" col-md-8">
+                                                    <p>@comment.CommentContent</p>
+                                                </div>
+                                            </div>}
+                                    }
+                                    <br />
+                                    <form asp-action="AddComment" method="post">
+                                        <div class="form-group col-md-10">
+                                            <input type="hidden" asp-for="Comment.PostId" value="@post.Id" />
+                                            <input asp-for="Comment.PostId" class="form-control" id="" placeholder="Comment...">
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <button type="submit" class="btn" style="background-color:  #F0DE4D">
+                                                <span class="glyphicon glyphicon-comment"></span> Comment
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>*@
+                    </div>
+                </div>
+            </div>}
+    </div>
+    <div class="separator"></div>
+    <div class="row text-white">
+        <div class="col-lg-7">
+            <p class="lead">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+
+        </div>
+        <div class="col-lg-5">
+            <p class="lead">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+
+        </div>
+    </div>
+
+</div>
+<!-- End  -->
+<div class="container">
     <div class="row">
         <div>
             @foreach (var item in Model.Images)
@@ -46,136 +207,20 @@
                 </div>
 
             }
-
         </div>
-
     </div>
 </div>
-
-@*<div>
-            @if(Model.Likes != null)
-            {
-                <div>
-                    @if (Model.Image.IsLiked)
-                    {
-                        @foreach (var img in Model.Likes)
-                        {
-                            @img.ApplicationUser
-                            @img.Image.ImageName
-                        }
-                    }
-
-                </div>
-
-            }
-    </div>*@
-
-@*<script type="text/javascript">
-        $(document).ready(function () {
-            $("#btnSave").click(function () {
-                AddLikes();
-            });
-        });
-
-        function AddLikes() {
-            var likes = "<tr><td>" + $("#txtClothingType").val() + "</td><td>" + $("#txtColor")
-                .val() + "</td><td>" + $("#txtSize").val() + "</td><td>" + $("#txtDate")
-                    .val() + "</td><td>";
-            $("#tableAddLikes").last().append(likes);
-            $("#txtClothingType").val("");
-            $("#txtColor").val("");
-            $("#txtSize").val("");
-            $("#txtDate").val("");
-        }
-
-    </script>*@
-<!--<!--<div class="container-fluid" style="background-color: aquamarine">
-    <h5>Requests: </h5>
-    <table>
-        <tr>
-            <td>
-                Clothing Type:
-            </td>
-            <td>
-                <input type="text" name="clothingType" value="" id="txtClothingType" />
-            </td>
-            <td>
-                Color:
-            </td>
-            <td>
-                <input type="text" name="color" value="" id="txtColor" />
-            </td>
-            <td>
-                Size:
-            </td>
-            <td>
-                <input type="text" name="size" value="" id="txtSize" />
-            </td>
-            <td>
-                Date Needed:
-            </td>
-            <td>
-                <input type="text" name="Date" value="" id="txtDate" />
-            </td>
-
-        </tr>
-        <tr>
-            <td>
-                <input type="button" id="btnSave" name="name" value="save" />
-            </td>
-        </tr>
-    </table>
-
-    <table id="tableAddLikes">
-        <thead>
-            <tr>
-                <td>
-                    Clothing Type
-                </td>
-                <td>
-                    Color
-                </td>
-                <td>
-                    Size
-                </td>
-                <td>
-                    Date Needed
-                </td>
-            </tr>
-        </thead>
-
-    </table>
-</div>-->
-<!--@*<table class="table">
-
-        @foreach (var item in Model.Likes)
-        {
-            if (item.IsLiked == true)
-            {
-                <tbody>
-                    <tr>
-                        <td>
-                            @item.ApplicationUserId
-                            @item.DateLiked
-                            <a href="@item.Image"> <img src="~/images/items/@item.Image" height="50" width="50" /></a>
-                        </td>
-                    </tr>
-                </tbody>
-            }
-
-        }
-
-    </table>*@-->
 
 
 
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.ApplicationUser.Id">Edit</a> |
-    <a asp-action="UploadProfileFiles" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">Upload Profile Image</a> |
-    <a asp-action="PostNewImage" asp-controller="Images" asp-route-id="@Model.ApplicationUser.Id">Upload pictures</a>
-    <a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">Details</a>
-    <a asp-action="Index">Back to List</a>
+    @*<a asp-action="Edit" asp-route-id="@Model.ApplicationUser.Id">Edit</a> |*@
+    @*<a asp-action="UploadProfileFiles" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">Upload Profile Image</a> |*@
+    @*<a asp-action="PostNewImage" asp-controller="Images" asp-route-id="@Model.ApplicationUser.Id">Upload pictures</a>*@
+    @*<a asp-action="SearchUsers" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">SEARCH USERS</a>*@
+    @*<a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">Details</a>
+        <a asp-action="Index">Back to List</a>*@
 </div>
 
 

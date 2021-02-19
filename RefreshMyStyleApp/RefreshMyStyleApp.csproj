@@ -6,6 +6,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20210219163744_Initial.cs" />
+    <Compile Remove="Migrations\20210219163744_Initial.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="bootstrap" Version="4.6.0" />
     <PackageReference Include="ClientNotifications" Version="1.17.1" />
     <PackageReference Include="Dapper" Version="2.0.78" />
@@ -23,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Migrations\" />
     <Folder Include="wwwroot\images\items\" />
     <Folder Include="wwwroot\images\profileImages\" />
   </ItemGroup>

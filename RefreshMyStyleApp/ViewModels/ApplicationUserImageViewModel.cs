@@ -27,6 +27,9 @@ namespace RefreshMyStyleApp.ViewModels
         public List<Claimed> Claims { get; set; }
         public List<Friend> Friends { get; set; }
 
-       
+        public Post Post { get; set; }
+        public List<Post> Posts { get; set;  }
+        public Comment Comment { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }

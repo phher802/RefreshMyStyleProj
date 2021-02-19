@@ -48,8 +48,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5629df46-c719-4412-ab98-2ec035174091",
-                            ConcurrencyStamp = "e0359c70-9698-4a72-b960-a654888ca0af",
+                            Id = "9fd64335-f951-42a7-ab06-aa0ed34758ad",
+                            ConcurrencyStamp = "77a91103-cd93-42d0-822c-72c8e8f4f7c5",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -307,6 +307,37 @@ namespace RefreshMyStyleApp.Migrations
                     b.ToTable("ClaimItems");
                 });
 
+            modelBuilder.Entity("RefreshMyStyleApp.Models.Comment", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ApplicationUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CommentContent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("CommentDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CommentorFullName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PostId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("RefreshMyStyleApp.Models.Event", b =>
                 {
                     b.Property<int?>("Id")
@@ -314,8 +345,14 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("CancelEvent")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("DatePosted")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("EventCreator")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EventDate")
                         .HasColumnType("datetime2");
@@ -329,18 +366,19 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<string>("Invite")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsCanceled")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsGoing")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsInvted")
+                    b.Property<bool>("IsInvited")
                         .HasColumnType("bit");
 
                     b.Property<string>("Message")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("EventListId");
 
                     b.ToTable("Events");
                 });
@@ -355,11 +393,17 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<int>("ApplicationUserId")
                         .HasColumnType("int");
 
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
 
-                    b.ToTable("EventList");
+                    b.HasIndex("EventId")
+                        .IsUnique();
+
+                    b.ToTable("EventLists");
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Friend", b =>
@@ -487,6 +531,35 @@ namespace RefreshMyStyleApp.Migrations
                     b.ToTable("Likes");
                 });
 
+            modelBuilder.Entity("RefreshMyStyleApp.Models.Post", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ApplicationUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DateTimePosted")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PostByUser")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostContent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PostTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.ToTable("Posts");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -562,11 +635,17 @@ namespace RefreshMyStyleApp.Migrations
                         .HasForeignKey("ImageId");
                 });
 
-            modelBuilder.Entity("RefreshMyStyleApp.Models.Event", b =>
+            modelBuilder.Entity("RefreshMyStyleApp.Models.Comment", b =>
                 {
-                    b.HasOne("RefreshMyStyleApp.Models.EventList", "EvenList")
+                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("EventListId");
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RefreshMyStyleApp.Models.Post", "Post")
+                        .WithMany()
+                        .HasForeignKey("PostId");
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.EventList", b =>
@@ -574,6 +653,12 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
                         .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RefreshMyStyleApp.Models.Event", "Event")
+                        .WithOne("EvenList")
+                        .HasForeignKey("RefreshMyStyleApp.Models.EventList", "EventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -617,6 +702,15 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasOne("RefreshMyStyleApp.Models.Image", "Image")
                         .WithMany("Likes")
                         .HasForeignKey("ImageId");
+                });
+
+            modelBuilder.Entity("RefreshMyStyleApp.Models.Post", b =>
+                {
+                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

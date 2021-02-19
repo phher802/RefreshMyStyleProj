@@ -1,0 +1,41 @@
+﻿@model RefreshMyStyleApp.Models.Post
+
+@{
+    ViewData["Title"] = "NewPost";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>NewPost</h1>
+
+<h4>Post</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="NewPost" asp-controller="ApplicationUsers" method="post">
+            <div class="form-group">
+                <label asp-for="PostTitle" class="control-label"></label>
+                <input asp-for="PostTitle" class="form-control" />
+                <span asp-validation-for="PostTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PostContent" class="control-label"></label>
+                <textarea asp-for="PostContent" placeholder="Make a request" class="form-control" ></textarea>
+                <span asp-validation-for="PostContent" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="display: none">
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                <select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

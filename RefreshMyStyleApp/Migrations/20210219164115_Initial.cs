@@ -47,6 +47,29 @@ namespace RefreshMyStyleApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Events",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    DatePosted = table.Column<DateTime>(nullable: true),
+                    EventDate = table.Column<DateTime>(nullable: true),
+                    EventTitle = table.Column<string>(nullable: true),
+                    Message = table.Column<string>(nullable: true),
+                    IsGoing = table.Column<bool>(nullable: false),
+                    Invite = table.Column<string>(nullable: true),
+                    IsInvited = table.Column<bool>(nullable: false),
+                    CancelEvent = table.Column<string>(nullable: true),
+                    IsCanceled = table.Column<bool>(nullable: false),
+                    EventCreator = table.Column<string>(nullable: true),
+                    EventListId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Events", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -187,20 +210,27 @@ namespace RefreshMyStyleApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "EventList",
+                name: "EventLists",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ApplicationUserId = table.Column<int>(nullable: false)
+                    ApplicationUserId = table.Column<int>(nullable: false),
+                    EventId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EventList", x => x.Id);
+                    table.PrimaryKey("PK_EventLists", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EventList_ApplicationUsers_ApplicationUserId",
+                        name: "FK_EventLists_ApplicationUsers_ApplicationUserId",
                         column: x => x.ApplicationUserId,
                         principalTable: "ApplicationUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EventLists_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -278,29 +308,26 @@ namespace RefreshMyStyleApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Events",
+                name: "Posts",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    DatePosted = table.Column<DateTime>(nullable: true),
-                    EventDate = table.Column<DateTime>(nullable: true),
-                    EventTitle = table.Column<string>(nullable: true),
-                    Message = table.Column<string>(nullable: true),
-                    IsGoing = table.Column<bool>(nullable: false),
-                    Invite = table.Column<string>(nullable: true),
-                    IsInvted = table.Column<bool>(nullable: false),
-                    EventListId = table.Column<int>(nullable: true)
+                    PostTitle = table.Column<string>(nullable: true),
+                    PostContent = table.Column<string>(nullable: true),
+                    PostByUser = table.Column<string>(nullable: true),
+                    DateTimePosted = table.Column<DateTime>(nullable: true),
+                    ApplicationUserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Events", x => x.Id);
+                    table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Events_EventList_EventListId",
-                        column: x => x.EventListId,
-                        principalTable: "EventList",
+                        name: "FK_Posts_ApplicationUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "ApplicationUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -365,10 +392,39 @@ namespace RefreshMyStyleApp.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CommentContent = table.Column<string>(nullable: true),
+                    CommentDateTime = table.Column<DateTime>(nullable: true),
+                    CommentorFullName = table.Column<string>(nullable: true),
+                    ApplicationUserId = table.Column<int>(nullable: false),
+                    PostId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_ApplicationUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "ApplicationUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Comments_Posts_PostId",
+                        column: x => x.PostId,
+                        principalTable: "Posts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "5629df46-c719-4412-ab98-2ec035174091", "e0359c70-9698-4a72-b960-a654888ca0af", "ApplicationUser", "APPLICATIONUSER" });
+                values: new object[] { "9fd64335-f951-42a7-ab06-aa0ed34758ad", "77a91103-cd93-42d0-822c-72c8e8f4f7c5", "ApplicationUser", "APPLICATIONUSER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationUsers_ApplicationUserId",
@@ -430,14 +486,25 @@ namespace RefreshMyStyleApp.Migrations
                 column: "ImageId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EventList_ApplicationUserId",
-                table: "EventList",
+                name: "IX_Comments_ApplicationUserId",
+                table: "Comments",
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Events_EventListId",
-                table: "Events",
-                column: "EventListId");
+                name: "IX_Comments_PostId",
+                table: "Comments",
+                column: "PostId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventLists_ApplicationUserId",
+                table: "EventLists",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventLists_EventId",
+                table: "EventLists",
+                column: "EventId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Friends_ApplicationUserId",
@@ -473,6 +540,11 @@ namespace RefreshMyStyleApp.Migrations
                 name: "IX_Likes_ImageId",
                 table: "Likes",
                 column: "ImageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_ApplicationUserId",
+                table: "Posts",
+                column: "ApplicationUserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -496,7 +568,10 @@ namespace RefreshMyStyleApp.Migrations
                 name: "ClaimItems");
 
             migrationBuilder.DropTable(
-                name: "Events");
+                name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "EventLists");
 
             migrationBuilder.DropTable(
                 name: "Friends");
@@ -508,7 +583,10 @@ namespace RefreshMyStyleApp.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "EventList");
+                name: "Posts");
+
+            migrationBuilder.DropTable(
+                name: "Events");
 
             migrationBuilder.DropTable(
                 name: "Images");

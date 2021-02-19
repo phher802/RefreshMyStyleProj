@@ -47,13 +47,15 @@ namespace RefreshMyStyleApp.Controllers
             }
             applicationUserLoggedIn.FullName = applicationUserLoggedIn.FName + " " + applicationUserLoggedIn.LName;
             _context.ApplicationUsers.Update(applicationUserLoggedIn);
-            _context.SaveChanges();
+            _context.SaveChanges();          
 
             ApplicationUserImageViewModel applicationUserImageViewModel = new ApplicationUserImageViewModel
             {
                 ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
                 Images = _context.Images.Where(i => i.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
                 Likes = _context.Likes.Where(x => x.ImageId == applicationUserLoggedIn.Id).ToList(),
+                Posts = _context.Posts.Where(x => x.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
+                //Comment = _context.Comments.Where(x => applicationUserLoggedIn == applicationUserLoggedIn.Id).ToList();
             };
             return View(applicationUserImageViewModel);
         }
@@ -152,39 +154,14 @@ namespace RefreshMyStyleApp.Controllers
             return View(image.ToList());
         }
 
-        ////GET
-        //public IActionResult AddFriendRequest()
-        //{
-        //    return View();
-        //}
-
-        //POST
-        public IActionResult AddFriendRequest(ApplicationUser user, ApplicationUser friendUser)
-        {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            user = _context.ApplicationUsers.Where(f => f.IdentityUserId == userId).FirstOrDefault();
-            //friendUser = _context.ApplicationUsers.Select(x => x.Id);
-
-            var friendRequest = new Friend()
-            {
-                RequestedBy = user,
-                RequestedTo = friendUser,
-                RequestTime = DateTime.Now,
-                FriendRequestFlag = FriendRequestFlag.None
-            };
-            user.SentFriendRequests.Add(friendRequest);
-
-            return View("SearchUsers", friendRequest);
-                    
-        }
-
+   
         public IActionResult UploadProfilefiles()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadProfileFiles([Bind("Id, ProfileImageName")] List<IFormFile> files)
+        public async Task<IActionResult> UploadProfileFiles(List<IFormFile> files)
         {
             long size = files.Sum(f => f.Length);
 
@@ -315,6 +292,37 @@ namespace RefreshMyStyleApp.Controllers
             }
 
             return RedirectToAction("GetClaims");
+        }
+
+        public IActionResult NewPost()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult NewPost(Post Post)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var appUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            
+            Post newPost = new Post();
+            newPost.ApplicationUserId = appUser.Id;
+            newPost.DateTimePosted = DateTime.Now;
+            newPost.PostTitle = Post.PostTitle;
+            newPost.PostContent = Post.PostContent;
+            newPost.PostByUser = appUser.FName + " " + appUser.LName;
+             
+            _context.Posts.Add(newPost);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult DeletePost(int id)
+        {
+            var deletePost = _context.Posts.Find(id);
+            _context.Posts.Remove(deletePost);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: ClothingEnthusiasts/Edit/5
