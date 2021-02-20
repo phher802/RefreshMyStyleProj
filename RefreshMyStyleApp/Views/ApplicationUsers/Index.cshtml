@@ -21,7 +21,7 @@
         <div class="media d-flex align-items-center">
             <p>
                 <img src="~/images/profileImages/@Model.ApplicationUser.ProfileImageName" alt="Profile Image" width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
-            </p>            
+            </p>
             <input type="hidden" asp-for="ApplicationUser.ProfileImageName" name="files" value="" />
             <div class="media-body">
                 <h4 class="m-0"> @Model.ApplicationUser.FullName</h4>
@@ -100,57 +100,54 @@
         {
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="well" style="background-color: #F3F4F0">
-
+                    <div style="background-color: #F3F4F0">
                         <div class="panel panel-default text-left" style="background-color: #ffffff">
-                            <div class="panel-body">                      
-                                <p style="display: none">@post.PostByUser</p>
+                            <div class="panel-body">
+                                <p> Posted by: @post.PostByUser</p>
                                 <p>Title: @post.PostTitle</p>
                                 <div>
                                     <p>@post.PostContent</p>
-                                </div>                               
+                                </div>
                                 <p class="text-light">Date Posted: @post.DateTimePosted</p>
-
                                 <input type="hidden" asp-for="Post.Id" value="@post.Id" />
                                 <a asp-action="DeletePost" asp-route-id="@post.Id" asp-controller="ApplicationUsers">
                                     <button type="submit" class="btn btn-default btn-sm" style="background-color: #ABEDE3">
                                         Delete
                                     </button>
                                 </a>
-
                             </div>
                         </div>
-
-                        @*<div class="panel panel-default text-left" style="background-color: #F3F4F0">
-                                <div class="panel-body">
-                                    @foreach (var comment in Model.Comments)
-                                    {
-                                        if (comment.PostId == post.Id)
-                                        {
-                                            <div class="row">
-                                                <div class=" col-md-2">
-                                                    <p><img src="@comment.Post" class="rounded" height="30" width="30" alt="Avatar"> <strong>@comment.ApplicationUser.FullName</strong></p>
-                                                </div>
-                                                <div class=" col-md-8">
-                                                    <p>@comment.CommentContent</p>
-                                                </div>
-                                            </div>}
-                                    }
-                                    <br />
-                                    <form asp-action="AddComment" method="post">
-                                        <div class="form-group col-md-10">
-                                            <input type="hidden" asp-for="Comment.PostId" value="@post.Id" />
-                                            <input asp-for="Comment.PostId" class="form-control" id="" placeholder="Comment...">
+                        <h5>Comments</h5>
+                        <div style="background-color: lightblue">
+                            @foreach (var comment in Model.Comments)
+                            {
+                                @if (comment.PostId == post.Id)
+                                {
+                                    <div>
+                                        <div>
+                                            <p>@comment.CommentorFullName)</p>
                                         </div>
-                                        <div class="form-group col-md-2">
-                                            <button type="submit" class="btn" style="background-color:  #F0DE4D">
-                                                <span class="glyphicon glyphicon-comment"></span> Comment
-                                            </button>
+                                        <div>
+                                            <p>@comment.CommentContent</p>
                                         </div>
-                                    </form>
-
+                                    </div>
+                                }
+                            }
+                        </div>
+                        <div>
+                            <form asp-action="AddComment" asp-controller="ApplicationUsers" method="post">
+                                <div class="form-group col-md-10">
+                                    <input type="hidden" asp-for="Comment.PostId" value="@post.Id" />
+                                    <textarea asp-for="Comment.CommentContent" maxlength="50" class="form-control" id="" placeholder="Comment..."></textarea>
                                 </div>
-                            </div>*@
+                                <div class="form-group col-md-2">
+                                    <button type="submit" class="btn" style="background-color:  #F0DE4D">
+                                        Comment
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
                     </div>
                 </div>
             </div>}
@@ -174,6 +171,7 @@
     </div>
 
 </div>
+
 <!-- End  -->
 <div class="container">
     <div class="row">

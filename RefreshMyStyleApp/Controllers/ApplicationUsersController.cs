@@ -55,7 +55,7 @@ namespace RefreshMyStyleApp.Controllers
                 Images = _context.Images.Where(i => i.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
                 Likes = _context.Likes.Where(x => x.ImageId == applicationUserLoggedIn.Id).ToList(),
                 Posts = _context.Posts.Where(x => x.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
-                //Comment = _context.Comments.Where(x => applicationUserLoggedIn == applicationUserLoggedIn.Id).ToList();
+                Comments = _context.Comments.Where(x => x.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
             };
             return View(applicationUserImageViewModel);
         }
@@ -321,6 +321,24 @@ namespace RefreshMyStyleApp.Controllers
         {
             var deletePost = _context.Posts.Find(id);
             _context.Posts.Remove(deletePost);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult Addcomment(Comment comment)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var appUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            //Post commentedPost = _context.Posts.Where(x => x.Id == comment.PostId).FirstOrDefault();
+
+            Comment newComment = new Comment();
+            newComment.PostId = comment.PostId;
+            newComment.ApplicationUserId = appUser.Id;
+            newComment.CommentorFullName = appUser.FName + " " + appUser.LName;
+            newComment.CommentDateTime = DateTime.Now;
+            newComment.CommentContent = comment.CommentContent;
+
+            _context.Comments.Add(newComment);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
