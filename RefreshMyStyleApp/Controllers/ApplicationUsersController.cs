@@ -343,6 +343,14 @@ namespace RefreshMyStyleApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult DeleteComment(int id)
+        {
+            var deleteComment = _context.Comments.Find(id);
+            _context.Comments.Remove(deleteComment);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
         // GET: ClothingEnthusiasts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

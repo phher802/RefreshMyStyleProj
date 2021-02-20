@@ -112,7 +112,7 @@
                                 <input type="hidden" asp-for="Post.Id" value="@post.Id" />
                                 <a asp-action="DeletePost" asp-route-id="@post.Id" asp-controller="ApplicationUsers">
                                     <button type="submit" class="btn btn-default btn-sm" style="background-color: #ABEDE3">
-                                        Delete
+                                        Delete Post
                                     </button>
                                 </a>
                             </div>
@@ -123,14 +123,19 @@
                             {
                                 @if (comment.PostId == post.Id)
                                 {
-                                    <div>
-                                        <div>
-                                            <p>@comment.CommentorFullName)</p>
-                                        </div>
-                                        <div>
-                                            <p>@comment.CommentContent</p>
-                                        </div>
-                                    </div>
+                            <div>
+                                <div>
+                                    <p>@comment.CommentorFullName</p>
+                                </div>
+                                <div>
+                                    <p>@comment.CommentContent</p>
+                                </div>
+                                <a asp-action="DeleteComment" asp-route-id="@comment.Id" asp-controller="ApplicationUsers">
+                                    <button type="submit" class="btn btn-default btn-sm" style="background-color: #ABEDE3">
+                                        Delete Comment
+                                    </button>
+                                </a>
+                            </div>
                                 }
                             }
                         </div>
