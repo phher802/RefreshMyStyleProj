@@ -38,7 +38,8 @@ namespace RefreshMyStyleApp.Models
         public string ProfileImageName { get; set; }
 
         public int ImageOwnerId { get; set; }
-        public bool IsGoing { get; set; }
+   
+        public bool EventAttendStatus { get; set; }
 
         [Display(Name = "Search friends")]
         public string SearchUsers { get; set; }

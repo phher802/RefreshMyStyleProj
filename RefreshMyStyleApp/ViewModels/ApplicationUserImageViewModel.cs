@@ -19,7 +19,7 @@ namespace RefreshMyStyleApp.ViewModels
         public List<ApplicationUser> SearchUsers { get; set; }
 
         public List<Image> Images { get; set; }
-        
+
         public int? ImageId { get; set; }
         public List<Like> Likes { get; set; }
         public Like Like { get; set; }
@@ -28,8 +28,13 @@ namespace RefreshMyStyleApp.ViewModels
         public List<Friend> Friends { get; set; }
 
         public Post Post { get; set; }
-        public List<Post> Posts { get; set;  }
+        public List<Post> Posts { get; set; }
         public Comment Comment { get; set; }
         public List<Comment> Comments { get; set; }
+        public Event Event { get; set; }
+
+        public List<Event> Events {get; set; }
+
+       
     }
 }

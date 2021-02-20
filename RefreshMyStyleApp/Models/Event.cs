@@ -23,21 +23,17 @@ namespace RefreshMyStyleApp.Models
 
         public string Message { get; set; }
 
-        public bool IsGoing { get; set; }
-
-        public string Invite { get; set; }
-
-        public bool IsInvited { get; set; }
-
         public string CancelEvent { get; set; }
 
         public bool IsCanceled { get; set; }
 
-        public string EventCreator { get; set; }
+        public int EventCreatorId { get; set; }
+        public string EventCreatorName { get; set; }
+        public int AttendeeId { get; set; }
+        public string AttendeeName { get; set; }
+        public bool IsAttending { get; set; }
+        public bool IsNotAttending { get; set; }
 
-        [ForeignKey("EventList")]
-        public int? EventListId { get; set; }
-        public EventList EvenList { get; set; }
 
     }
 }

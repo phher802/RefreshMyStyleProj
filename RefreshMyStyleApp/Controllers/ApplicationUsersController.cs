@@ -351,7 +351,53 @@ namespace RefreshMyStyleApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: ClothingEnthusiasts/Edit/5
+        public IActionResult CreateEvent()
+        {
+            return View();
+        }
+
+        public IActionResult CreateEvent(Event newEvent)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            //var appUserNotLoggedIn = _context.ApplicationUsers.Find(id);
+
+            Event createEvent = new Event();
+            createEvent.EventCreatorId = currentAppUser.Id;
+            createEvent.EventCreatorName = currentAppUser.FName + " " + currentAppUser.LName;
+            createEvent.DatePosted = DateTime.Now;
+            createEvent.EventDate = newEvent.EventDate;
+            createEvent.EventTitle = newEvent.EventTitle;
+            createEvent.Message = newEvent.Message;
+
+            if (newEvent.IsCanceled)
+            {
+                createEvent.CancelEvent = "Event Has Been Canceled";
+            }
+         
+            _context.Events.Add(createEvent);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult EventAttendees(int id, Event currentEvent)
+        {
+      
+            var appUser = _context.ApplicationUsers.Find(id);
+            currentEvent = _context.Events.Find(id);
+           // var fullName = appUser.FName + " " + appUser.LName;
+
+            if (appUser.EventAttendStatus == currentEvent.IsAttending)
+            {
+                currentEvent.AttendeeId = appUser.Id;
+                currentEvent.AttendeeName = appUser.FName + " " + appUser.LName;
+            }
+
+            return RedirectToAction(nameof(CreateEvent));
+
+        }
+
+        // GET: ApplicationUser/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -367,7 +413,7 @@ namespace RefreshMyStyleApp.Controllers
             return View(applicationUser);
         }
 
-        // POST: ClothingEnthusiasts/Edit/5
+        // POST: ApplicationUser/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
