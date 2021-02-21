@@ -1,0 +1,57 @@
+﻿@model RefreshMyStyleApp.ViewModels.EventViewModel
+
+@{
+    ViewData["Title"] = "EventList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>EventList</h1>
+
+<div>
+    <h4>EventViewModel</h4>
+    <hr />
+
+    @foreach (var item in Model.Events)
+    {
+        <div class="card text-center">
+            <div class="card-header">
+                @Html.DisplayFor(item => item.Event.EventDate)
+            </div>
+            <div class="card-body">
+                <h5 class="card-title">@Html.DisplayFor(item => item.Event.EventTitle)</h5>
+                <p class="card-text">@Html.DisplayFor(item => item.Event.Message)</p>
+                <a asp-action="EventAttendees" asp-controller="ApplicationUsers">
+                    <input type="hidden" asp-for="ApplicationUserId" value="" />
+                    <button>
+                        Attending
+                    </button></a>
+               
+            </div>
+            <div class="card-footer text-muted">
+                Created on: @Html.DisplayFor(item => item.Event.DatePosted)
+            </div>
+        </div>
+
+    }
+
+
+
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ApplicationUser)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ApplicationUser.Id)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Event)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Event.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

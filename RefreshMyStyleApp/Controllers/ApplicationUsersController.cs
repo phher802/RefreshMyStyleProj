@@ -47,7 +47,7 @@ namespace RefreshMyStyleApp.Controllers
             }
             applicationUserLoggedIn.FullName = applicationUserLoggedIn.FName + " " + applicationUserLoggedIn.LName;
             _context.ApplicationUsers.Update(applicationUserLoggedIn);
-            _context.SaveChanges();          
+            _context.SaveChanges();
 
             ApplicationUserImageViewModel applicationUserImageViewModel = new ApplicationUserImageViewModel
             {
@@ -95,7 +95,7 @@ namespace RefreshMyStyleApp.Controllers
             if (ModelState.IsValid)
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                applicationUser.IdentityUserId = userId;        
+                applicationUser.IdentityUserId = userId;
 
                 _context.ApplicationUsers.Add(applicationUser);
                 _context.SaveChanges();
@@ -127,14 +127,14 @@ namespace RefreshMyStyleApp.Controllers
                 if (searchString != userLoggedIn.FName || searchString != userLoggedIn.LName)
                 {
                     searchUsers = searchUsers.Where(x => x.FName.Contains(searchString.ToLower()) ||
-                                      x.LName.Contains(searchString.ToLower()));                                    
+                                      x.LName.Contains(searchString.ToLower()));
                 }
-            }         
+            }
             userLoggedIn.SearchResults = searchUsers.ToList();
-             return View(userLoggedIn);           
+            return View(userLoggedIn);
         }
 
-  
+
         //GET
         public IActionResult SearchImages()
         {
@@ -143,18 +143,18 @@ namespace RefreshMyStyleApp.Controllers
 
         //POST
         public IActionResult SearchImages(string searchString)
-        {       
+        {
             var image = from i in _context.Images select i;
 
             if (!String.IsNullOrEmpty(searchString))
-            {              
+            {
                 image = image.Where(x => x.ImageName.Contains(searchString.ToLower()));
-                
+
             }
             return View(image.ToList());
         }
 
-   
+
         public IActionResult UploadProfilefiles()
         {
             return View();
@@ -209,8 +209,8 @@ namespace RefreshMyStyleApp.Controllers
                 Images = _context.Images.Where(i => i.ApplicationUserId == id).ToList(),
                 Likes = _context.Likes.Where(x => x.ApplicationUserId == appUserLoggedIn.Id).ToList(),
             };
-            return View(personViewModel);      
-        }    
+            return View(personViewModel);
+        }
 
         public IActionResult LikeImage(int id)
         {
@@ -263,10 +263,10 @@ namespace RefreshMyStyleApp.Controllers
             var imageOwner = _context.Images.Where(x => x.Id.Equals(appUser.Id)).FirstOrDefault();
             Image likedImage = _context.Images.Where(c => c.ApplicationUserId == appUser.Id).SingleOrDefault();
             Claimed newClaim = new Claimed();
-            newClaim.ImageId = likedImage.Id;          
+            newClaim.ImageId = likedImage.Id;
             newClaim.ImageTitle = imageOwner.ImageTitle;
             newClaim.UserId = appUser.Id;
-            newClaim.ClaimImageOwnerFullName = appUser.FName + " " + appUser.LName;           
+            newClaim.ClaimImageOwnerFullName = appUser.FName + " " + appUser.LName;
             newClaim.ApplicationUserId = currentAppUser.Id;
             newClaim.IsClaimed = true;
             newClaim.DateClaimed = DateTime.Now;
@@ -285,7 +285,7 @@ namespace RefreshMyStyleApp.Controllers
 
             if (image.IsClaimed)
             {
-              //  image.Claimed += 25.00;
+                //  image.Claimed += 25.00;
                 _context.Update(image);
                 _context.SaveChanges();
 
@@ -304,14 +304,14 @@ namespace RefreshMyStyleApp.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var appUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            
+
             Post newPost = new Post();
             newPost.ApplicationUserId = appUser.Id;
             newPost.DateTimePosted = DateTime.Now;
             newPost.PostTitle = Post.PostTitle;
             newPost.PostContent = Post.PostContent;
             newPost.PostByUser = appUser.FName + " " + appUser.LName;
-             
+
             _context.Posts.Add(newPost);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
@@ -351,11 +351,29 @@ namespace RefreshMyStyleApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult EventList(int id)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var appUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var appUserNotLoggedIn = _context.ApplicationUsers.Find(id);
+
+            EventViewModel eventViewModel = new EventViewModel
+            {
+                ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
+                AppUsersNotLoggedIn = _context.ApplicationUsers.Where(c => c.Id == id).ToList(),
+                Event = _context.Events.Where(e => e.EventCreatorId == appUserLoggedIn.Id).FirstOrDefault(),
+                Events = _context.Events.Where(e => e.EventCreatorId == appUserLoggedIn.Id).ToList(),
+            };
+            return View(eventViewModel);
+        }
+
         public IActionResult CreateEvent()
         {
+
             return View();
         }
 
+        [HttpPost]
         public IActionResult CreateEvent(Event newEvent)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -374,26 +392,26 @@ namespace RefreshMyStyleApp.Controllers
             {
                 createEvent.CancelEvent = "Event Has Been Canceled";
             }
-         
+
             _context.Events.Add(createEvent);
             _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(EventList));
         }
 
         public IActionResult EventAttendees(int id, Event currentEvent)
         {
-      
+
             var appUser = _context.ApplicationUsers.Find(id);
             currentEvent = _context.Events.Find(id);
-           // var fullName = appUser.FName + " " + appUser.LName;
+            // var fullName = appUser.FName + " " + appUser.LName;
 
-            if (appUser.EventAttendStatus == currentEvent.IsAttending)
-            {
-                currentEvent.AttendeeId = appUser.Id;
-                currentEvent.AttendeeName = appUser.FName + " " + appUser.LName;
-            }
+            //if (appUser.EventAttendStatus == currentEvent.IsAttending)
+            //{
+            //    currentEvent.AttendeeId = appUser.Id;
+            //    currentEvent.AttendeeName = appUser.FName + " " + appUser.LName;
+            //}
 
-            return RedirectToAction(nameof(CreateEvent));
+            return RedirectToAction(nameof(EventList));
 
         }
 

@@ -12,9 +12,14 @@ namespace RefreshMyStyleApp.ViewModels
     {
         [Key]
         public int? Id { get; set; }
-      
+        public int AttendeeId { get; set; }
+        public string AttendeeName { get; set; }
+        public bool IsAttending { get; set; }
+        public bool IsNotAttending { get; set; }
+
         public List<Event> Events { get; set; }
-        public List<Event> Attendees { get; set; }
+        public List<ApplicationUser> ApplicationUsers { get; set; }
+        public List<ApplicationUser> AppUsersNotLoggedIn { get; set; }
 
         [ForeignKey("ApplicationUser")]
         public int ApplicationUserId { get; set; }

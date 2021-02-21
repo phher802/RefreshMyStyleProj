@@ -23,17 +23,23 @@ namespace RefreshMyStyleApp.Models
 
         public string Message { get; set; }
 
+        public string StreetAddress { get; set; }
+
+        public string State { get; set; }
+
+        public string Zipcode { get; set; }
+
         public string CancelEvent { get; set; }
 
         public bool IsCanceled { get; set; }
 
         public int EventCreatorId { get; set; }
+
         public string EventCreatorName { get; set; }
-        public int AttendeeId { get; set; }
-        public string AttendeeName { get; set; }
-        public bool IsAttending { get; set; }
-        public bool IsNotAttending { get; set; }
+     
 
 
     }
+
+ 
 }
