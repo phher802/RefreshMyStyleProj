@@ -369,6 +369,9 @@ namespace RefreshMyStyleApp.Controllers
 
         public IActionResult CreateEvent()
         {
+            ViewData["states"] = new List<string> { "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS",
+                "KY", "LA", "ME", "MD", "MA", "MI","MN", "MS", "MO","MT", "NE", "NV","NH", "NJ", "NM","NY", "NC", "ND","OH", "OK", "OR","PA", "RI", "SC","SD",
+                "TN", "TX","UT", "VT", "VA","WA", "WV", "WI","WY" };
 
             return View();
         }
@@ -387,17 +390,23 @@ namespace RefreshMyStyleApp.Controllers
             createEvent.EventDate = newEvent.EventDate;
             createEvent.EventTitle = newEvent.EventTitle;
             createEvent.Message = newEvent.Message;
+            createEvent.StreetAddress = newEvent.StreetAddress;
+            createEvent.State = newEvent.State;
+            createEvent.Zipcode = newEvent.Zipcode;
 
             if (newEvent.IsCanceled)
             {
                 createEvent.CancelEvent = "Event Has Been Canceled";
             }
 
+
+
             _context.Events.Add(createEvent);
             _context.SaveChanges();
             return RedirectToAction(nameof(EventList));
         }
 
+  
         public IActionResult EventAttendees(int id, Event currentEvent)
         {
 

@@ -3,7 +3,9 @@
 @{
     ViewData["Title"] = "CreateEvent";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    List<string> states = (List<string>)ViewData["states"];
 }
+
 
 <h1>CreateEvent</h1>
 
@@ -29,7 +31,21 @@
                 <input asp-for="Message" class="form-control" />
                 <span asp-validation-for="Message" class="text-danger"></span>
             </div>
-
+            <div class="form-group">
+                <label asp-for="StreetAddress" class="control-label"></label>
+                <input asp-for="StreetAddress" class="form-control" />
+                <span asp-validation-for="StreetAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="State" class="control-label"></label>
+                <Select asp-for="State" class="form-control" asp-items="new SelectList(states)"></Select>
+                <span asp-validation-for="State" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Zipcode" class="control-label"></label>
+                <Select asp-for="Zipcode" class="form-control"></Select>
+                <span asp-validation-for="Zipcode" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
