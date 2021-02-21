@@ -194,12 +194,9 @@ namespace RefreshMyStyleApp.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AttendeeId = table.Column<int>(nullable: false),
-                    AttendeeName = table.Column<string>(nullable: true),
-                    IsAttending = table.Column<bool>(nullable: false),
-                    IsNotAttending = table.Column<bool>(nullable: false),
-                    ApplicationUserId = table.Column<int>(nullable: false),
-                    EventId = table.Column<int>(nullable: false)
+                    AttendeeId = table.Column<int>(nullable: true),
+                    EventId = table.Column<int>(nullable: true),
+                    ApplicationUserId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -218,12 +215,12 @@ namespace RefreshMyStyleApp.Migrations
                     PhoneNumber = table.Column<string>(nullable: true),
                     ProfileImageName = table.Column<string>(nullable: true),
                     ImageOwnerId = table.Column<int>(nullable: false),
-                    EventAttendStatus = table.Column<bool>(nullable: false),
                     SearchUsers = table.Column<string>(nullable: true),
+                    EventAttendStatus = table.Column<bool>(nullable: false),
+                    IsAttending = table.Column<bool>(nullable: false),
                     IdentityUserId = table.Column<string>(nullable: true),
                     ApplicationUserId = table.Column<int>(nullable: true),
-                    EventViewModelId = table.Column<int>(nullable: true),
-                    EventViewModelId1 = table.Column<int>(nullable: true)
+                    EventViewModelId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -241,15 +238,29 @@ namespace RefreshMyStyleApp.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ApplicationUsers_EventViewModel_EventViewModelId1",
-                        column: x => x.EventViewModelId1,
-                        principalTable: "EventViewModel",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_ApplicationUsers_AspNetUsers_IdentityUserId",
                         column: x => x.IdentityUserId,
                         principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Attendees",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    AttendeeName = table.Column<string>(nullable: true),
+                    EventViewModelId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Attendees", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Attendees_EventViewModel_EventViewModelId",
+                        column: x => x.EventViewModelId,
+                        principalTable: "EventViewModel",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -265,8 +276,10 @@ namespace RefreshMyStyleApp.Migrations
                     EventTitle = table.Column<string>(nullable: true),
                     Message = table.Column<string>(nullable: true),
                     StreetAddress = table.Column<string>(nullable: true),
+                    City = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
                     Zipcode = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
                     CancelEvent = table.Column<string>(nullable: true),
                     IsCanceled = table.Column<bool>(nullable: false),
                     EventCreatorId = table.Column<int>(nullable: false),
@@ -294,25 +307,11 @@ namespace RefreshMyStyleApp.Migrations
                     RequestedToId = table.Column<int>(nullable: true),
                     RequestTime = table.Column<DateTime>(nullable: true),
                     BecameFriendsTime = table.Column<DateTime>(nullable: true),
-                    FriendRequestFlag = table.Column<int>(nullable: false),
-                    ApplicationUserId = table.Column<int>(nullable: true),
-                    ApplicationUserId1 = table.Column<int>(nullable: true)
+                    FriendRequestFlag = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Friends", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Friends_ApplicationUsers_ApplicationUserId",
-                        column: x => x.ApplicationUserId,
-                        principalTable: "ApplicationUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Friends_ApplicationUsers_ApplicationUserId1",
-                        column: x => x.ApplicationUserId1,
-                        principalTable: "ApplicationUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Friends_ApplicationUsers_RequestedById",
                         column: x => x.RequestedById,
@@ -413,7 +412,7 @@ namespace RefreshMyStyleApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "73f53831-52e1-4d76-a31a-56c81aef99b0", "75cc4671-8766-4cd1-b0a1-851d0898ec91", "ApplicationUser", "APPLICATIONUSER" });
+                values: new object[] { "951cca11-b6be-422c-be81-9ee05978fab1", "69fd6ce4-ec45-4804-a974-1001e0a0614b", "ApplicationUser", "APPLICATIONUSER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationUsers_ApplicationUserId",
@@ -424,11 +423,6 @@ namespace RefreshMyStyleApp.Migrations
                 name: "IX_ApplicationUsers_EventViewModelId",
                 table: "ApplicationUsers",
                 column: "EventViewModelId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ApplicationUsers_EventViewModelId1",
-                table: "ApplicationUsers",
-                column: "EventViewModelId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationUsers_IdentityUserId",
@@ -475,6 +469,11 @@ namespace RefreshMyStyleApp.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Attendees_EventViewModelId",
+                table: "Attendees",
+                column: "EventViewModelId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ClaimItems_ApplicationUserId",
                 table: "ClaimItems",
                 column: "ApplicationUserId");
@@ -505,19 +504,14 @@ namespace RefreshMyStyleApp.Migrations
                 column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EventViewModel_AttendeeId",
+                table: "EventViewModel",
+                column: "AttendeeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EventViewModel_EventId",
                 table: "EventViewModel",
                 column: "EventId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Friends_ApplicationUserId",
-                table: "Friends",
-                column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Friends_ApplicationUserId1",
-                table: "Friends",
-                column: "ApplicationUserId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Friends_RequestedById",
@@ -587,7 +581,15 @@ namespace RefreshMyStyleApp.Migrations
                 column: "ApplicationUserId",
                 principalTable: "ApplicationUsers",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_EventViewModel_Attendees_AttendeeId",
+                table: "EventViewModel",
+                column: "AttendeeId",
+                principalTable: "Attendees",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_EventViewModel_Events_EventId",
@@ -595,7 +597,7 @@ namespace RefreshMyStyleApp.Migrations
                 column: "EventId",
                 principalTable: "Events",
                 principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -605,8 +607,8 @@ namespace RefreshMyStyleApp.Migrations
                 table: "ApplicationUsers");
 
             migrationBuilder.DropForeignKey(
-                name: "FK_ApplicationUsers_EventViewModel_EventViewModelId1",
-                table: "ApplicationUsers");
+                name: "FK_Attendees_EventViewModel_EventViewModelId",
+                table: "Attendees");
 
             migrationBuilder.DropForeignKey(
                 name: "FK_Events_EventViewModel_EventViewModelId",
@@ -653,6 +655,9 @@ namespace RefreshMyStyleApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "ApplicationUsers");
+
+            migrationBuilder.DropTable(
+                name: "Attendees");
 
             migrationBuilder.DropTable(
                 name: "Events");

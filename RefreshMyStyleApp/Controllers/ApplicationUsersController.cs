@@ -356,13 +356,14 @@ namespace RefreshMyStyleApp.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var appUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             var appUserNotLoggedIn = _context.ApplicationUsers.Find(id);
+            var currentEvent = _context.Events.Find(id);
 
             EventViewModel eventViewModel = new EventViewModel
             {
                 ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
-                AppUsersNotLoggedIn = _context.ApplicationUsers.Where(c => c.Id == id).ToList(),
                 Event = _context.Events.Where(e => e.EventCreatorId == appUserLoggedIn.Id).FirstOrDefault(),
                 Events = _context.Events.Where(e => e.EventCreatorId == appUserLoggedIn.Id).ToList(),
+                Attendees = _context.Attendees.Where(x => x.AttendeeId == appUserLoggedIn.Id).ToList(),
             };
             return View(eventViewModel);
         }
@@ -390,38 +391,35 @@ namespace RefreshMyStyleApp.Controllers
             createEvent.EventDate = newEvent.EventDate;
             createEvent.EventTitle = newEvent.EventTitle;
             createEvent.Message = newEvent.Message;
-            createEvent.StreetAddress = newEvent.StreetAddress;
-            createEvent.State = newEvent.State;
-            createEvent.Zipcode = newEvent.Zipcode;
+            createEvent.Address = newEvent.StreetAddress +", "+ newEvent.City + ", " +newEvent.State + " " + newEvent.Zipcode;
+            
 
             if (newEvent.IsCanceled)
             {
                 createEvent.CancelEvent = "Event Has Been Canceled";
             }
 
-
-
             _context.Events.Add(createEvent);
             _context.SaveChanges();
             return RedirectToAction(nameof(EventList));
         }
 
-  
-        public IActionResult EventAttendees(int id, Event currentEvent)
+
+        public IActionResult GetAttendee(AttendEvent attendee)
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
 
-            var appUser = _context.ApplicationUsers.Find(id);
-            currentEvent = _context.Events.Find(id);
-            // var fullName = appUser.FName + " " + appUser.LName;
+            AttendEvent newAttendee = new AttendEvent();
+            newAttendee.AttendeeId = currentAppUser.Id;
+            newAttendee.AttendeeName = currentAppUser.FName + " " + currentAppUser.LName;
+            newAttendee.EventId = attendee.EventId;
+           
 
-            //if (appUser.EventAttendStatus == currentEvent.IsAttending)
-            //{
-            //    currentEvent.AttendeeId = appUser.Id;
-            //    currentEvent.AttendeeName = appUser.FName + " " + appUser.LName;
-            //}
+            _context.Attendees.Add(newAttendee);
+            _context.SaveChanges();
 
             return RedirectToAction(nameof(EventList));
-
         }
 
         // GET: ApplicationUser/Edit/5

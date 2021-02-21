@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RefreshMyStyleApp.Data;
 
 namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210221190550_EditAttendEventModel")]
+    partial class EditAttendEventModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,8 +50,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "543d3aba-fa92-4c6d-9a6c-30a2aee04cd6",
-                            ConcurrencyStamp = "2cf5483c-b764-442f-96dd-374ab10c2c28",
+                            Id = "2cc0d86c-7c58-495e-bdcd-aa7b6ca113ee",
+                            ConcurrencyStamp = "e48dc2af-31c1-4c44-a430-be7759c9ac69",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -285,13 +287,13 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AttendeeId")
+                    b.Property<int?>("AttendeeId")
                         .HasColumnType("int");
 
                     b.Property<string>("AttendeeName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EventId")
+                    b.Property<int>("EventId")
                         .HasColumnType("int");
 
                     b.Property<int?>("EventViewModelId")

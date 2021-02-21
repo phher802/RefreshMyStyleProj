@@ -25,9 +25,13 @@ namespace RefreshMyStyleApp.Models
 
         public string StreetAddress { get; set; }
 
+        public string City { get; set; }
+
         public string State { get; set; }
 
         public string Zipcode { get; set; }
+
+        public string Address { get; set; }
 
         public string CancelEvent { get; set; }
 
@@ -36,7 +40,7 @@ namespace RefreshMyStyleApp.Models
         public int EventCreatorId { get; set; }
 
         public string EventCreatorName { get; set; }
-     
+
 
 
     }

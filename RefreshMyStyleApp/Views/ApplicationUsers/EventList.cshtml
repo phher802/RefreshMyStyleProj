@@ -10,48 +10,52 @@
 <div>
     <h4>EventViewModel</h4>
     <hr />
+    <div>
+        @foreach (var e in Model.Events)
+        {
+            <div class="card text-center" style="padding: 10px">
+                <div class="card-header" style="background-color: #cc8af7">
+                    <h5 class="text-light">
+                        Event Date: @Html.DisplayFor(e => e.Event.EventDate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
+                    </h5>
+                </div>
+                <div class="card-body" style="background-color: #c6b2f5">
+                    <h5 class="card-title">@Html.DisplayFor(e => e.Event.EventTitle)</h5>
+                    <ul>
+                        <li class="card-text">@Html.DisplayFor(e => e.Event.Message)</li>
+                        <li>Location Address: @Html.DisplayFor(e => e.Event.Address)</li>
 
-    @foreach (var item in Model.Events)
-    {
-        <div class="card text-center">
-            <div class="card-header">
-                @Html.DisplayFor(item => item.Event.EventDate)
+                    </ul>
+
+                    <a asp-action="GetAttendee" asp-controller="ApplicationUsers" asp-route-attendee="@Model.Attendee">
+                     
+                        <button>
+                            Attend
+                        </button>
+                    </a>
+
+                </div>
+                <div class="card-footer text-muted" style="text-decoration-color: #ffffff; background-color:#cc8af7">
+                    Created on: @Html.DisplayFor(item => item.Event.DatePosted)
+                </div>
+                <div>
+                    <h6>Attendees</h6>
+                    @foreach (var item in Model.Attendees)
+                    {
+                        <ul>
+                            <li>@item.AttendeeName</li>
+                        </ul>
+                    }
+                </div>
             </div>
-            <div class="card-body">
-                <h5 class="card-title">@Html.DisplayFor(item => item.Event.EventTitle)</h5>
-                <p class="card-text">@Html.DisplayFor(item => item.Event.Message)</p>
-                <a asp-action="EventAttendees" asp-controller="ApplicationUsers">
-                    <input type="hidden" asp-for="ApplicationUserId" value="" />
-                    <button>
-                        Attending
-                    </button></a>
-               
-            </div>
-            <div class="card-footer text-muted">
-                Created on: @Html.DisplayFor(item => item.Event.DatePosted)
-            </div>
-        </div>
 
-    }
+        }
+    </div>
 
 
-
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ApplicationUser)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ApplicationUser.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Event)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Event.Id)
-        </dd>
-    </dl>
 </div>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+
     <a asp-action="Index">Back to List</a>
 </div>

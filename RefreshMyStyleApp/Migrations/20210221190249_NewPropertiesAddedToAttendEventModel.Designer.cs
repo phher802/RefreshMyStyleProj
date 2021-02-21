@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RefreshMyStyleApp.Data;
 
 namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210221190249_NewPropertiesAddedToAttendEventModel")]
+    partial class NewPropertiesAddedToAttendEventModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,8 +50,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "543d3aba-fa92-4c6d-9a6c-30a2aee04cd6",
-                            ConcurrencyStamp = "2cf5483c-b764-442f-96dd-374ab10c2c28",
+                            Id = "2d8afac3-049e-4b63-91c6-d317d783b839",
+                            ConcurrencyStamp = "41ed7f24-f579-450f-931a-56252dc618d7",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -291,7 +293,7 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<string>("AttendeeName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EventId")
+                    b.Property<int>("EventId")
                         .HasColumnType("int");
 
                     b.Property<int?>("EventViewModelId")

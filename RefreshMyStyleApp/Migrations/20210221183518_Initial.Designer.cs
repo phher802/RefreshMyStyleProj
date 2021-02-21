@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RefreshMyStyleApp.Data;
 
 namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210221183518_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,8 +50,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "543d3aba-fa92-4c6d-9a6c-30a2aee04cd6",
-                            ConcurrencyStamp = "2cf5483c-b764-442f-96dd-374ab10c2c28",
+                            Id = "951cca11-b6be-422c-be81-9ee05978fab1",
+                            ConcurrencyStamp = "69fd6ce4-ec45-4804-a974-1001e0a0614b",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -285,14 +287,8 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AttendeeId")
-                        .HasColumnType("int");
-
                     b.Property<string>("AttendeeName")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("EventId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("EventViewModelId")
                         .HasColumnType("int");

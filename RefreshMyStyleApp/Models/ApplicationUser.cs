@@ -15,11 +15,6 @@ namespace RefreshMyStyleApp.Models
         [Key]
         public int Id { get; set; }
 
-        //public ApplicationUser()
-        //{
-        //    SentFriendRequests = new List<Friend>();
-        //    ReceievedFriendRequests = new List<Friend>();
-        //}
 
         [Display(Name = "First Name")]
         public string FName { get; set; }
@@ -38,33 +33,23 @@ namespace RefreshMyStyleApp.Models
         public string ProfileImageName { get; set; }
 
         public int ImageOwnerId { get; set; }
-   
-        public bool EventAttendStatus { get; set; }
+
+        [NotMapped]
+        public IFormFile ProfileImage { get; set; }
+
+        public List<Image> Images { get; set; }
 
         [Display(Name = "Search friends")]
         public string SearchUsers { get; set; }
         
         public List<ApplicationUser> SearchResults { get; set; }
       
-        [NotMapped]
-        public IFormFile ProfileImage { get; set; }
-
         public List<Like> Likes { get; set; }
-        public List<Image> Images { get; set; }
+  
+        public bool EventAttendStatus { get; set; }
 
+        public bool IsAttending { get; set; }
 
-        [NotMapped]
-        public virtual List<Friend> Friends { get; set; }
-   
-
-        [InverseProperty("RequestedBy")]
-        public virtual List<Friend> RequestedBy { get; set; }
-
-        [InverseProperty("RequestedTo")]
-        public virtual List<Friend> RequestedTo { get; set; }
-
-        public List<Friend> SentFriendRequests { get; }
-        public List<Friend> ReceievedFriendRequests { get; }
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }

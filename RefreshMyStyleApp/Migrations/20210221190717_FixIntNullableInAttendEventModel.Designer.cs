@@ -10,8 +10,8 @@ using RefreshMyStyleApp.Data;
 namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210221011032_Initial")]
-    partial class Initial
+    [Migration("20210221190717_FixIntNullableInAttendEventModel")]
+    partial class FixIntNullableInAttendEventModel
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,8 +50,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "73f53831-52e1-4d76-a31a-56c81aef99b0",
-                            ConcurrencyStamp = "75cc4671-8766-4cd1-b0a1-851d0898ec91",
+                            Id = "543d3aba-fa92-4c6d-9a6c-30a2aee04cd6",
+                            ConcurrencyStamp = "2cf5483c-b764-442f-96dd-374ab10c2c28",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -242,9 +242,6 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<int?>("EventViewModelId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("EventViewModelId1")
-                        .HasColumnType("int");
-
                     b.Property<string>("FName")
                         .HasColumnType("nvarchar(max)");
 
@@ -256,6 +253,9 @@ namespace RefreshMyStyleApp.Migrations
 
                     b.Property<int>("ImageOwnerId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsAttending")
+                        .HasColumnType("bit");
 
                     b.Property<string>("LName")
                         .HasColumnType("nvarchar(max)");
@@ -275,11 +275,35 @@ namespace RefreshMyStyleApp.Migrations
 
                     b.HasIndex("EventViewModelId");
 
-                    b.HasIndex("EventViewModelId1");
-
                     b.HasIndex("IdentityUserId");
 
                     b.ToTable("ApplicationUsers");
+                });
+
+            modelBuilder.Entity("RefreshMyStyleApp.Models.AttendEvent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AttendeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AttendeeName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EventViewModelId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventViewModelId");
+
+                    b.ToTable("Attendees");
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Claimed", b =>
@@ -357,7 +381,13 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CancelEvent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("DatePosted")
@@ -407,12 +437,6 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("ApplicationUserId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ApplicationUserId1")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("BecameFriendsTime")
                         .HasColumnType("datetime2");
 
@@ -429,10 +453,6 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("ApplicationUserId1");
 
                     b.HasIndex("RequestedById");
 
@@ -556,32 +576,25 @@ namespace RefreshMyStyleApp.Migrations
 
             modelBuilder.Entity("RefreshMyStyleApp.ViewModels.EventViewModel", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("ApplicationUserId")
+                    b.Property<int?>("ApplicationUserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("AttendeeId")
+                    b.Property<int?>("AttendeeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("AttendeeName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("EventId")
+                    b.Property<int?>("EventId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("IsAttending")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsNotAttending")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("AttendeeId");
 
                     b.HasIndex("EventId");
 
@@ -646,16 +659,19 @@ namespace RefreshMyStyleApp.Migrations
                         .HasForeignKey("ApplicationUserId");
 
                     b.HasOne("RefreshMyStyleApp.ViewModels.EventViewModel", null)
-                        .WithMany("AppUsersNotLoggedIn")
-                        .HasForeignKey("EventViewModelId");
-
-                    b.HasOne("RefreshMyStyleApp.ViewModels.EventViewModel", null)
                         .WithMany("ApplicationUsers")
-                        .HasForeignKey("EventViewModelId1");
+                        .HasForeignKey("EventViewModelId");
 
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
                         .HasForeignKey("IdentityUserId");
+                });
+
+            modelBuilder.Entity("RefreshMyStyleApp.Models.AttendEvent", b =>
+                {
+                    b.HasOne("RefreshMyStyleApp.ViewModels.EventViewModel", null)
+                        .WithMany("Attendees")
+                        .HasForeignKey("EventViewModelId");
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Claimed", b =>
@@ -693,20 +709,12 @@ namespace RefreshMyStyleApp.Migrations
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Friend", b =>
                 {
-                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", null)
-                        .WithMany("ReceievedFriendRequests")
-                        .HasForeignKey("ApplicationUserId");
-
-                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", null)
-                        .WithMany("SentFriendRequests")
-                        .HasForeignKey("ApplicationUserId1");
-
                     b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "RequestedBy")
-                        .WithMany("RequestedBy")
+                        .WithMany()
                         .HasForeignKey("RequestedById");
 
                     b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "RequestedTo")
-                        .WithMany("RequestedTo")
+                        .WithMany()
                         .HasForeignKey("RequestedToId");
                 });
 
@@ -745,15 +753,15 @@ namespace RefreshMyStyleApp.Migrations
                 {
                     b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ApplicationUserId");
+
+                    b.HasOne("RefreshMyStyleApp.Models.AttendEvent", "Attendee")
+                        .WithMany()
+                        .HasForeignKey("AttendeeId");
 
                     b.HasOne("RefreshMyStyleApp.Models.Event", "Event")
                         .WithMany()
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("EventId");
                 });
 #pragma warning restore 612, 618
         }
