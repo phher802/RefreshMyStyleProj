@@ -63,8 +63,7 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 60px;
-    background-color: #ffd369;
-    background-image: url("https://www.transparenttextures.com/patterns/concrete-wall-3.png");
+
 }
 
 .footer {
@@ -127,7 +126,7 @@ body {
 
 
 body {
-    background-color: #ffd369;
+    background-color: #f8dc81;
     background-image: url("https://www.transparenttextures.com/patterns/fake-luxury.png");
     min-height: 100vh;
     overflow-x: hidden;

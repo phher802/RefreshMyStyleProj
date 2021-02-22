@@ -229,14 +229,14 @@ namespace RefreshMyStyleApp.Controllers
             //add image and appUser to like table
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            var appUser = _context.ApplicationUsers.Where(x => x.Id == id).SingleOrDefault();
-            var imageOwner = _context.Images.Where(x => x.Id.Equals(appUser.Id)).FirstOrDefault();
-            Image likedImage = _context.Images.Where(c => c.ApplicationUserId == appUser.Id).SingleOrDefault();
+            Image currentImage = _context.Images.Find(id);
+            var imageOwner = _context.ApplicationUsers.Where(x => x.Id == currentImage.ApplicationUserId).FirstOrDefault();
+           
             Like newLike = new Like();
-            newLike.ImageId = likedImage.Id;
-            newLike.ImageTitle = imageOwner.ImageTitle;
-            newLike.UserId = appUser.Id;
-            newLike.LikedImageOwnerFullName = appUser.FName + " " + appUser.LName;
+            newLike.ImageId = currentImage.Id;
+            newLike.ImageTitle = currentImage.ImageTitle;
+            newLike.UserId = currentImage.ApplicationUserId;
+            newLike.LikedImageOwnerFullName = imageOwner.FullName;
             newLike.ApplicationUserId = currentAppUser.Id;
             newLike.IsLiked = true;
             newLike.DateLiked = DateTime.Now;
@@ -268,9 +268,6 @@ namespace RefreshMyStyleApp.Controllers
             //add image and appUser to like table
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            var appUser = _context.ApplicationUsers.Where(x => x.Id == id).FirstOrDefault();
-            //Image likedImage = _context.Images.Where(c => c.Id == id).SingleOrDefault();
-            //var imageOwner = _context.Images.Where(x => x.ApplicationUserId == id).FirstOrDefault();
             Image currentImage = _context.Images.Find(id);
             var imageOwner = _context.ApplicationUsers.Where(x => x.Id == currentImage.ApplicationUserId).FirstOrDefault();
 
