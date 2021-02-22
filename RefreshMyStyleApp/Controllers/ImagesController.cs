@@ -108,8 +108,7 @@ namespace RefreshMyStyleApp.Controllers
             var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             newImage.ApplicationUserId = applicationUser.Id;
             newImage.ImageTitle = uniqueName;
-            
-         
+                           
             _context.Images.Add(newImage);
             _context.SaveChanges();
             return RedirectToAction("Create", newImage);

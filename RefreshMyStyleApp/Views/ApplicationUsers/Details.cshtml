@@ -19,7 +19,7 @@
 
             </p>
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-4">
             @if (Model.Images != null)
             {
                 @foreach (var item in Model.Images)
@@ -43,7 +43,8 @@
                                         Like
                                     </button>
                                 </a>
-                                <a asp-action="ClaimImage" asp-controller="ApplicationUsers" asp-route-id="@item.Id">
+                                <a asp-action="ClaimImage" asp-controller="ApplicationUsers" asp-route-id="@item.Id" >
+                                    <input type="hidden" asp-for="@item.ApplicationUserId name="name" value="" />
                                     <button type="submit" class="btn btn-default btn-sm" style="background-color: #0094ff">
                                         Claim
                                     </button>
@@ -65,12 +66,12 @@
                 @if (e.EventCreatorId == Model.AppUserNotLoggedIn.Id)
                 {
                     <div class="card text-center" style="padding: 10px">
-                        <div class="card-header" style="background-color: #cc8af7">
+                        <div class="card-header" style="background-color: #eeeeee">
                             <h5 class="text-light">
                                 Event Date: @Html.DisplayFor(e => e.Event.EventDate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
                             </h5>
                         </div>
-                        <div class="card-body" style="background-color: #c6b2f5">
+                        <div class="card-body" style="background-color: #eeeeee">
                             <h5 class="card-title">@Html.DisplayFor(e => e.Event.EventTitle)</h5>
                             <p class="card-text">@Html.DisplayFor(e => e.Event.Message)</p>
                             <hr />
@@ -100,13 +101,13 @@
                 }
             }
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-3">
             <div>
                 <h3 class="text-dark font-italic">Recent Posts</h3>
                 @foreach (var post in Model.Posts)
                 {
                     <div class="accordion" id="accordionExample">
-                        <div class="accordion-item" style="background-color: lightblue">
+                        <div class="accordion-item" style="background-color: #eeeeee">
                             <h2 class="accordion-header" id="headingOne">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                                     <p> Posted by: @post.PostByUser  Title: @post.PostTitle </p>
@@ -123,7 +124,7 @@
                                         </button>
                                     </a>
                                     <h5>Comments</h5>
-                                    <div style="background-color: lightblue">
+                                    <div style="background-color: #eeeeee">
                                         @foreach (var comment in Model.Comments)
                                         {
                                             @if (comment.PostId == post.Id)
@@ -146,7 +147,7 @@
                                     </div>
                                     <div>
                                         <form asp-action="AddComment" asp-controller="ApplicationUsers" method="post">
-                                            <div class="form-group col-md-10">
+                                            <div class="form-group col-md-10" style="background-color: #eeeeee">
                                                 <input type="hidden" asp-for="Comment.PostId" value="@post.Id" />
                                                 <textarea asp-for="Comment.CommentContent" maxlength="50" class="form-control" id="" placeholder="Comment..."></textarea>
                                             </div>

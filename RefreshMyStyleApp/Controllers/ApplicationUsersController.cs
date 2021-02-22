@@ -105,6 +105,7 @@ namespace RefreshMyStyleApp.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 applicationUser.IdentityUserId = userId;
+                
 
                 _context.ApplicationUsers.Add(applicationUser);
                 _context.SaveChanges();
@@ -260,22 +261,24 @@ namespace RefreshMyStyleApp.Controllers
             return View(personViewModel);
         }
 
-        public IActionResult ClaimImage(int id)
+        public IActionResult ClaimImage(int id, Claimed currentClaim)
         {
             //get image
             //get appUser that liked image
             //add image and appUser to like table
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            var appUser = _context.ApplicationUsers.Where(x => x.Id == id).SingleOrDefault();
+            var appUser = _context.ApplicationUsers.Where(x => x.Id == id).FirstOrDefault();
             //Image likedImage = _context.Images.Where(c => c.Id == id).SingleOrDefault();
-            var imageOwner = _context.Images.Where(x => x.Id.Equals(appUser.Id)).FirstOrDefault();
-            Image likedImage = _context.Images.Where(c => c.ApplicationUserId == appUser.Id).SingleOrDefault();
+            //var imageOwner = _context.Images.Where(x => x.ApplicationUserId == id).FirstOrDefault();
+            Image currentImage = _context.Images.Find(id);
+            var imageOwner = _context.ApplicationUsers.Where(x => x.Id == currentImage.ApplicationUserId).FirstOrDefault();
+
             Claimed newClaim = new Claimed();
-            newClaim.ImageId = likedImage.Id;
-            newClaim.ImageTitle = imageOwner.ImageTitle;
-            newClaim.UserId = appUser.Id;
-            newClaim.ClaimImageOwnerFullName = appUser.FName + " " + appUser.LName;
+            newClaim.ImageId = currentImage.Id;
+            newClaim.ImageTitle = currentImage.ImageTitle;
+            newClaim.UserId = currentImage.ApplicationUserId;
+            newClaim.ClaimImageOwnerFullName = imageOwner.FullName;
             newClaim.ApplicationUserId = currentAppUser.Id;
             newClaim.IsClaimed = true;
             newClaim.DateClaimed = DateTime.Now;
@@ -501,10 +504,18 @@ namespace RefreshMyStyleApp.Controllers
 
         public IActionResult DeleteLikedImage(int id)
         {
-            var likedImageToDelete = _context.Likes.Find(id);
-            _context.Likes.Remove(likedImageToDelete);
+            var deleteLikedImage = _context.Likes.Find(id);
+            _context.Likes.Remove(deleteLikedImage);
             _context.SaveChanges();
             return RedirectToAction(nameof(GetLikes));
+        }
+
+        public IActionResult DeleteClaimedImage(int id)
+        {
+            var deleteClaimedImage = _context.ClaimItems.Find(id);
+            _context.ClaimItems.Remove(deleteClaimedImage);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(GetClaims));
         }
 
         // GET: ClothingEnthusiasts/Delete/5

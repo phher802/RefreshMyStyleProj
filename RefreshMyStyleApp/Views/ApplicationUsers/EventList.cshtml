@@ -14,12 +14,12 @@
         @foreach (var e in Model.Events)
         {
             <div class="card text-center" style="padding: 10px">
-                <div class="card-header" style="background-color: #cc8af7">
+                <div class="card-header" style="background-color: #eeeeee">
                     <h5 class="text-light">
                         Event Date: @Html.DisplayFor(e => e.Event.EventDate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
                     </h5>
                 </div>
-                <div class="card-body" style="background-color: #c6b2f5">
+                <div class="card-body" style="background-color: #eeeeee">
                     <h5 class="card-title">@Html.DisplayFor(e => e.Event.EventTitle)</h5>
                     <p class="card-text">@Html.DisplayFor(e => e.Event.Message)</p>
                     <hr />

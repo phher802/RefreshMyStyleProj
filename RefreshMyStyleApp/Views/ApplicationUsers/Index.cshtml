@@ -81,7 +81,7 @@
             </a>
         </li>
         <li class="nav-item">
-            <a asp-action="GetClaimes" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
+            <a asp-action="GetClaims" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
 
                 My Claims
             </a>
@@ -101,7 +101,7 @@
 
     <div>
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-9">
                 <div class="container-fluid">
                     <div class="card-deck">
                         @foreach (var item in Model.Images)
@@ -139,72 +139,75 @@
 
             </div>
            
-            <div class="col-lg-4">
-                <div class="container-fluid">
-                    <h3 class="text-dark font-italic">Recent Posts</h3>
-                    @foreach (var post in Model.Posts)
-                    {
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div style="background-color: #F3F4F0">
-                                    <div style="background-color: lightblue">
-                                        <div class="panel-body">
-                                            <p> Posted by: @post.PostByUser</p>
-                                            <p>Title: @post.PostTitle</p>
-                                            <div>
-                                                <p>@post.PostContent</p>
-                                            </div>
-                                            <p class="text-light">Date Posted: @post.DateTimePosted</p>
+            <div class="col-lg-3">
+                <div>
+                    <div>
+                        <h3 class="text-dark font-italic">Recent Posts</h3>
+                        @foreach (var post in Model.Posts)
+                        {
+                            <div class="accordion" id="accordionExample">
+                                <div class="accordion-item" style="background-color: #eeeeee">
+                                    <h2 class="accordion-header" id="headingOne">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                                            <p> Posted by: @post.PostByUser  Title: @post.PostTitle </p>
+                                        </button>
+                                    </h2>
+                                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                        <div class="accordion-body" style="background-color: aliceblue">
+                                            <p>@post.PostContent</p>
+                                            <p>Date Posted: @post.DateTimePosted</p>
                                             <input type="hidden" asp-for="Post.Id" value="@post.Id" />
                                             <a asp-action="DeletePost" asp-route-id="@post.Id" asp-controller="ApplicationUsers">
                                                 <button type="submit" class="btn btn-default btn-sm" style="background-color: #ABEDE3">
                                                     Delete Post
                                                 </button>
                                             </a>
-                                        </div>
-                                    </div>
-                                    <h5>Comments</h5>
-                                    <div style="background-color: lightblue">
-                                        @foreach (var comment in Model.Comments)
-                                        {
-                                            @if (comment.PostId == post.Id)
-                                            {
-                                                <div>
-                                                    <div>
-                                                        <p>@comment.CommentorFullName</p>
+                                            <h5>Comments</h5>
+                                            <div style="background-color: #eeeeee">
+                                                @foreach (var comment in Model.Comments)
+                                                {
+                                                    @if (comment.PostId == post.Id)
+                                                    {
+                                                        <div>
+                                                            <div>
+                                                                Commented by:<p>@comment.CommentorFullName</p>
+                                                            </div>
+                                                            <div>
+                                                                <p>@comment.CommentContent</p>
+                                                            </div>
+                                                            <a asp-action="DeleteComment" asp-route-id="@comment.Id" asp-controller="ApplicationUsers">
+                                                                <button type="submit" class="btn btn-default btn-sm" style="background-color: #ABEDE3">
+                                                                    Delete Comment
+                                                                </button>
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                }
+                                            </div>
+                                            <div>
+                                                <form asp-action="AddComment" asp-controller="ApplicationUsers" method="post">
+                                                    <div class="form-group col-md-10" style="background-color: #eeeeee">
+                                                        <input type="hidden" asp-for="Comment.PostId" value="@post.Id" />
+                                                        <textarea asp-for="Comment.CommentContent" maxlength="50" class="form-control" id="" placeholder="Comment..."></textarea>
                                                     </div>
-                                                    <div>
-                                                        <p>@comment.CommentContent</p>
-                                                    </div>
-                                                    <a asp-action="DeleteComment" asp-route-id="@comment.Id" asp-controller="ApplicationUsers">
-                                                        <button type="submit" class="btn btn-default btn-sm" style="background-color: #ABEDE3">
-                                                            Delete Comment
+                                                    <div class="form-group col-md-2">
+                                                        <button type="submit" class="btn" style="background-color:  #F0DE4D">
+                                                            Comment
                                                         </button>
-                                                    </a>
-                                                </div>
-                                            }
-                                        }
-                                    </div>
-                                    <div>
-                                        <form asp-action="AddComment" asp-controller="ApplicationUsers" method="post">
-                                            <div class="form-group col-md-10">
-                                                <input type="hidden" asp-for="Comment.PostId" value="@post.Id" />
-                                                <textarea asp-for="Comment.CommentContent" maxlength="50" class="form-control" id="" placeholder="Comment..."></textarea>
+                                                    </div>
+                                                </form>
                                             </div>
-                                            <div class="form-group col-md-2">
-                                                <button type="submit" class="btn" style="background-color:  #F0DE4D">
-                                                    Comment
-                                                </button>
-                                            </div>
-                                        </form>
+                                        </div>
+
                                     </div>
+
+
 
                                 </div>
-                            </div>
 
-                        </div>
-                    }
-                </div>
+                            </div>
+                        }
+                    </div>
                 
             </div>
         </div>

@@ -46,7 +46,7 @@
                 <td>
 
                     <a asp-action="Details" asp-route-id="@claim.UserId">Details</a> |
-                    <a asp-action="DeleteLikedImage" asp-route-id="@claim.Id">Delete</a>
+                    <a asp-action="DeleteClaimedImage" asp-controller="ApplicationUsers" asp-route-id="@claim.Id">Delete</a>
                 </td>
             </tr>
         }
