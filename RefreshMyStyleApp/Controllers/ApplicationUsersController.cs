@@ -35,6 +35,7 @@ namespace RefreshMyStyleApp.Controllers
            
         }
 
+
         // GET: People
         public IActionResult Index()
         {

@@ -183,7 +183,7 @@ namespace RefreshMyStyleApp.Controllers
         }
 
         // GET: Images/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> EditImage(int? id)
         {
             if (id == null)
             {
@@ -195,7 +195,6 @@ namespace RefreshMyStyleApp.Controllers
             {
                 return NotFound();
             }
-            ViewData["Id"] = new SelectList(_context.ApplicationUsers, "Id", "Id", image.ApplicationUserId);
             return View(image);
         }
 
@@ -204,7 +203,7 @@ namespace RefreshMyStyleApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, Image image)
+        public IActionResult EditImage(int? id, Image image)
         {
             if (id != image.Id)
             {
@@ -213,25 +212,18 @@ namespace RefreshMyStyleApp.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(image);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ImageExists(image.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                Image editImage = _context.Images.Find(id);
+                editImage.ClothingCategory = image.ClothingCategory;
+                editImage.Color = image.Color;
+                editImage.Description = image.Description;
+                editImage.Size = image.Size;
+                editImage.ItemStatus = image.ItemStatus;
+
+                _context.Images.Update(editImage);
+                _context.SaveChanges();
+                return RedirectToAction("Index" , "ApplicationUsers");
             }
-            ViewData["Id"] = new SelectList(_context.ApplicationUsers, "Id", "Id", image.ApplicationUserId);
+
             return View(image);
         }
 
@@ -245,22 +237,14 @@ namespace RefreshMyStyleApp.Controllers
 
 
         // GET: Images/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult DeleteImage(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var deleteImage = _context.Images.Find(id);
+            _context.Images.Remove(deleteImage);
+            _context.SaveChanges();
+            return RedirectToAction("Index", "ApplicationUsers");
 
-            var image = await _context.Images
-                .Include(i => i.ApplicationUser)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (image == null)
-            {
-                return NotFound();
-            }
-
-            return View(image);
+           
         }
 
         // POST: Images/Delete/5

@@ -15,12 +15,13 @@
 </p>
 
 
+
 <!-- Vertical navbar -->
 <div class="vertical-nav bg-white" id="sidebar">
     <div class="py-4 px-3 mb-4 bg-light">
         <div class="media d-flex align-items-center">
             <p>
-                <img src="~/images/profileImages/@Model.ApplicationUser.ProfileImageName" alt="Profile Image" width="65" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+                <img src="~/images/profileImages/@Model.ApplicationUser.ProfileImageName" alt="Profile Image" width="80" height="50" class="mr-3 rounded-circle img-thumbnail shadow-sm">
             </p>
             <input type="hidden" asp-for="ApplicationUser.ProfileImageName" name="files" value="" />
             <div class="media-body">
@@ -29,10 +30,15 @@
             </div>
         </div>
     </div>
-
     <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">Main</p>
-
-    <ul class="nav flex-column bg-white mb-0">
+    <a asp-action="SearchUsers" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
+        <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
+        Search Users
+    </a>
+    <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        Utilities
+    </a>
+    <ul class="collapse" id="collapseExample">
         <li class="nav-item">
             <a href="#" class="nav-link text-dark font-italic bg-light">
                 <i class="fa fa-th-large mr-3 text-primary fa-fw"></i>
@@ -52,45 +58,37 @@
             </a>
         </li>
         <li class="nav-item">
-            <a asp-action="SearchUsers" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
+            <a asp-action="NewPost" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
                 <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
-                Search Users
+                Create a post
             </a>
         </li>
-      
-    </ul>
 
+    </ul>
     <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Lists</p>
 
     <ul class="nav flex-column bg-white mb-0">
         <li class="nav-item">
             <a asp-action="EventList" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
-                <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
+
                 My Events
             </a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link text-dark font-italic">
-                <i class="fa fa-area-chart mr-3 text-primary fa-fw"></i>
+            <a asp-action="GetLikes" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
+
                 My Likes
             </a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link text-dark font-italic">
-                <i class="fa fa-bar-chart mr-3 text-primary fa-fw"></i>
+            <a asp-action="GetClaimes" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
+
                 My Claims
             </a>
         </li>
         <li class="nav-item">
             <a href="#" class="nav-link text-dark font-italic">
-                <i class="fa fa-pie-chart mr-3 text-primary fa-fw"></i>
-                Items Liked
-            </a>
-        </li>
-        <li class="nav-item">
-            <a href="#" class="nav-link text-dark font-italic">
-                <i class="fa fa-line-chart mr-3 text-primary fa-fw"></i>
-                Items Claimed
+
             </a>
         </li>
     </ul>
@@ -98,139 +96,147 @@
 <!-- End vertical navbar -->
 <!-- Page content holder -->
 <div class="page-content p-5" id="content">
-    <!-- Toggle button -->
+    <!--Toggle button -->
     <button id="sidebarCollapse" type="button" class="btn btn-light bg-white rounded-pill shadow-sm px-4 mb-4"><i class="fa fa-bars mr-2"></i><small class="text-uppercase font-weight-bold">Toggle</small></button>
 
-    <div class="col-sm-7">
-        <h3 class="text-dark font-italic">Recent Posts</h3>
-        @foreach (var post in Model.Posts)
-        {
-            <div class="row">
-                <div class="col-sm-12">
-                    <div style="background-color: #F3F4F0">
-                        <div class="panel panel-default text-left" style="background-color: #ffffff">
-                            <div class="panel-body">
-                                <p> Posted by: @post.PostByUser</p>
-                                <p>Title: @post.PostTitle</p>
-                                <div>
-                                    <p>@post.PostContent</p>
+    <div>
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="container-fluid padding" >
+                    <div class="card-deck">
+                        @foreach (var item in Model.Images)
+                        {
+
+                            <div class="card" style="width: 15rem">
+                                <img src="~/images/items/@item.ImageTitle" alt="@item.ImageName" />
+
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.ImageName</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">@item.ClothingCategory</h6>
+                                    <p class="card-text"> @item.Description</p>
+                                    <p class="card-text">Color: @item.Color</p>
+                                    <p class="card-text">Size: @item.Size</p>
+                                    <p class="card-text">Status: @item.ItemStatus</p>
+
+                                    <a asp-action="DeleteImage" asp-controller="Images" asp-route-id="@item.Id">
+                                        <button type="submit" class="btn btn-default btn-sm" style="background-color: #0094ff">
+                                            Delete Image
+                                        </button>
+                                    </a>
+                                    <a asp-action="EditImage" asp-controller="Images" asp-route-id="@item.Id">
+                                        <button type="submit" class="btn btn-default btn-sm" style="background-color: #0094ff">
+                                            Edit
+                                        </button>
+                                    </a>
                                 </div>
-                                <p class="text-light">Date Posted: @post.DateTimePosted</p>
-                                <input type="hidden" asp-for="Post.Id" value="@post.Id" />
-                                <a asp-action="DeletePost" asp-route-id="@post.Id" asp-controller="ApplicationUsers">
-                                    <button type="submit" class="btn btn-default btn-sm" style="background-color: #ABEDE3">
-                                        Delete Post
-                                    </button>
-                                </a>
+
                             </div>
-                        </div>
-                        <h5>Comments</h5>
-                        <div style="background-color: lightblue">
-                            @foreach (var comment in Model.Comments)
-                            {
-                                @if (comment.PostId == post.Id)
-                                {
-                                    <div>
+
+                        }
+                    </div>
+                </div>
+                
+               
+            </div>
+            <div class="col-lg-4">
+                <h3 class="text-dark font-italic">Recent Posts</h3>
+                @foreach (var post in Model.Posts)
+                {
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div style="background-color: #F3F4F0">
+                                <div class="panel panel-default text-left" style="background-color: #ffffff">
+                                    <div class="panel-body">
+                                        <p> Posted by: @post.PostByUser</p>
+                                        <p>Title: @post.PostTitle</p>
                                         <div>
-                                            <p>@comment.CommentorFullName</p>
+                                            <p>@post.PostContent</p>
                                         </div>
-                                        <div>
-                                            <p>@comment.CommentContent</p>
-                                        </div>
-                                        <a asp-action="DeleteComment" asp-route-id="@comment.Id" asp-controller="ApplicationUsers">
+                                        <p class="text-light">Date Posted: @post.DateTimePosted</p>
+                                        <input type="hidden" asp-for="Post.Id" value="@post.Id" />
+                                        <a asp-action="DeletePost" asp-route-id="@post.Id" asp-controller="ApplicationUsers">
                                             <button type="submit" class="btn btn-default btn-sm" style="background-color: #ABEDE3">
-                                                Delete Comment
+                                                Delete Post
                                             </button>
                                         </a>
                                     </div>
-                                }
-                            }
-                        </div>
-                        <div>
-                            <form asp-action="AddComment" asp-controller="ApplicationUsers" method="post">
-                                <div class="form-group col-md-10">
-                                    <input type="hidden" asp-for="Comment.PostId" value="@post.Id" />
-                                    <textarea asp-for="Comment.CommentContent" maxlength="50" class="form-control" id="" placeholder="Comment..."></textarea>
                                 </div>
-                                <div class="form-group col-md-2">
-                                    <button type="submit" class="btn" style="background-color:  #F0DE4D">
-                                        Comment
-                                    </button>
+                                <h5>Comments</h5>
+                                <div style="background-color: lightblue">
+                                    @foreach (var comment in Model.Comments)
+                                    {
+                                        @if (comment.PostId == post.Id)
+                                        {
+                                            <div>
+                                                <div>
+                                                    <p>@comment.CommentorFullName</p>
+                                                </div>
+                                                <div>
+                                                    <p>@comment.CommentContent</p>
+                                                </div>
+                                                <a asp-action="DeleteComment" asp-route-id="@comment.Id" asp-controller="ApplicationUsers">
+                                                    <button type="submit" class="btn btn-default btn-sm" style="background-color: #ABEDE3">
+                                                        Delete Comment
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        }
+                                    }
                                 </div>
-                            </form>
+                                <div>
+                                    <form asp-action="AddComment" asp-controller="ApplicationUsers" method="post">
+                                        <div class="form-group col-md-10">
+                                            <input type="hidden" asp-for="Comment.PostId" value="@post.Id" />
+                                            <textarea asp-for="Comment.CommentContent" maxlength="50" class="form-control" id="" placeholder="Comment..."></textarea>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <button type="submit" class="btn" style="background-color:  #F0DE4D">
+                                                Comment
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
                         </div>
+                    </div>}
+            </div>
+        </div>
+    </div>
 
-                    </div>
+    @*<div class="separator"></div>*@
+    @*<div class="row text-white">
+                <div class="col-lg-7">
+                    <p class="lead">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                        dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+
                 </div>
-            </div>}
-    </div>
-    <div class="separator"></div>
-    <div class="row text-white">
-        <div class="col-lg-7">
-            <p class="lead">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
+                <div class="col-lg-5">
+                    <p class="lead">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
+                        dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
 
-        </div>
-        <div class="col-lg-5">
-            <p class="lead">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-            </p>
-
-        </div>
-    </div>
-
-</div>
-
-<!-- End  -->
-<div class="container">
-    <div class="row">
-        <div>
-            @foreach (var item in Model.Images)
-            {
-                <div class="card-deck">
-                    <div class="card h-100" style="width: 15rem; height: 10rem; display: flex">
-                        <img src="~/images/items/@item.ImageTitle" class="card-img-top img-fluid" alt="@item.ImageName" />
-
-                        <div class="card-body">
-                            <h5 class="card-title">@item.ImageName</h5>
-                            <h6 class="card-subtitle mb-2 text-muted">@item.ClothingCategory</h6>
-                            <p class="card-text"> @item.Description</p>
-                            <p class="card-text">Color: @item.Color</p>
-                            <p class="card-text">Size: @item.Size</p>
-                            <p class="card-text">Status: @item.ItemStatus</p>
-
-                            <a asp-action="LikeImage" asp-controller="ApplicationUsers" asp-route-id="@item.Id">
-                                <button type="submit" class="btn btn-default btn-sm" style="background-color: #0094ff">
-                                    Like
-                                </button>
-                            </a>
-                            <a asp-action="ClaimImage" asp-controller="ApplicationUsers" asp-route-id="@item.Id">
-                                <button type="submit" class="btn btn-default btn-sm" style="background-color: #0094ff">
-                                    Claim
-                                </button>
-                            </a>
-                        </div>
-                    </div>
                 </div>
+            </div>
 
-            }
-        </div>
+        </div>*@
+
+    <!-- End  -->
+
+
+
+
+
+    <div>
+        @*<a asp-action="Edit" asp-route-id="@Model.ApplicationUser.Id">Edit</a> |*@
+        @*<a asp-action="UploadProfileFiles" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">Upload Profile Image</a> |*@
+        @*<a asp-action="PostNewImage" asp-controller="Images" asp-route-id="@Model.ApplicationUser.Id">Upload pictures</a>*@
+        @*<a asp-action="SearchUsers" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">SEARCH USERS</a>*@
+        @*<a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">Details</a>
+            <a asp-action="Index">Back to List</a>*@
     </div>
-</div>
-
-
-
-
-<div>
-    @*<a asp-action="Edit" asp-route-id="@Model.ApplicationUser.Id">Edit</a> |*@
-    @*<a asp-action="UploadProfileFiles" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">Upload Profile Image</a> |*@
-    @*<a asp-action="PostNewImage" asp-controller="Images" asp-route-id="@Model.ApplicationUser.Id">Upload pictures</a>*@
-    @*<a asp-action="SearchUsers" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">SEARCH USERS</a>*@
-    @*<a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">Details</a>
-        <a asp-action="Index">Back to List</a>*@
-</div>
 
 
