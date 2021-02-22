@@ -102,7 +102,7 @@
     <div>
         <div class="row">
             <div class="col-lg-8">
-                <div class="container-fluid padding" >
+                <div class="container-fluid">
                     <div class="card-deck">
                         @foreach (var item in Model.Images)
                         {
@@ -135,108 +135,97 @@
                         }
                     </div>
                 </div>
-                
-               
-            </div>
-            <div class="col-lg-4">
-                <h3 class="text-dark font-italic">Recent Posts</h3>
-                @foreach (var post in Model.Posts)
-                {
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div style="background-color: #F3F4F0">
-                                <div class="panel panel-default text-left" style="background-color: #ffffff">
-                                    <div class="panel-body">
-                                        <p> Posted by: @post.PostByUser</p>
-                                        <p>Title: @post.PostTitle</p>
-                                        <div>
-                                            <p>@post.PostContent</p>
-                                        </div>
-                                        <p class="text-light">Date Posted: @post.DateTimePosted</p>
-                                        <input type="hidden" asp-for="Post.Id" value="@post.Id" />
-                                        <a asp-action="DeletePost" asp-route-id="@post.Id" asp-controller="ApplicationUsers">
-                                            <button type="submit" class="btn btn-default btn-sm" style="background-color: #ABEDE3">
-                                                Delete Post
-                                            </button>
-                                        </a>
-                                    </div>
-                                </div>
-                                <h5>Comments</h5>
-                                <div style="background-color: lightblue">
-                                    @foreach (var comment in Model.Comments)
-                                    {
-                                        @if (comment.PostId == post.Id)
-                                        {
-                                            <div>
-                                                <div>
-                                                    <p>@comment.CommentorFullName</p>
-                                                </div>
-                                                <div>
-                                                    <p>@comment.CommentContent</p>
-                                                </div>
-                                                <a asp-action="DeleteComment" asp-route-id="@comment.Id" asp-controller="ApplicationUsers">
-                                                    <button type="submit" class="btn btn-default btn-sm" style="background-color: #ABEDE3">
-                                                        Delete Comment
-                                                    </button>
-                                                </a>
-                                            </div>
-                                        }
-                                    }
-                                </div>
-                                <div>
-                                    <form asp-action="AddComment" asp-controller="ApplicationUsers" method="post">
-                                        <div class="form-group col-md-10">
-                                            <input type="hidden" asp-for="Comment.PostId" value="@post.Id" />
-                                            <textarea asp-for="Comment.CommentContent" maxlength="50" class="form-control" id="" placeholder="Comment..."></textarea>
-                                        </div>
-                                        <div class="form-group col-md-2">
-                                            <button type="submit" class="btn" style="background-color:  #F0DE4D">
-                                                Comment
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
 
+
+            </div>
+           
+            <div class="col-lg-4">
+                <div class="container-fluid">
+                    <h3 class="text-dark font-italic">Recent Posts</h3>
+                    @foreach (var post in Model.Posts)
+                    {
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div style="background-color: #F3F4F0">
+                                    <div style="background-color: lightblue">
+                                        <div class="panel-body">
+                                            <p> Posted by: @post.PostByUser</p>
+                                            <p>Title: @post.PostTitle</p>
+                                            <div>
+                                                <p>@post.PostContent</p>
+                                            </div>
+                                            <p class="text-light">Date Posted: @post.DateTimePosted</p>
+                                            <input type="hidden" asp-for="Post.Id" value="@post.Id" />
+                                            <a asp-action="DeletePost" asp-route-id="@post.Id" asp-controller="ApplicationUsers">
+                                                <button type="submit" class="btn btn-default btn-sm" style="background-color: #ABEDE3">
+                                                    Delete Post
+                                                </button>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <h5>Comments</h5>
+                                    <div style="background-color: lightblue">
+                                        @foreach (var comment in Model.Comments)
+                                        {
+                                            @if (comment.PostId == post.Id)
+                                            {
+                                                <div>
+                                                    <div>
+                                                        <p>@comment.CommentorFullName</p>
+                                                    </div>
+                                                    <div>
+                                                        <p>@comment.CommentContent</p>
+                                                    </div>
+                                                    <a asp-action="DeleteComment" asp-route-id="@comment.Id" asp-controller="ApplicationUsers">
+                                                        <button type="submit" class="btn btn-default btn-sm" style="background-color: #ABEDE3">
+                                                            Delete Comment
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                            }
+                                        }
+                                    </div>
+                                    <div>
+                                        <form asp-action="AddComment" asp-controller="ApplicationUsers" method="post">
+                                            <div class="form-group col-md-10">
+                                                <input type="hidden" asp-for="Comment.PostId" value="@post.Id" />
+                                                <textarea asp-for="Comment.CommentContent" maxlength="50" class="form-control" id="" placeholder="Comment..."></textarea>
+                                            </div>
+                                            <div class="form-group col-md-2">
+                                                <button type="submit" class="btn" style="background-color:  #F0DE4D">
+                                                    Comment
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
                             </div>
+
                         </div>
-                    </div>}
+                    }
+                </div>
+                
             </div>
         </div>
     </div>
-
-    @*<div class="separator"></div>*@
-    @*<div class="row text-white">
-                <div class="col-lg-7">
-                    <p class="lead">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                        dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-
-                </div>
-                <div class="col-lg-5">
-                    <p class="lead">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure
-                        dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                    </p>
-
-                </div>
-            </div>
-
-        </div>*@
-
-    <!-- End  -->
+</div>
+@*<div class="separator"></div>*@
 
 
 
 
 
-    <div>
-        @*<a asp-action="Edit" asp-route-id="@Model.ApplicationUser.Id">Edit</a> |*@
-        @*<a asp-action="UploadProfileFiles" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">Upload Profile Image</a> |*@
-        @*<a asp-action="PostNewImage" asp-controller="Images" asp-route-id="@Model.ApplicationUser.Id">Upload pictures</a>*@
-        @*<a asp-action="SearchUsers" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">SEARCH USERS</a>*@
-        @*<a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">Details</a>
-            <a asp-action="Index">Back to List</a>*@
-    </div>
+
+
+
+<div>
+    @*<a asp-action="Edit" asp-route-id="@Model.ApplicationUser.Id">Edit</a> |*@
+    @*<a asp-action="UploadProfileFiles" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">Upload Profile Image</a> |*@
+    @*<a asp-action="PostNewImage" asp-controller="Images" asp-route-id="@Model.ApplicationUser.Id">Upload pictures</a>*@
+    @*<a asp-action="SearchUsers" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">SEARCH USERS</a>*@
+    @*<a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id">Details</a>
+        <a asp-action="Index">Back to List</a>*@
+</div>
 
 

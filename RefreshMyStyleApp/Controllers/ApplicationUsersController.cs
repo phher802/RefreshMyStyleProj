@@ -77,6 +77,10 @@ namespace RefreshMyStyleApp.Controllers
                 Event = _context.Events.Where(e => e.EventCreatorId == id).FirstOrDefault(),
                 Events = _context.Events.Where(e => e.EventCreatorId == id).ToList(),
                 Attendees = _context.Attendees.Where(x => x.EventId == id).ToList(),
+                Posts = _context.Posts.Where(x => x.ApplicationUserId == id).ToList(),
+                Comments = _context.Comments.Where(x => x.PostId == id).ToList(),
+
+
             };
 
             return View(personViewModel);
@@ -345,7 +349,8 @@ namespace RefreshMyStyleApp.Controllers
 
             _context.Comments.Add(newComment);
             _context.SaveChanges();
-            return RedirectToAction(nameof(Index));
+            //return RedirectToAction();
+            return View("Details");
         }
 
         public IActionResult DeleteComment(int id)
