@@ -28,11 +28,11 @@ namespace RefreshMyStyleApp.Controllers
         private readonly IHubContext<NotificationHub> _notiHubContext;
 
 
-        public ApplicationUsersController(ApplicationDbContext context, IWebHostEnvironment env, IHubContext<NotificationHub> notificationHubContext)
+        public ApplicationUsersController(ApplicationDbContext context, IWebHostEnvironment env)
         {
             _context = context;
             _env = env;
-            _notiHubContext = notificationHubContext;
+           
         }
 
         // GET: People
@@ -66,12 +66,16 @@ namespace RefreshMyStyleApp.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var appUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            ApplicationUser appUserdetails = _context.ApplicationUsers.Find(id);
+            ApplicationUser AppUserNotLoggedIn = _context.ApplicationUsers.Find(id);
+            var appUser = _context.ApplicationUsers.Where(a => a.Id == id).SingleOrDefault();
 
             ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
             {
                 AppUserNotLoggedIn = _context.ApplicationUsers.Find(id),
                 Images = _context.Images.Where(i => i.ApplicationUserId == id).ToList(),
+                Event = _context.Events.Where(e => e.EventCreatorId == id).FirstOrDefault(),
+                Events = _context.Events.Where(e => e.EventCreatorId == id).ToList(),
+                Attendees = _context.Attendees.Where(x => x.EventId == id).ToList(),
             };
 
             return View(personViewModel);
@@ -392,20 +396,36 @@ namespace RefreshMyStyleApp.Controllers
             createEvent.EventTitle = newEvent.EventTitle;
             createEvent.Message = newEvent.Message;
             createEvent.Address = newEvent.StreetAddress +", "+ newEvent.City + ", " +newEvent.State + " " + newEvent.Zipcode;
-            
-
-            if (newEvent.IsCanceled)
-            {
-                createEvent.CancelEvent = "Event Has Been Canceled";
-            }
+        
 
             _context.Events.Add(createEvent);
             _context.SaveChanges();
             return RedirectToAction(nameof(EventList));
         }
 
+        public IActionResult DeleteEvent(int id)
+        {
+            var deleteEvent = _context.Events.Find(id);
+            _context.Events.Remove(deleteEvent);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(EventList));
+        }
 
-        public IActionResult GetAttendee(AttendEvent attendee)
+        public IActionResult CancelEvent(int id)
+        {
+            var cancelEvent = _context.Events.Find(id);
+            cancelEvent.IsCanceled = true;
+            cancelEvent.Message = "This event has been canceled.";
+            cancelEvent.Address = "Not Available";
+            cancelEvent.DateCanceled = DateTime.Now;
+
+            _context.Events.Update(cancelEvent);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(EventList));
+
+        }
+
+        public IActionResult GetAttendee(int id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
@@ -413,13 +433,13 @@ namespace RefreshMyStyleApp.Controllers
             AttendEvent newAttendee = new AttendEvent();
             newAttendee.AttendeeId = currentAppUser.Id;
             newAttendee.AttendeeName = currentAppUser.FName + " " + currentAppUser.LName;
-            newAttendee.EventId = attendee.EventId;
+            newAttendee.EventId = id;
            
-
             _context.Attendees.Add(newAttendee);
             _context.SaveChanges();
 
-            return RedirectToAction(nameof(EventList));
+            // return RedirectToAction(nameof(EventList));
+            return RedirectToAction("Details", new { Id = id });
         }
 
         // GET: ApplicationUser/Edit/5

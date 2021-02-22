@@ -33,7 +33,7 @@ namespace RefreshMyStyleApp.Models
 
         public string Address { get; set; }
 
-        public string CancelEvent { get; set; }
+        public DateTime? DateCanceled { get; set; }
 
         public bool IsCanceled { get; set; }
 
@@ -41,8 +41,7 @@ namespace RefreshMyStyleApp.Models
 
         public string EventCreatorName { get; set; }
 
-
-
+    
     }
 
  

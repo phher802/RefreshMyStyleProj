@@ -10,8 +10,8 @@ using RefreshMyStyleApp.Data;
 namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210221190717_FixIntNullableInAttendEventModel")]
-    partial class FixIntNullableInAttendEventModel
+    [Migration("20210221235918_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,8 +50,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "543d3aba-fa92-4c6d-9a6c-30a2aee04cd6",
-                            ConcurrencyStamp = "2cf5483c-b764-442f-96dd-374ab10c2c28",
+                            Id = "5ce35181-10a1-4e53-9bb1-79c9e2c4b36f",
+                            ConcurrencyStamp = "41a02734-fdf7-4a01-9fb1-93c0f0750215",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -261,6 +261,7 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfileImageName")
@@ -384,11 +385,11 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("CancelEvent")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("City")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateCanceled")
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime?>("DatePosted")
                         .HasColumnType("datetime2");
@@ -543,6 +544,62 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasIndex("ImageId");
 
                     b.ToTable("Likes");
+                });
+
+            modelBuilder.Entity("RefreshMyStyleApp.Models.MyItemClaimed", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ApplicationUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ClothingEnthusiastId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClothingEnthusiastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ImageId");
+
+                    b.ToTable("MyItemsClaimed");
+                });
+
+            modelBuilder.Entity("RefreshMyStyleApp.Models.MyItemLiked", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ApplicationUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ClothingEnthusiastId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClothingEnthusiastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ImageId");
+
+                    b.ToTable("MyItemsLiked");
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Post", b =>
@@ -737,6 +794,32 @@ namespace RefreshMyStyleApp.Migrations
 
                     b.HasOne("RefreshMyStyleApp.Models.Image", "Image")
                         .WithMany("Likes")
+                        .HasForeignKey("ImageId");
+                });
+
+            modelBuilder.Entity("RefreshMyStyleApp.Models.MyItemClaimed", b =>
+                {
+                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RefreshMyStyleApp.Models.Image", "Image")
+                        .WithMany()
+                        .HasForeignKey("ImageId");
+                });
+
+            modelBuilder.Entity("RefreshMyStyleApp.Models.MyItemLiked", b =>
+                {
+                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RefreshMyStyleApp.Models.Image", "Image")
+                        .WithMany()
                         .HasForeignKey("ImageId");
                 });
 

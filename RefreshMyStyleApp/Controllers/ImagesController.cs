@@ -21,15 +21,12 @@ namespace RefreshMyStyleApp.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly IWebHostEnvironment _env;
-        private readonly IHubContext<NotificationHub> _notiHubContext;
 
-
-        public ImagesController(ApplicationDbContext context, IWebHostEnvironment env, IHubContext<NotificationHub> notificationHubContext)
+        public ImagesController(ApplicationDbContext context, IWebHostEnvironment env)
         {
             _context = context;
             _env = env;
-            _notiHubContext = notificationHubContext;
-    
+       
         }
 
         // GET: Images

@@ -18,7 +18,7 @@
     <div class="row">
 
         <div>
-            @if(Model.Images != null)
+            @if (Model.Images != null)
             {
                 @foreach (var item in Model.Images)
                 {
@@ -26,7 +26,7 @@
 
                         <div class="card h-100" style="width: 15rem; display: flex">
                             <img src="~/images/items/@item.ImageTitle" class="card-img-top img-fluid img-thumbnail" alt="@item.ImageName" />
-                           
+
                             <div class="card-body">
                                 <h5 class="card-title">@item.ImageName</h5>
                                 <h6 class="card-subtitle mb-2 text-muted">@item.ClothingCategory</h6>
@@ -45,7 +45,8 @@
                                     <button type="submit" class="btn btn-default btn-sm" style="background-color: #0094ff">
                                         Claim
                                     </button>
-                                    </a>
+                                </a>
+
                             </div>
 
                         </div>
@@ -55,6 +56,48 @@
                 }
             }
         </div>
+        <div>
+            @foreach (var e in Model.Events)
+            {
+                @if (e.EventCreatorId == Model.AppUserNotLoggedIn.Id)
+                {
+                    <div class="card text-center" style="padding: 10px">
+                        <div class="card-header" style="background-color: #cc8af7">
+                            <h5 class="text-light">
+                                Event Date: @Html.DisplayFor(e => e.Event.EventDate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
+                            </h5>
+                        </div>
+                        <div class="card-body" style="background-color: #c6b2f5">
+                            <h5 class="card-title">@Html.DisplayFor(e => e.Event.EventTitle)</h5>
+                            <p class="card-text">@Html.DisplayFor(e => e.Event.Message)</p>
+                            <hr />
+                            <p>Location Address: @Html.DisplayFor(e => e.Event.Address)</p>
+                            @if (e.IsCanceled)
+                            {
+                                <h2>@Html.DisplayFor(e => e.Event.Message)</h2>
+                                <h6>@Html.DisplayFor(e => e.Event.DateCanceled, "{0:MM/dd/yyyy}", new { @class = "form-control" }) </h6>
+                            }
+                            <a asp-action="GetAttendee" asp-controller="ApplicationUsers" asp-route-id="@e.Id">
+                                <button>
+                                    Attend This Event
+                                </button>
+                            </a>
+                        </div>
+                        <div class="card-footer text-muted" style="text-decoration-color: #ffffff; background-color:#cc8af7">
+                            Created on: @Html.DisplayFor(item => item.Event.DatePosted)
+                        </div>
+                        <div>
+                            <h6 class="text-center">Attendees</h6>
+                            @foreach (var item in Model.Attendees)
+                            {
+                                <p class="text-center">@item.AttendeeName</p>
+                            }
+                        </div>
+                    </div>
+                }
 
+
+            }
+        </div>
     </div>
 </div>
