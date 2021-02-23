@@ -10,7 +10,7 @@
 
 
 
-<div class="container" style="text-align: center; padding-top: 5rem" >
+<div class="container" style="text-align: center; padding-top: 5rem">
     <div>
         <h1 style="text-align: center">@Html.DisplayFor(model => model.AppUserNotLoggedIn.FullName)</h1>
         <p>
@@ -44,14 +44,18 @@
                                     </button>
                                 </a>
                             </p>
-                            <p>
-                                <a asp-action="ClaimImage" asp-controller="ApplicationUsers" asp-route-id="@item.Id">
-                                    <input type="hidden" asp-for="@item.ApplicationUserId name=" name" value="" />
-                                    <button type="submit" class="btn btn-default btn-sm" style="background-color: #eff7e1">
-                                        Claim
-                                    </button>
-                                </a>
-                            </p>
+                            @if (item.IsClaimed == false)
+                            {
+                                <p>
+                                    <a asp-action="ClaimImage" asp-controller="ApplicationUsers" asp-route-id="@item.Id">
+                                        <input type="hidden" asp-for="@item.ApplicationUserId name=" name" value="" />
+                                        <button type="submit" class="btn btn-default btn-sm" style="background-color: #eff7e1">
+                                            Claim
+                                        </button>
+                                    </a>
+                                </p>
+                            }
+
 
 
                         </div>
@@ -114,7 +118,7 @@
                         <div class="accordion-item" style="background-color: #eff7e1">
                             <h2 class="accordion-header" id="headingOne">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                               
+
                                     <p>@post.PostTitle </p>
                                 </button>
                             </h2>
@@ -124,9 +128,9 @@
                                     <hr />
                                     <div style="color: dimgrey" class="tiny-text">
                                         <p> Posted by: @post.PostByUser  </p>
-                                        <p >Date Posted: @post.DateTimePosted</p>
+                                        <p>Date Posted: @post.DateTimePosted</p>
                                     </div>
-                                   
+
                                     <input type="hidden" asp-for="Post.Id" value="@post.Id" />
                                     <a asp-action="DeletePost" asp-route-id="@post.Id" asp-controller="ApplicationUsers">
                                         <button type="submit" class="btn btn-default btn-sm" style="background-color: #a2d0c1">

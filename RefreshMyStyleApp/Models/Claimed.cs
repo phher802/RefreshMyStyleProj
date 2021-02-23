@@ -16,6 +16,8 @@ namespace RefreshMyStyleApp.Models
 
         public DateTime? DateClaimed { get; set; }
 
+        public int ClaimedById { get; set; }
+
         public int UserId { get; set; }
         public string ClaimImageOwnerFullName { get; set; }
 

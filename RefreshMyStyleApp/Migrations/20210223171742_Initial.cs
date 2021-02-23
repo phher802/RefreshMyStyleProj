@@ -160,6 +160,7 @@ namespace RefreshMyStyleApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IsClaimed = table.Column<bool>(nullable: false),
                     DateClaimed = table.Column<DateTime>(nullable: true),
+                    ClaimedById = table.Column<int>(nullable: false),
                     UserId = table.Column<int>(nullable: false),
                     ClaimImageOwnerFullName = table.Column<string>(nullable: true),
                     ImageTitle = table.Column<string>(nullable: true),
@@ -470,7 +471,7 @@ namespace RefreshMyStyleApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "5ce35181-10a1-4e53-9bb1-79c9e2c4b36f", "41a02734-fdf7-4a01-9fb1-93c0f0750215", "ApplicationUser", "APPLICATIONUSER" });
+                values: new object[] { "0e4e1a5a-a43a-4e10-a87d-8b1936e06c05", "c8e7c240-62e1-4e47-ae72-84a702b7f057", "ApplicationUser", "APPLICATIONUSER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationUsers_ApplicationUserId",

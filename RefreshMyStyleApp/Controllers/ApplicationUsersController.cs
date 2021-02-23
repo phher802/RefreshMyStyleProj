@@ -32,7 +32,7 @@ namespace RefreshMyStyleApp.Controllers
         {
             _context = context;
             _env = env;
-           
+
         }
 
 
@@ -42,12 +42,12 @@ namespace RefreshMyStyleApp.Controllers
             ApplicationUser applicationUserLoggedIn = new ApplicationUser();
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             applicationUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-          
+
             if (applicationUserLoggedIn == null)
             {
                 return RedirectToAction(nameof(Create));
             }
-           
+
             applicationUserLoggedIn.FullName = applicationUserLoggedIn.FName + " " + applicationUserLoggedIn.LName;
             _context.ApplicationUsers.Update(applicationUserLoggedIn);
             _context.SaveChanges();
@@ -61,8 +61,8 @@ namespace RefreshMyStyleApp.Controllers
                 Images = _context.Images.Where(i => i.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
                 Likes = _context.Likes.Where(x => x.ImageId == applicationUserLoggedIn.Id).ToList(),
                 Posts = _context.Posts.Where(x => x.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
-                //Comments = _context.Comments.Where(x => x.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
-                Comments = _context.Comments.Where(x => x.PostId == post.Id).ToList(),
+                Comments = _context.Comments.Where(x => x.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
+                //Comments = _context.Comments.Where(x => x.PostId == post.Id).ToList(),
             };
             return View(applicationUserImageViewModel);
         }
@@ -111,7 +111,7 @@ namespace RefreshMyStyleApp.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 applicationUser.IdentityUserId = userId;
-                
+
 
                 _context.ApplicationUsers.Add(applicationUser);
                 _context.SaveChanges();
@@ -237,7 +237,7 @@ namespace RefreshMyStyleApp.Controllers
             var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             Image currentImage = _context.Images.Find(id);
             var imageOwner = _context.ApplicationUsers.Where(x => x.Id == currentImage.ApplicationUserId).FirstOrDefault();
-           
+
             Like newLike = new Like();
             newLike.ImageId = currentImage.Id;
             newLike.ImageTitle = currentImage.ImageTitle;
@@ -283,9 +283,12 @@ namespace RefreshMyStyleApp.Controllers
             newClaim.UserId = currentImage.ApplicationUserId;
             newClaim.ClaimImageOwnerFullName = imageOwner.FullName;
             newClaim.ApplicationUserId = currentAppUser.Id;
+            newClaim.ClaimedById = currentAppUser.Id;
             newClaim.IsClaimed = true;
             newClaim.DateClaimed = DateTime.Now;
+            currentImage.IsClaimed = true;
 
+            _context.Images.Update(currentImage);
             _context.ClaimItems.Add(newClaim);
             _context.SaveChanges();
             return RedirectToAction("GetClaims", new { Id = id });
@@ -306,9 +309,26 @@ namespace RefreshMyStyleApp.Controllers
 
             }
 
-            return RedirectToAction("GetClaims");
+            return RedirectToAction("GetLikedAndClaimed");
         }
 
+        public IActionResult GetLikedAndClaimed(int id)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var claimedImages = _context.Images.Find(id);
+            var claimedItem = _context.Images.Where(c => c.IsClaimed == true).FirstOrDefault(c => c.Id == claimedImages.Id);
+
+
+            ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
+            {
+                ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
+                Images = _context.Images.Where(i => i.ApplicationUserId == id).ToList(),
+                Claimed = _context.ClaimItems.Find(id),
+                Claims = _context.ClaimItems.Where(c => c.ImageId == claimedItem.Id).ToList(),
+            };
+            return View();
+        }
         public IActionResult NewPost()
         {
             return View();
@@ -357,7 +377,7 @@ namespace RefreshMyStyleApp.Controllers
             _context.SaveChanges();
             //return RedirectToAction();
 
-            return RedirectToAction(nameof(Index));                 
+            return RedirectToAction(nameof(Index));
         }
 
         public IActionResult AddCommentToDetails(int? id, Comment comment)
@@ -365,7 +385,7 @@ namespace RefreshMyStyleApp.Controllers
             id = comment.PostId;
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var appUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            var post = _context.Posts.Find(id);       
+            var post = _context.Posts.Find(id);
             var postOwner = _context.Posts.Where(a => a.ApplicationUserId == post.ApplicationUserId).FirstOrDefault();
             var postOwerId = _context.ApplicationUsers.Where(a => a.Id == postOwner.ApplicationUserId).SingleOrDefault();
 
@@ -382,8 +402,9 @@ namespace RefreshMyStyleApp.Controllers
 
             id = postOwerId.Id;
 
-            return RedirectToAction("Details", new { Id = id});
+            return RedirectToAction("Details", new { Id = id });
         }
+
 
 
         public IActionResult DeleteComment(int id)
@@ -434,8 +455,8 @@ namespace RefreshMyStyleApp.Controllers
             createEvent.EventDate = newEvent.EventDate;
             createEvent.EventTitle = newEvent.EventTitle;
             createEvent.Message = newEvent.Message;
-            createEvent.Address = newEvent.StreetAddress +", "+ newEvent.City + ", " +newEvent.State + " " + newEvent.Zipcode;
-        
+            createEvent.Address = newEvent.StreetAddress + ", " + newEvent.City + ", " + newEvent.State + " " + newEvent.Zipcode;
+
 
             _context.Events.Add(createEvent);
             _context.SaveChanges();
@@ -473,7 +494,7 @@ namespace RefreshMyStyleApp.Controllers
             newAttendee.AttendeeId = currentAppUser.Id;
             newAttendee.AttendeeName = currentAppUser.FName + " " + currentAppUser.LName;
             newAttendee.EventId = id;
-           
+
             _context.Attendees.Add(newAttendee);
             _context.SaveChanges();
 

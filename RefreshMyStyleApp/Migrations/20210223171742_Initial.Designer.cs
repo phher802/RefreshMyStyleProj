@@ -10,7 +10,7 @@ using RefreshMyStyleApp.Data;
 namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210221235918_Initial")]
+    [Migration("20210223171742_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,8 +50,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5ce35181-10a1-4e53-9bb1-79c9e2c4b36f",
-                            ConcurrencyStamp = "41a02734-fdf7-4a01-9fb1-93c0f0750215",
+                            Id = "0e4e1a5a-a43a-4e10-a87d-8b1936e06c05",
+                            ConcurrencyStamp = "c8e7c240-62e1-4e47-ae72-84a702b7f057",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -319,6 +319,9 @@ namespace RefreshMyStyleApp.Migrations
 
                     b.Property<string>("ClaimImageOwnerFullName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ClaimedById")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("DateClaimed")
                         .HasColumnType("datetime2");
