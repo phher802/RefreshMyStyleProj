@@ -111,16 +111,17 @@
                 @foreach (var post in Model.Posts)
                 {
                     <div class="accordion" id="accordionExample">
-                        <div class="accordion-item" style="background-color: #eeeeee">
+                        <div class="accordion-item" style="background-color: #eff7e1">
                             <h2 class="accordion-header" id="headingOne">
                                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                    <p> Posted by: @post.PostByUser  Title: @post.PostTitle </p>
+                                    <p> <h6>Posted by: </h6>@post.PostByUser  </p>
+                                    <p> <h6>Title:</h6> @post.PostTitle </p>
                                 </button>
                             </h2>
                             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                 <div class="accordion-body" style="background-color: aliceblue">
                                     <p>@post.PostContent</p>
-                                    <p>Date Posted: @post.DateTimePosted</p>
+                                    <p style="color: dimgrey">Date Posted: @post.DateTimePosted</p>
                                     <input type="hidden" asp-for="Post.Id" value="@post.Id" />
                                     <a asp-action="DeletePost" asp-route-id="@post.Id" asp-controller="ApplicationUsers">
                                         <button type="submit" class="btn btn-default btn-sm" style="background-color: #a2d0c1">

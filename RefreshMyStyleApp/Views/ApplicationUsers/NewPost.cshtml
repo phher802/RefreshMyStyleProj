@@ -5,21 +5,23 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>NewPost</h1>
+<h1>Create A New Post</h1>
 
-<h4>Post</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="NewPost" asp-controller="ApplicationUsers" method="post">
             <div class="form-group">
-                <label asp-for="PostTitle" class="control-label"></label>
+                @*<label asp-for="PostTitle" class="control-label"></label>*@
+                <p>Title</p>
                 <input asp-for="PostTitle" class="form-control" />
                 <span asp-validation-for="PostTitle" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="PostContent" class="control-label"></label>
-                <textarea asp-for="PostContent" placeholder="Make a request" class="form-control" ></textarea>
+            <div class="form-group" style="padding-top: 1rem">
+                @*<label asp-for="PostContent" class="control-label"></label>*@
+                <p>Message</p>
+                <textarea asp-for="PostContent" placeholder="Make a request" class="form-control"></textarea>
                 <span asp-validation-for="PostContent" class="text-danger"></span>
             </div>
 
@@ -27,15 +29,19 @@
                 <label asp-for="ApplicationUserId" class="control-label"></label>
                 <select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"></select>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group" style="padding-top: 1rem">
+                <input type="submit" value="Create" class="btn btn-outline-warning btn-event" />
             </div>
 
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@*<div>
+    <a asp-action="Index">
+        <button type="button" class="btn btn-outline-warning btn-event">
+            Return To Profile
+        </button>
+    </a>
+</div>*@
 
