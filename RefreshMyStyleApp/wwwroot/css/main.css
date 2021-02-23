@@ -1,6 +1,10 @@
 ﻿body {
     background-color: #f8dc81;
-    color: #214151
+    color: #214151;
+    /*font-family: 'Marmelad', sans-serif;*/
+    font-family: 'Merriweather', serif;
+   /* font-family: 'Montserrat', sans-serif;*/
+    /*font-family: 'Sansita', sans-serif;*/
 }
 
 .btn-outline-warning {
@@ -27,3 +31,7 @@
     margin-top: .03rem;
     margin-bottom: .05rem;
 }
+
+.tiny-text{
+    font-size: .7em;
+} 

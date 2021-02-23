@@ -42,13 +42,18 @@ namespace RefreshMyStyleApp.Controllers
             ApplicationUser applicationUserLoggedIn = new ApplicationUser();
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             applicationUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+          
             if (applicationUserLoggedIn == null)
             {
                 return RedirectToAction(nameof(Create));
             }
+           
             applicationUserLoggedIn.FullName = applicationUserLoggedIn.FName + " " + applicationUserLoggedIn.LName;
             _context.ApplicationUsers.Update(applicationUserLoggedIn);
             _context.SaveChanges();
+
+            var appUser = _context.ApplicationUsers.Where(a => a.Id == applicationUserLoggedIn.Id).SingleOrDefault();
+            var post = _context.Posts.Where(p => p.ApplicationUserId == appUser.Id).FirstOrDefault();
 
             ApplicationUserImageViewModel applicationUserImageViewModel = new ApplicationUserImageViewModel
             {
@@ -56,7 +61,8 @@ namespace RefreshMyStyleApp.Controllers
                 Images = _context.Images.Where(i => i.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
                 Likes = _context.Likes.Where(x => x.ImageId == applicationUserLoggedIn.Id).ToList(),
                 Posts = _context.Posts.Where(x => x.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
-                Comments = _context.Comments.Where(x => x.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
+                //Comments = _context.Comments.Where(x => x.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
+                Comments = _context.Comments.Where(x => x.PostId == post.Id).ToList(),
             };
             return View(applicationUserImageViewModel);
         }

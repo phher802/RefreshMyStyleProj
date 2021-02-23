@@ -6,17 +6,17 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>UploadFiles</h1>
+<h1>Upload A Selfie!</h1>
 
-<h4>Person</h4>
+
 <hr />
-<div class="row">
+<div class="row" style="padding-top: 5rem">
     <div class="col-md-4">
         <form method="post" enctype="multipart/form-data" asp-controller="ApplicationUsers"
               asp-action="UploadProfileFiles">
             <div class="form-group">
                 <div class="col-md-10">
-                    <p>Upload profile picture:</p>
+                   
                     <input asp-for="ProfileImage" type="file" name="files" accept="image/*" multiple />
                     <span asp-validation-for="ProfileImage" class="text-danger"></span>
                 </div>
@@ -30,7 +30,7 @@
     </div>
 </div>
 
-<div>
+@*<div>
     <a asp-action="Index">Back to List</a>
-</div>
+</div>*@
 
