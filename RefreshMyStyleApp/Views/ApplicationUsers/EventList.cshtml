@@ -5,21 +5,41 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>EventList</h1>
 
 <div>
-    <h4>EventViewModel</h4>
+
+    <h1 class="text-center">My Events</h1>
+    <p>
+        <a asp-action="CreateEvent" asp-controller="ApplicationUsers" asp-route-newEvent="@Model.Event">
+            <button type="button" class="btn btn-outline-warning btn-event">
+                Create A New Event
+            </button>
+        </a>
+    </p>
+    <p>
+        <a asp-action="Index">
+            <button type="button" class="btn btn-outline-warning btn-event">
+                Return to Profile
+            </button>
+        </a>
+    </p>
+  
+</div>
+
+
+<div>
+
     <hr />
     <div>
         @foreach (var e in Model.Events)
         {
             <div class="card text-center" style="padding: 10px">
-                <div class="card-header" style="background-color: #eeeeee">
+                <div class="card-header" style="background-color: #a2d0c1">
                     <h5 class="text-light">
                         Event Date: @Html.DisplayFor(e => e.Event.EventDate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
                     </h5>
                 </div>
-                <div class="card-body" style="background-color: #eeeeee">
+                <div class="card-body" style="background-color: #eff7e1">
                     <h5 class="card-title">@Html.DisplayFor(e => e.Event.EventTitle)</h5>
                     <p class="card-text">@Html.DisplayFor(e => e.Event.Message)</p>
                     <hr />
@@ -35,7 +55,7 @@
                             </button>
                         </a>*@
                 </div>
-                <div class="card-footer text-muted" style="text-decoration-color: #ffffff; background-color:#cc8af7">
+                <div class="card-footer text-muted" style="background-color: #a2d0c1">
                     Created on: @Html.DisplayFor(item => item.Event.DatePosted)
                 </div>
                 <div>
@@ -49,6 +69,7 @@
 
                     }
                 </div>
+                
                 <a asp-action="DeleteEvent" asp-controller="ApplicationUsers" asp-route-id="@e.Id">
                     <button type="submit" class="btn btn-default btn-sm">
                         Delete Event
@@ -67,7 +88,4 @@
 
 </div>
 
-<div>
-    <a asp-action="CreateEvent" asp-controller="ApplicationUsers" asp-route-newEvent="@Model.Event">Create New Event</a>
-    <a asp-action="Index">Back to List</a>
-</div>
+

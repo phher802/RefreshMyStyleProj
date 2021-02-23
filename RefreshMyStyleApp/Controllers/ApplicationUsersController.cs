@@ -67,8 +67,9 @@ namespace RefreshMyStyleApp.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var appUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            ApplicationUser AppUserNotLoggedIn = _context.ApplicationUsers.Find(id);
+            var AppUserNotLoggedIn = _context.ApplicationUsers.Find(id);
             var appUser = _context.ApplicationUsers.Where(a => a.Id == id).SingleOrDefault();
+            var post = _context.Posts.Where(p => p.ApplicationUserId == appUser.Id).FirstOrDefault();
 
             ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
             {
@@ -78,8 +79,7 @@ namespace RefreshMyStyleApp.Controllers
                 Events = _context.Events.Where(e => e.EventCreatorId == id).ToList(),
                 Attendees = _context.Attendees.Where(x => x.EventId == id).ToList(),
                 Posts = _context.Posts.Where(x => x.ApplicationUserId == id).ToList(),
-                Comments = _context.Comments.Where(x => x.PostId == id).ToList(),
-
+                Comments = _context.Comments.Where(x => x.PostId == post.Id).ToList(),
 
             };
 
@@ -334,11 +334,11 @@ namespace RefreshMyStyleApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Addcomment(Comment comment)
+        public IActionResult AddcommentToIndex(Comment comment)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var appUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            //Post commentedPost = _context.Posts.Where(x => x.Id == comment.PostId).FirstOrDefault();
+            Post postOwner = _context.Posts.Where(x => x.Id == comment.PostId).FirstOrDefault();
 
             Comment newComment = new Comment();
             newComment.PostId = comment.PostId;
@@ -350,8 +350,35 @@ namespace RefreshMyStyleApp.Controllers
             _context.Comments.Add(newComment);
             _context.SaveChanges();
             //return RedirectToAction();
-            return View("Details");
+
+            return RedirectToAction(nameof(Index));                 
         }
+
+        public IActionResult AddCommentToDetails(int? id, Comment comment)
+        {
+            id = comment.PostId;
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var appUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var post = _context.Posts.Find(id);       
+            var postOwner = _context.Posts.Where(a => a.ApplicationUserId == post.ApplicationUserId).FirstOrDefault();
+            var postOwerId = _context.ApplicationUsers.Where(a => a.Id == postOwner.ApplicationUserId).SingleOrDefault();
+
+            Comment newComment = new Comment();
+            newComment.PostId = post.Id;
+            newComment.ApplicationUserId = appUser.Id;
+            newComment.CommentorFullName = appUser.FName + " " + appUser.LName;
+            newComment.CommentDateTime = DateTime.Now;
+            newComment.CommentContent = comment.CommentContent;
+
+            _context.Comments.Add(newComment);
+            _context.SaveChanges();
+            //return RedirectToAction();
+
+            id = postOwerId.Id;
+
+            return RedirectToAction("Details", new { Id = id});
+        }
+
 
         public IActionResult DeleteComment(int id)
         {

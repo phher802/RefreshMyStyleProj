@@ -7,16 +7,22 @@
 
 
 
-<h1>SearchUsers</h1>
+<h1 style="text-align:center">Search Users</h1>
+
+
+
 <div class="container-fluid">
-    <div class="row">
+    <div class="col-3">
         <form asp-action="SearchUsers" asp-controller="ApplicationUsers">
             <input type="hidden" asp-for="Id" />
             <input name="searchString" type="text" class="form-control" />
-            <input type="submit" value="Search" class="btn btn-primary" />
+            <input type="submit" value="Search" class="btn btn-outline-warning btn-event" />
         </form>
     </div>
-    <table class="table">
+    <p>
+        <a asp-action="Index"><button type="button" class="btn btn-outline-warning btn-event">Back to Profile</button></a>
+    </p>
+    <table class="table" style="text-align: center">
         <thead>
             <tr>
                 <th style="display: none">
@@ -28,12 +34,7 @@
                 <th>
                     @Html.DisplayNameFor(model => model.LName)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.FullName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PhoneNumber)
-                </th>
+              
                 <th>
 
                     @Html.DisplayNameFor(model => model.ProfileImageName)
@@ -54,22 +55,24 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.LName)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FullName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.PhoneNumber)
-                    </td>
+                                   
                     <td>
                         <p>
-                            <img src="~/images/profileImages/@item.ProfileImageName" height="50" width="50" />
+                            <img src="~/images/profileImages/@item.ProfileImageName" height="80" width="70" />
                         </p>
                     </td>
 
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                        <a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.Id">Details</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+
+                        <p>
+                            <a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.Id">
+                                <button type="button" class="btn btn-outline-warning btn-event">
+                                    Details
+                                </button>
+                            </a>
+                        </p>
+
+
                     </td>
                 </tr>
             }
@@ -78,7 +81,4 @@
 </div>
 
 
-<div>
-    <a asp-action="Edit">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+

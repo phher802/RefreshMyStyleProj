@@ -10,68 +10,72 @@
 
 
 
-<div class="container-fluid">
+<div class="container" style="text-align: center">
+    <div>
+        <h1 style="text-align: center">@Html.DisplayFor(model => model.AppUserNotLoggedIn.FullName)</h1>
+        <p>
+            <img src="~/images/profileImages/@Html.DisplayFor(m => m.AppUserNotLoggedIn.ProfileImageName)" width="100" height="75" class="mr-3 rounded-circle img-thumbnail shadow-sm" />
+
+        </p>
+    </div>
     <div class="row">
-        <div class="col-lg-2">
-            <h1>@Html.DisplayFor(model => model.AppUserNotLoggedIn.FullName)</h1>
-            <p>
-                <img src="~/images/profileImages/@Html.DisplayFor(m => m.AppUserNotLoggedIn.ProfileImageName)" width="100" height="75" class="mr-3 rounded-circle img-thumbnail shadow-sm" />
 
-            </p>
-        </div>
-        <div class="col-lg-4">
-            @if (Model.Images != null)
+        <div class="col-lg-4" style="margin-top: 3rem">
+
+            @foreach (var item in Model.Images)
             {
-                @foreach (var item in Model.Images)
-                {
-                    <div class="col-md">
+                <div>
+                    <div class="card h-100" style="display: flex; padding: .05rem">
+                        <img src="~/images/items/@item.ImageTitle" class="card-img-top img-fluid img-thumbnail" alt="@item.ImageName" />
 
-                        <div class="card h-100" style="width: 15rem; display: flex">
-                            <img src="~/images/items/@item.ImageTitle" class="card-img-top img-fluid img-thumbnail" alt="@item.ImageName" />
-
-                            <div class="card-body">
-                                <h5 class="card-title">@item.ImageName</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">@item.ClothingCategory</h6>
-                                <p class="card-text"> @item.Description</p>
-                                <p class="card-text">Color: @item.Color</p>
-                                <p class="card-text">Size: @item.Size</p>
-                                <p class="card-text">
-                                    Status: @item.ItemStatus
-                                </p>
+                        <div class="card-body">
+                            <h5 class="card-title">@item.ImageName</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">@item.ClothingCategory</h6>
+                            <p class="card-text"> @item.Description</p>
+                            <p class="card-text">Color: @item.Color</p>
+                            <p class="card-text">Size: @item.Size</p>
+                            <p class="card-text">
+                                Status: @item.ItemStatus
+                            </p>
+                            <p>
                                 <a asp-action="LikeImage" asp-controller="ApplicationUsers" asp-route-id="@item.Id">
-                                    <button type="submit" class="btn btn-default btn-sm" style="background-color: #808080">
+                                    <button type="submit" class="btn btn-default btn-sm" style="background-color: #eff7e1">
                                         Like
                                     </button>
                                 </a>
-                                <a asp-action="ClaimImage" asp-controller="ApplicationUsers" asp-route-id="@item.Id" >
-                                    <input type="hidden" asp-for="@item.ApplicationUserId name="name" value="" />
-                                    <button type="submit" class="btn btn-default btn-sm" style="background-color: #0094ff">
+                            </p>
+                            <p>
+                                <a asp-action="ClaimImage" asp-controller="ApplicationUsers" asp-route-id="@item.Id">
+                                    <input type="hidden" asp-for="@item.ApplicationUserId name=" name" value="" />
+                                    <button type="submit" class="btn btn-default btn-sm" style="background-color: #eff7e1">
                                         Claim
                                     </button>
                                 </a>
+                            </p>
 
-                            </div>
 
                         </div>
+
                     </div>
+                </div>
 
 
-                }
             }
+
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-4" style="margin-top: 3rem">
 
             @foreach (var e in Model.Events)
             {
                 @if (e.EventCreatorId == Model.AppUserNotLoggedIn.Id)
                 {
-                    <div class="card text-center" style="padding: 10px">
-                        <div class="card-header" style="background-color: #eeeeee">
+                    <div class="card" style="padding: 10px">
+                        <div class="card-header" style="background-color: #a2d0c1">
                             <h5 class="text-light">
                                 Event Date: @Html.DisplayFor(e => e.Event.EventDate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
                             </h5>
                         </div>
-                        <div class="card-body" style="background-color: #eeeeee">
+                        <div class="card-body" style="background-color: #eff7e1">
                             <h5 class="card-title">@Html.DisplayFor(e => e.Event.EventTitle)</h5>
                             <p class="card-text">@Html.DisplayFor(e => e.Event.Message)</p>
                             <hr />
@@ -87,7 +91,7 @@
                                 </button>
                             </a>
                         </div>
-                        <div class="card-footer text-muted" style="text-decoration-color: #ffffff; background-color:#cc8af7">
+                        <div class="card-footer text-muted" style="text-decoration-color: #ffffff; background-color:#a2d0c1">
                             Created on: @Html.DisplayFor(item => item.Event.DatePosted)
                         </div>
                         <div>
@@ -101,7 +105,7 @@
                 }
             }
         </div>
-        <div class="col-lg-3">
+        <div class="col-lg-4" style="margin-top: 3rem">
             <div>
                 <h3 class="text-dark font-italic">Recent Posts</h3>
                 @foreach (var post in Model.Posts)
@@ -116,17 +120,17 @@
                             <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                                 <div class="accordion-body" style="background-color: aliceblue">
                                     <p>@post.PostContent</p>
-                                    <p >Date Posted: @post.DateTimePosted</p>
+                                    <p>Date Posted: @post.DateTimePosted</p>
                                     <input type="hidden" asp-for="Post.Id" value="@post.Id" />
                                     <a asp-action="DeletePost" asp-route-id="@post.Id" asp-controller="ApplicationUsers">
-                                        <button type="submit" class="btn btn-default btn-sm" style="background-color: #ABEDE3">
+                                        <button type="submit" class="btn btn-default btn-sm" style="background-color: #a2d0c1">
                                             Delete Post
                                         </button>
                                     </a>
                                     <h5>Comments</h5>
-                                    <div style="background-color: #eeeeee">
+                                    <div style="background-color: #eff7e1">
                                         @foreach (var comment in Model.Comments)
-                                        {
+                                        { 
                                             @if (comment.PostId == post.Id)
                                             {
                                                 <div>
@@ -146,23 +150,27 @@
                                         }
                                     </div>
                                     <div>
-                                        <form asp-action="AddComment" asp-controller="ApplicationUsers" method="post">
-                                            <div class="form-group col-md-10" style="background-color: #eeeeee">
-                                                <input type="hidden" asp-for="Comment.PostId" value="@post.Id" />
-                                                <textarea asp-for="Comment.CommentContent" maxlength="50" class="form-control" id="" placeholder="Comment..."></textarea>
-                                            </div>
-                                            <div class="form-group col-md-2">
-                                                <button type="submit" class="btn" style="background-color:  #F0DE4D">
+                                        <form asp-action="AddCommentToDetails" asp-controller="ApplicationUsers" asp-route-comment="@Model.Comment" method="post">
+                                        <div class="form-group col-md-10" style="background-color: #eff7e1">
+                                            <input type="hidden" asp-for="Comment.PostId" asp-route-comment="@Model.Comment" value="@post.Id" />
+                                            <textarea  asp-for="Comment.CommentContent" maxlength="50" class="form-control" id="" placeholder="Comment..."></textarea>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <a asp-action="AddCommentToDetails" asp-controller="ApplicationUsers" asp-route-id="@post.Id">
+                                                <input type="hidden" asp-for="@Model.Comment" name="name" value="" />
+                                                <button type="submit" class="btn" style="background-color: #F0DE4D">
                                                     Comment
                                                 </button>
-                                            </div>
+                                            </a>
+
+                                        </div>
                                         </form>
                                     </div>
                                 </div>
-                               
+
                             </div>
-                            
-                           
+
+
 
                         </div>
 

@@ -50,6 +50,8 @@ namespace RefreshMyStyleApp.Models
 
         public bool IsAttending { get; set; }
 
+        
+
 
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }

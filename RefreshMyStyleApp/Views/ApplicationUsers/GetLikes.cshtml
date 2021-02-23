@@ -5,11 +5,23 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Likes</h1>
+<h1 style="text-align: center">My Likes</h1>
 
 <p>
-    <a asp-action="Index" asp-controller="ApplicationUsers">Return to Profile</a>
+    <a asp-action="Index" asp-controller="ApplicationUsers">
+        <button type="button" class="btn btn-outline-warning btn-event">
+            Return to Profile
+        </button>
+    </a>
 </p>
+<p>
+    <a asp-action="SearchUsers" asp-controller="ApplicationUsers">
+        <button type="button" class="btn btn-outline-warning btn-event">
+            Search Users
+        </button>
+    </a>
+</p>
+<hr />
 <table class="table">
     <thead>
         <tr>
@@ -18,10 +30,12 @@
                 Date
             </th>
             <th>
-                @Html.DisplayNameFor(m => m.Image)
+                @*@Html.DisplayNameFor(m => m.Image)*@
+                Clothing Item
             </th>
             <th>
-                @Html.DisplayNameFor(m => m.AppUserNotLoggedIn.FullName)
+                @*@Html.DisplayNameFor(m => m.AppUserNotLoggedIn.FullName)*@
+                Contact
             </th>
             <th></th>
         </tr>
@@ -36,7 +50,7 @@
                 </td>
                 <td>
                     <p>
-                       <img src="~/images/items/@like.ImageTitle" height="100" width="50" /> 
+                        <img src="~/images/items/@like.ImageTitle" height="100" width="50" />
                     </p>
                 </td>
 
@@ -44,9 +58,21 @@
                     @like.LikedImageOwnerFullName
                 </td>
                 <td>
-                 
-                    <a asp-action="Details" asp-route-id="@like.UserId">Details</a> |
-                    <a asp-action="DeleteLikedImage" asp-route-id="@like.Id">Delete</a>
+                    <p>
+                        <a asp-action="Details" asp-route-id="@like.UserId">
+                            <button type="button" class="btn btn-outline-warning btn-event">
+                                Details
+                            </button>
+                        </a>
+                    </p>
+                    <p>
+                        <a asp-action="DeleteLikedImage" asp-route-id="@like.Id">
+                            <button type="button" class="btn btn-outline-warning btn-event">
+                                Delete
+                            </button>
+                        </a>
+
+                    </p>                                                        
                 </td>
             </tr>
         }

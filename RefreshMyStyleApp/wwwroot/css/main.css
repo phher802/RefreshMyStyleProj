@@ -1,4 +1,29 @@
 ﻿body {
     background-color: #f8dc81;
-   
+    color: #214151
+}
+
+.btn-outline-warning {
+    color: #ffffff;
+    border-color: #ffffff;
+    border-width: thin;
+}
+
+.btn-outline-warning:hover {
+        color: #212529;
+        background-color: #ffc107;
+        border-color: #ffc107;
+}
+
+.accordion-header {
+    background-color: #eff7e1;
+}
+
+.accordion-body {
+    background-color: #eff7e1;
+}
+
+.toggle-btn{
+    margin-top: .03rem;
+    margin-bottom: .05rem;
 }

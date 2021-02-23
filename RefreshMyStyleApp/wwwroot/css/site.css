@@ -84,6 +84,7 @@ body {
     left: 0;
     box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
     transition: all 0.4s;
+    background-color: #eff7e1;
 }
 
 .page-content {
@@ -130,6 +131,7 @@ body {
     background-image: url("https://www.transparenttextures.com/patterns/fake-luxury.png");
     min-height: 100vh;
     overflow-x: hidden;
+    text-decoration-color: #214151
 }
 
 .separator {
