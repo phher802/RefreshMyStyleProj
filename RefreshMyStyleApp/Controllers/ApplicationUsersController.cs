@@ -564,7 +564,11 @@ namespace RefreshMyStyleApp.Controllers
         public IActionResult DeleteClaimedImage(int id)
         {
             var deleteClaimedImage = _context.ClaimItems.Find(id);
+            //var image = _context.Images.Where(x => x.Id == deleteClaimedImage.Id).SingleOrDefault();
+
             _context.ClaimItems.Remove(deleteClaimedImage);
+
+           // _context.Images
             _context.SaveChanges();
             return RedirectToAction(nameof(GetClaims));
         }
