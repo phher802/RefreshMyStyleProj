@@ -7,28 +7,27 @@ using System.Threading.Tasks;
 
 namespace RefreshMyStyleApp.Models
 {
-    public class Claimed
+    public class ClaimedItem
     {
         [Key]
-        public int? Id { get; set; }
-        
-        public bool IsClaimed { get; set; }
+        public int? Id { get; set; }      
 
         public DateTime? DateClaimed { get; set; }
+    
+        public int ClaimedImageOwnerId { get; set; }
+        public string ClaimImageOwnerFullName { get; set; }
+        public string ImageTitle { get; set; }
 
         public int ClaimedById { get; set; }
-
-        public int UserId { get; set; }
-        public string ClaimImageOwnerFullName { get; set; }
-
-        public string ImageTitle { get; set; }
+        public string ClaimedByName { get; set; }
+        
+        public bool IsDeleted { get; set; }
 
         [ForeignKey("Image")]
         public int? ImageId { get; set; }
         public Image Image { get; set; }
-
-        [ForeignKey("ApplicationUser")]
+   
         public int ApplicationUserId { get; set; }
-        public ApplicationUser ApplicationUser { get; set; }
+      
     }
 }

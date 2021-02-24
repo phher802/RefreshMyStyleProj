@@ -1,23 +1,24 @@
 ﻿body {
     background-color: #f8dc81;
     color: #214151;
-    /*font-family: 'Marmelad', sans-serif;*/
-    font-family: 'Merriweather', serif;
+    font-family: 'Marmelad', sans-serif;
+ /*   font-family: 'Merriweather', serif;*/
    /* font-family: 'Montserrat', sans-serif;*/
     /*font-family: 'Sansita', sans-serif;*/
 }
 
 .btn-outline-warning {
     color: #ffffff;
-    border-color: #ffffff;
+    border-color: #a2d0c1;
+    background-color: #a2d0c1;
     border-width: thin;
 }
 
-.btn-outline-warning:hover {
-        color: #212529;
-        background-color: #ffc107;
-        border-color: #ffc107;
-}
+    .btn-outline-warning:hover {
+        color: #ffffff;
+        background-color: #214151;
+        border-color: #eff7e1;
+    }
 
 .accordion-header {
     background-color: #eff7e1;

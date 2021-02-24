@@ -12,9 +12,7 @@ namespace RefreshMyStyleApp.Models
     {
         [Key]
         public int? Id { get; set; }
-
         public string ImageName { get; set; }
-
         public string ImageTitle { get; set; }
 
         [Display(Name = "Search your style")]
@@ -27,21 +25,16 @@ namespace RefreshMyStyleApp.Models
 
         [Display(Name = "Category")]
         public string ClothingCategory { get; set; }
-
         public string Color { get; set; }
-
         public string Size { get; set; }
-
         public string Description { get; set; }
-
         public string ItemStatus { get; set; }
-
         public bool IsLiked { get; set; }
-
+      
         public bool IsClaimed { get; set; }
 
-        public List<Claimed> Claimed { get; set; }
-        public List<Like> Likes { get; set; }
+        public List<ClaimedItem> Claimed { get; set; }
+        public List<LikedItem> Likes { get; set; }
 
         [ForeignKey("ApplicationUser")]
         public int ApplicationUserId { get; set; }

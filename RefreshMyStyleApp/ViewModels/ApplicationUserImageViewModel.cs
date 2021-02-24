@@ -21,11 +21,11 @@ namespace RefreshMyStyleApp.ViewModels
         public List<Image> Images { get; set; }
 
         public int? ImageId { get; set; }
-        public List<Like> Likes { get; set; }
-        public Like Like { get; set; }
+        public List<LikedItem> Likes { get; set; }
+        public LikedItem Like { get; set; }
 
-        public List<Claimed> Claims { get; set; }
-        public Claimed Claimed { get; set; }
+        public List<ClaimedItem> Claims { get; set; }
+        public ClaimedItem Claimed { get; set; }
         public List<Friend> Friends { get; set; }
 
         public Post Post { get; set; }

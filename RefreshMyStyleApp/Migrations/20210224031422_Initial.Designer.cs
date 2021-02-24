@@ -10,7 +10,7 @@ using RefreshMyStyleApp.Data;
 namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210223171742_Initial")]
+    [Migration("20210224031422_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,8 +50,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0e4e1a5a-a43a-4e10-a87d-8b1936e06c05",
-                            ConcurrencyStamp = "c8e7c240-62e1-4e47-ae72-84a702b7f057",
+                            Id = "d525f25f-94af-44a9-a87b-dac5a51b9a1b",
+                            ConcurrencyStamp = "8ecbe95d-f12c-4586-ad31-120f260e2ac3",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -261,7 +261,6 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ProfileImageName")
@@ -307,7 +306,7 @@ namespace RefreshMyStyleApp.Migrations
                     b.ToTable("Attendees");
                 });
 
-            modelBuilder.Entity("RefreshMyStyleApp.Models.Claimed", b =>
+            modelBuilder.Entity("RefreshMyStyleApp.Models.ClaimedItem", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -323,6 +322,12 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<int>("ClaimedById")
                         .HasColumnType("int");
 
+                    b.Property<string>("ClaimedByName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ClaimedImageOwnerId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DateClaimed")
                         .HasColumnType("datetime2");
 
@@ -332,19 +337,14 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<string>("ImageTitle")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsClaimed")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ApplicationUserId");
-
                     b.HasIndex("ImageId");
 
-                    b.ToTable("ClaimItems");
+                    b.ToTable("ClaimedItems");
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Comment", b =>
@@ -512,7 +512,7 @@ namespace RefreshMyStyleApp.Migrations
                     b.ToTable("Images");
                 });
 
-            modelBuilder.Entity("RefreshMyStyleApp.Models.Like", b =>
+            modelBuilder.Entity("RefreshMyStyleApp.Models.LikedItem", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
@@ -534,6 +534,12 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<bool>("IsLiked")
                         .HasColumnType("bit");
 
+                    b.Property<int>("LikedById")
+                        .HasColumnType("int");
+
+                    b.Property<string>("LikedByName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("LikedImageOwnerFullName")
                         .HasColumnType("nvarchar(max)");
 
@@ -546,63 +552,7 @@ namespace RefreshMyStyleApp.Migrations
 
                     b.HasIndex("ImageId");
 
-                    b.ToTable("Likes");
-                });
-
-            modelBuilder.Entity("RefreshMyStyleApp.Models.MyItemClaimed", b =>
-                {
-                    b.Property<int?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ApplicationUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ClothingEnthusiastId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClothingEnthusiastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("ImageId");
-
-                    b.ToTable("MyItemsClaimed");
-                });
-
-            modelBuilder.Entity("RefreshMyStyleApp.Models.MyItemLiked", b =>
-                {
-                    b.Property<int?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ApplicationUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ClothingEnthusiastId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ClothingEnthusiastName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("ImageId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ApplicationUserId");
-
-                    b.HasIndex("ImageId");
-
-                    b.ToTable("MyItemsLiked");
+                    b.ToTable("LikedItems");
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Post", b =>
@@ -734,14 +684,8 @@ namespace RefreshMyStyleApp.Migrations
                         .HasForeignKey("EventViewModelId");
                 });
 
-            modelBuilder.Entity("RefreshMyStyleApp.Models.Claimed", b =>
+            modelBuilder.Entity("RefreshMyStyleApp.Models.ClaimedItem", b =>
                 {
-                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("RefreshMyStyleApp.Models.Image", "Image")
                         .WithMany("Claimed")
                         .HasForeignKey("ImageId");
@@ -787,42 +731,16 @@ namespace RefreshMyStyleApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("RefreshMyStyleApp.Models.Like", b =>
+            modelBuilder.Entity("RefreshMyStyleApp.Models.LikedItem", b =>
                 {
                     b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RefreshMyStyleApp.Models.Image", "Image")
                         .WithMany("Likes")
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RefreshMyStyleApp.Models.Image", "Image")
-                        .WithMany("Likes")
-                        .HasForeignKey("ImageId");
-                });
-
-            modelBuilder.Entity("RefreshMyStyleApp.Models.MyItemClaimed", b =>
-                {
-                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RefreshMyStyleApp.Models.Image", "Image")
-                        .WithMany()
-                        .HasForeignKey("ImageId");
-                });
-
-            modelBuilder.Entity("RefreshMyStyleApp.Models.MyItemLiked", b =>
-                {
-                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RefreshMyStyleApp.Models.Image", "Image")
-                        .WithMany()
                         .HasForeignKey("ImageId");
                 });
 

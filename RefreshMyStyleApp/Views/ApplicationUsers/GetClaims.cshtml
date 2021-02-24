@@ -56,12 +56,13 @@
                 </td>
                 <td>
                     <p>
-                        <a asp-action="Details" asp-route-id="@claim.UserId">
+                        <a asp-action="Details" asp-route-id="@claim.ClaimedImageOwnerId">
                             <button type="button" class="btn btn-outline-warning btn-event">
                                 Details
                             </button>
                         </a>
                     </p>
+                    
                     <p>
                         <a asp-action="DeleteClaimedImage" asp-controller="ApplicationUsers" asp-route-id="@claim.Id">
                         <button type="button" class="btn btn-outline-warning btn-event">

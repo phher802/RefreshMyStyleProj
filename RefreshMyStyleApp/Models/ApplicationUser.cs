@@ -24,7 +24,7 @@ namespace RefreshMyStyleApp.Models
         [Display(Name = "Full Name")]
         public string FullName { get; set; }
 
-        [Required(ErrorMessage = "Phone Number Required", AllowEmptyStrings = false)]
+    
         [Display(Name = "Primary Phone Number")]
         [Phone]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
@@ -44,8 +44,6 @@ namespace RefreshMyStyleApp.Models
         
         public List<ApplicationUser> SearchResults { get; set; }
       
-        public List<Like> Likes { get; set; }
-  
         public bool EventAttendStatus { get; set; }
 
         public bool IsAttending { get; set; }

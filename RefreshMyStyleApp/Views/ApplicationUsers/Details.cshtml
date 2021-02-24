@@ -25,7 +25,7 @@
             @foreach (var item in Model.Images)
             {
                 <div>
-                    <div class="card h-100" style="display: flex; padding: .05rem">
+                    <div class="card h-100" style="display: flex">
                         <img src="~/images/items/@item.ImageTitle" class="card-img-top img-fluid img-thumbnail" alt="@item.ImageName" />
 
                         <div class="card-body">
@@ -37,32 +37,38 @@
                             <p class="card-text">
                                 Status: @item.ItemStatus
                             </p>
-                            <p>
-                                <a asp-action="LikeImage" asp-controller="ApplicationUsers" asp-route-id="@item.Id">
-                                    <button type="submit" class="btn btn-default btn-sm" style="background-color: #eff7e1">
-                                        Like
-                                    </button>
-                                </a>
-                            </p>
-                            @if (item.IsClaimed == false)
-                            {
-                                <p>
-                                    <a asp-action="ClaimImage" asp-controller="ApplicationUsers" asp-route-id="@item.Id">
-                                        <input type="hidden" asp-for="@item.ApplicationUserId name=" name" value="" />
+                            <div class="row">
+                                <div class="col-sml-6">
+                                    <a asp-action="LikeImage" asp-controller="ApplicationUsers" asp-route-id="@item.Id">
                                         <button type="submit" class="btn btn-default btn-sm" style="background-color: #eff7e1">
-                                            Claim
+                                            Like
                                         </button>
                                     </a>
-                                </p>
-                                }
-                         
+                                </div>
+                                <div class="col-sm-6">
+                                    @if (item.IsClaimed == true)
+                                    {
 
-
+                                        <p>Item was claimed by: @Model.ApplicationUser.Id</p>
+                                    }
+                                    else
+                                    {
+                                        <p>
+                                            <a asp-action="ClaimImage" asp-controller="ApplicationUsers" asp-route-id="@item.Id">
+                                                <input type="hidden" asp-for="@item.ApplicationUserId name=" name" value="" />
+                                                <button type="submit" class="btn btn-default btn-sm" style="background-color: #eff7e1">
+                                                    Claim
+                                                </button>
+                                            </a>
+                                        </p>
+                                    }
+                                </div>                             
+                            </div>
+                                                                                                         
                         </div>
 
                     </div>
                 </div>
-
 
             }
 
@@ -179,6 +185,7 @@
                                             </div>
                                         </form>
                                     </div>
+                                    <hr />
                                 </div>
 
                             </div>

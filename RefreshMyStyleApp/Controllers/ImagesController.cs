@@ -144,22 +144,22 @@ namespace RefreshMyStyleApp.Controllers
            // var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var applicationUser = _context.ApplicationUsers.Where(c => c.Id == id).FirstOrDefault();
             Image likeImage = _context.Images.Where(i => i.Id == imageId).SingleOrDefault();
-            Like likeInDb = new Like();
+            LikedItem likeInDb = new LikedItem();
 
             likeInDb.Id = likeImage.Id;
             likeInDb.ApplicationUserId = applicationUser.Id;
             likeInDb.IsLiked = true;
             likeInDb.DateLiked = DateTime.Now;
 
-            _context.Likes.Update(likeInDb);
+            _context.LikedItems.Update(likeInDb);
             _context.SaveChanges();
             return RedirectToAction("Index", "ApplicationUsers", likeInDb);
 
         }
 
-        public List<Like> GetLikes()
+        public List<LikedItem> GetLikes()
         {
-            List<Like> likes = _context.Likes.Where(l => l.Id > 0).ToList();
+            List<LikedItem> likes = _context.LikedItems.Where(l => l.Id > 0).ToList();
             return likes.OrderByDescending(l => l.ImageId).ThenBy(l => l.DateLiked).ToList();
         }
         public List<SelectListItem> ClothingCategory()
@@ -228,9 +228,9 @@ namespace RefreshMyStyleApp.Controllers
 
 
 
-        public List<Claimed> GetClaims()
+        public List<ClaimedItem> GetClaims()
         {
-            List<Claimed> claimed = _context.ClaimItems.Where(c => c.Id > 0).ToList();
+            List<ClaimedItem> claimed = _context.ClaimedItems.Where(c => c.Id > 0).ToList();
             return claimed.OrderByDescending(c => c.ImageId).ThenBy(c => c.DateClaimed).ToList();
         }
 
