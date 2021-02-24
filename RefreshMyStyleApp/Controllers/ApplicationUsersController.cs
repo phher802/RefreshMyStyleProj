@@ -246,6 +246,8 @@ namespace RefreshMyStyleApp.Controllers
             newLike.ApplicationUserId = currentAppUser.Id;
             newLike.IsLiked = true;
             newLike.DateLiked = DateTime.Now;
+            newLike.LikedById = currentAppUser.Id;
+            newLike.LikedByName = currentAppUser.FName;
 
             _context.LikedItems.Add(newLike);
             _context.SaveChanges();
@@ -287,7 +289,10 @@ namespace RefreshMyStyleApp.Controllers
             newClaim.ClaimedById = currentAppUser.Id;
             newClaim.ClaimedByName = currentAppUser.FullName;        
             newClaim.DateClaimed = DateTime.Now;
+
             currentImage.IsClaimed = true;
+            currentImage.ClaimedById = currentAppUser.Id;
+            currentImage.ClaimedByName = currentAppUser.FullName;
 
             _context.Images.Update(currentImage);
             _context.ClaimedItems.Add(newClaim);
@@ -305,6 +310,7 @@ namespace RefreshMyStyleApp.Controllers
             if (deleteClaimedImage.IsDeleted == true)
             {
                 image.IsClaimed = false;
+             
             }
 
             _context.Images.Update(image);
@@ -331,8 +337,8 @@ namespace RefreshMyStyleApp.Controllers
 
             return RedirectToAction("GetLikedAndClaimed");
         }
-
-        public IActionResult GetLikedAndClaimed(int id)
+        //passes in ClaimedImageId
+        public IActionResult GetLikedAndClaimedItems(int id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
@@ -344,10 +350,10 @@ namespace RefreshMyStyleApp.Controllers
             {
                 ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
                 Images = _context.Images.Where(i => i.ApplicationUserId == id).ToList(),
-                Claimed = _context.ClaimedItems.Find(id),
-                Claims = _context.ClaimedItems.Where(c => c.ImageId == claimedItem.Id).ToList(),
+          
+                Claims = _context.ClaimedItems.Where(c => c.ClaimedImageOwnerId == claimedImages.Id).ToList(),
             };
-            return View();
+            return View(personViewModel);
         }
         public IActionResult NewPost()
         {

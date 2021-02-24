@@ -32,6 +32,8 @@ namespace RefreshMyStyleApp.Models
         public bool IsLiked { get; set; }
       
         public bool IsClaimed { get; set; }
+        public int ClaimedById { get; set; }
+        public string ClaimedByName { get; set; }
 
         public List<ClaimedItem> Claimed { get; set; }
         public List<LikedItem> Likes { get; set; }

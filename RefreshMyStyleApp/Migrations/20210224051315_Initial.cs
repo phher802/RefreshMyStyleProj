@@ -325,6 +325,8 @@ namespace RefreshMyStyleApp.Migrations
                     ItemStatus = table.Column<string>(nullable: true),
                     IsLiked = table.Column<bool>(nullable: false),
                     IsClaimed = table.Column<bool>(nullable: false),
+                    ClaimedById = table.Column<int>(nullable: false),
+                    ClaimedByName = table.Column<string>(nullable: true),
                     ApplicationUserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -424,7 +426,7 @@ namespace RefreshMyStyleApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "d525f25f-94af-44a9-a87b-dac5a51b9a1b", "8ecbe95d-f12c-4586-ad31-120f260e2ac3", "ApplicationUser", "APPLICATIONUSER" });
+                values: new object[] { "0484a458-a0be-4a08-93d3-b5930b71d310", "c433f26f-676c-421c-802d-c604dbbab6c8", "ApplicationUser", "APPLICATIONUSER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationUsers_ApplicationUserId",

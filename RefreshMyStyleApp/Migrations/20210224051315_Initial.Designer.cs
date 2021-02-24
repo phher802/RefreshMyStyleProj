@@ -10,7 +10,7 @@ using RefreshMyStyleApp.Data;
 namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210224031422_Initial")]
+    [Migration("20210224051315_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,8 +50,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d525f25f-94af-44a9-a87b-dac5a51b9a1b",
-                            ConcurrencyStamp = "8ecbe95d-f12c-4586-ad31-120f260e2ac3",
+                            Id = "0484a458-a0be-4a08-93d3-b5930b71d310",
+                            ConcurrencyStamp = "c433f26f-676c-421c-802d-c604dbbab6c8",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -474,6 +474,12 @@ namespace RefreshMyStyleApp.Migrations
 
                     b.Property<int>("ApplicationUserId")
                         .HasColumnType("int");
+
+                    b.Property<int>("ClaimedById")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ClaimedByName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ClothingCategory")
                         .HasColumnType("nvarchar(max)");

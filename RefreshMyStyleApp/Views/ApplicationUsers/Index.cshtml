@@ -79,8 +79,8 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link text-dark font-italic">
-
+            <a asp-action="GetLikedAndClaimedItems" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
+                Items Claimed/Liked
             </a>
         </li>
     </ul>
@@ -151,7 +151,7 @@
                                         </button>
                                     </h2>
                                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                        <div class="accordion-body" style="background-color: aliceblue">
+                                        <div class="accordion-body" style="background-color: #eff7e1">
                                             <p>@post.PostContent</p>
                                             <hr />
                                             <div class="tiny-text">

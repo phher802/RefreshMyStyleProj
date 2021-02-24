@@ -21,7 +21,7 @@
             <div class="form-group" style="padding-top: 1rem">
                 @*<label asp-for="PostContent" class="control-label"></label>*@
                 <p>Message</p>
-                <textarea asp-for="PostContent" placeholder="Make a request" class="form-control"></textarea>
+                <textarea asp-for="PostContent" placeholder="Make a request" class="form-control" maxlength="100"></textarea>
                 <span asp-validation-for="PostContent" class="text-danger"></span>
             </div>
 
