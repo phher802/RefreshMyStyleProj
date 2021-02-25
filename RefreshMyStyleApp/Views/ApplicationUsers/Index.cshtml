@@ -101,14 +101,21 @@
                 See who's interested!
             </a>
             @*@foreach(var claim in Model.Claims)
-            {
-                @if (claim.ClaimedById > 0)
                 {
-                    @Model.Claims.Count();
-                }
-            }*@
+                    @if (claim.ClaimedById > 0)
+                    {
+                        @Model.Claims.Count();
+                    }
+                }*@
         </li>
     </ul>
+
+
+    <p>
+        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </p>
+
+
 </div>
 <!-- End vertical navbar -->
 <!-- Page content holder -->

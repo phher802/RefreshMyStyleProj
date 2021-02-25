@@ -4,35 +4,42 @@
     ViewData["Title"] = "CreateMessage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div>
+    <a asp-action="Index">
+        <button type="button" class="btn btn-outline-warning btn-event">
+            Home
+        </button>
+    </a>
+</div>
 
-<h1>CreateMessage</h1>
+<h1>Create A Message</h1>
 
-<h4>Message</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CreateMessage">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @*<div class="form-group">
-                <label asp-for="ReceiverId" class="control-label"></label>
-                <input asp-for="ReceiverId" class="form-control" />
-                <span asp-validation-for="ReceiverId" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="ReceiverId" class="control-label"></label>
+                    <input asp-for="ReceiverId" class="form-control" />
+                    <span asp-validation-for="ReceiverId" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
                 @*<label asp-for="ReceiverName" class="control-label"></label>*@
                 <p>Send To:</p>
                 <input type="hidden" asp-for="ReceiverId" name="name" value="" />
-                <Select asp-for="ReceiverName" asp-items="ViewBag.GetAllUsers" class="form-control" ></Select>
+                <Select asp-for="ReceiverName" asp-items="ViewBag.GetAllUsers" class="form-control"></Select>
                 <span asp-validation-for="ReceiverName" class="text-danger"></span>
             </div>
             @*<div class="form-group">
-                <label asp-for="SenderID" class="control-label"></label>
-                <input asp-for="SenderID" class="form-control" />
-                <span asp-validation-for="SenderID" class="text-danger"></span>
-            </div>*@
+                    <label asp-for="SenderID" class="control-label"></label>
+                    <input asp-for="SenderID" class="form-control" />
+                    <span asp-validation-for="SenderID" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
                 <label asp-for="SenderName" class="control-label"></label>
-                <select type="text" asp-for="SenderName" asp-items="ViewBag.GetAllUsers" class="form-control" ></select>
+                <select type="text" asp-for="SenderName" asp-items="ViewBag.GetAllUsers" class="form-control"></select>
                 <span asp-validation-for="SenderName" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -40,15 +47,13 @@
                 <textarea asp-for="MessageContent" class="form-control" maxlength="100"></textarea>
                 <span asp-validation-for="MessageContent" class="text-danger"></span>
             </div>
-       
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-outline-warning btn-event" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 

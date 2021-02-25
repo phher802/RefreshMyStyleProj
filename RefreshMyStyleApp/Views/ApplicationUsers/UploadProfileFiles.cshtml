@@ -16,7 +16,7 @@
               asp-action="UploadProfileFiles">
             <div class="form-group">
                 <div class="col-md-10">
-                   
+
                     <input asp-for="ProfileImage" type="file" name="files" accept="image/*" multiple />
                     <span asp-validation-for="ProfileImage" class="text-danger"></span>
                 </div>
@@ -30,7 +30,11 @@
     </div>
 </div>
 
-@*<div>
-    <a asp-action="Index">Back to List</a>
-</div>*@
+<div>
+    <a asp-action="Index" asp-controller="ApplicationUsers">
+        <Button type="button" class="class=" btn btn-outline-warning btn-event"">
+            Home
+        </Button>
+    </a>
+</div>
 
