@@ -30,7 +30,7 @@
             </div>
         </div>
     </div>
-    <p class="text-gray font-weight-bold text-uppercase px-3 small pb-4 mb-0">Main</p>
+
     <a asp-action="SearchUsers" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
         <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
         Search Users
@@ -64,11 +64,18 @@
                 Create An Event
             </a>
         </li>
-
+        <li class="nav-item">
+            <a asp-action="CreateMessage" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
+                <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
+                Send A Message
+            </a>
+        </li>
     </ul>
-    <p class="text-gray font-weight-bold text-uppercase px-3 small py-4 mb-0">Lists</p>
 
-    <ul class="nav flex-column mb-0" style="background-color: #eff7e1">
+    <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
+        My Lists
+    </a>
+    <ul class="collapse" id="collapseExample2" @*style="background-color: #eff7e1"*@>
         <li class="nav-item">
             <a asp-action="EventList" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
                 My Events
@@ -82,6 +89,11 @@
         <li class="nav-item">
             <a asp-action="GetClaims" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
                 My Claims
+            </a>
+        </li>
+        <li class="nav-item">
+            <a asp-action="GetMessages" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
+                My Messages
             </a>
         </li>
         <li class="nav-item">
@@ -231,7 +243,7 @@
                         }
                         else
                         {
-                            <p>There are no posts yet.</p>
+                            <p>There are no posts yet. Create a post!</p>
                         }
 
                     </div>

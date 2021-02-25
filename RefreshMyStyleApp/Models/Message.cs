@@ -20,8 +20,9 @@ namespace RefreshMyStyleApp.Models
         public bool ConfirmMsgIsSent { get; set; }
         public DateTime DateMessageSent { get; set; }
         public int ApplicationUserId { get; set; }
-           
+       
         public int? ImageId { get; set; }
        
+
     }
 }

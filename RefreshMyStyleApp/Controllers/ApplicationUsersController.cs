@@ -347,10 +347,9 @@ namespace RefreshMyStyleApp.Controllers
             var image = _context.Images.Where(c => c.ApplicationUserId == id).FirstOrDefault();
             image.IsConfirmed = true;
 
-            Message newMessage = new Message();
-
             if (image.IsConfirmed)
             {
+                Message newMessage = new Message();
                 newMessage.SenderID = currentAppUser.Id;
                 newMessage.SenderName = currentAppUser.FullName;
                 newMessage.ReceiverId = claimItem.ClaimedById;
@@ -364,22 +363,76 @@ namespace RefreshMyStyleApp.Controllers
                 _context.Messages.Add(newMessage);
                 _context.SaveChanges();
 
+
             }
 
-            return RedirectToAction(nameof(GetLikedAndClaimedItems));
+            return RedirectToAction("GetMessages", new { Id = id });
         }
+
+        public List<SelectListItem> GetAllUsers()
+        {
+            List<ApplicationUser> applicationUsers = _context.ApplicationUsers.Where(a => a.Id > 0).ToList();       
+            //return applicationUsers.OrderByDescending(a => a.LName).ThenBy(a => a.FName).ToList();
+
+            List<SelectListItem> users = applicationUsers.ConvertAll(a =>
+            {
+                return new SelectListItem()
+                {
+                    Text = a.FullName.ToString(),
+                    Value = a.FullName.ToString(),
+                    Selected = false
+                };
+            });
+
+            return users;
+            
+        }
+
+        public IActionResult CreateMessage()
+        {
+            ViewData["GetAllUsers"] = GetAllUsers();
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateMessage(Message message)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var claimItem = _context.ClaimedItems.Where(c => c.ClaimedImageOwnerId == currentAppUser.Id).FirstOrDefault();
+            var image = _context.Images.Where(c => c.ApplicationUserId == currentAppUser.Id).FirstOrDefault();
+
+            Message newMessage = new Message();
+            newMessage.ApplicationUserId = currentAppUser.Id;
+            newMessage.SenderID = currentAppUser.Id;
+            newMessage.SenderName = currentAppUser.FullName;
+            newMessage.ReceiverId = message.ReceiverId;
+            newMessage.ReceiverName = message.ReceiverName;
+            newMessage.ImageFilePath = message.ImageFilePath;
+            newMessage.ImageId = message.ImageId;
+            newMessage.DateMessageSent = DateTime.Now;
+            newMessage.MessageContent = message.MessageContent;
+            
+
+            _context.Messages.Add(newMessage);
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(GetMessages));
+
+        }
+
 
         public IActionResult GetMessages(int id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            var messages = _context.Messages.Find(id);
+            //var messages = _context.Messages.Find(id);
 
             ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
             {
                 ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
-                Images = _context.Images.Where(i => i.Id == messages.ImageId).ToList(),
-                Messages = _context.Messages.Where(m => m.ReceiverId == currentAppUser.Id).ToList(),
+                Images = _context.Images.Where(i => i.ApplicationUserId == currentAppUser.Id).ToList(),
+                Messages = _context.Messages.Where(m => m.ApplicationUserId == currentAppUser.Id).ToList(),
             };
 
             return View(personViewModel);
@@ -411,6 +464,7 @@ namespace RefreshMyStyleApp.Controllers
             };
             return View(personViewModel);
         }
+
         public IActionResult NewPost()
         {
             return View();
@@ -568,13 +622,13 @@ namespace RefreshMyStyleApp.Controllers
 
         }
 
-        //passes in the event id
-        public IActionResult GetAttendee(int id, AttendEvent newAttendee)
+        //passes in the eventCreator id
+        public IActionResult GetAttendee(int id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
 
-            newAttendee = new AttendEvent();
+            AttendEvent newAttendee = new AttendEvent();
             newAttendee.AttendeeId = currentAppUser.Id;
             newAttendee.AttendeeName = currentAppUser.FName + " " + currentAppUser.LName;
             newAttendee.EventId = id;
@@ -584,7 +638,7 @@ namespace RefreshMyStyleApp.Controllers
 
             // return RedirectToAction(nameof(EventList));
             //return RedirectToAction("Details", newAttendee);
-            return View(newAttendee);
+            return RedirectToAction("Details", new { Id = id });
         }
 
         // GET: ApplicationUser/Edit/5
