@@ -107,7 +107,7 @@ namespace RefreshMyStyleApp.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var applicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             newImage.ApplicationUserId = applicationUser.Id;
-            newImage.ImageTitle = uniqueName;
+            newImage.ImageFilePath = uniqueName;
                            
             _context.Images.Add(newImage);
             _context.SaveChanges();
@@ -127,41 +127,8 @@ namespace RefreshMyStyleApp.Controllers
             return string.Empty;
         }
 
-        public IActionResult AddLike()
-        {
-            var user1 = _context.ApplicationUsers.Where(a => a.IdentityUserId == this.User.FindFirstValue(ClaimTypes.NameIdentifier)).Single();
-            var image = _context.Images.Where(x => x.Id == user1.Id).SingleOrDefault();
-            image.Likes = image.Likes.ToList();
-            
-            return View(image);
-        }
 
-        public IActionResult AddLike(int imageId, int id)
-        {
-            //get image
-            //get appUser that liked image
-            //add image and appUser to like table
-           // var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var applicationUser = _context.ApplicationUsers.Where(c => c.Id == id).FirstOrDefault();
-            Image likeImage = _context.Images.Where(i => i.Id == imageId).SingleOrDefault();
-            LikedItem likeInDb = new LikedItem();
-
-            likeInDb.Id = likeImage.Id;
-            likeInDb.ApplicationUserId = applicationUser.Id;
-            likeInDb.IsLiked = true;
-            likeInDb.DateLiked = DateTime.Now;
-
-            _context.LikedItems.Update(likeInDb);
-            _context.SaveChanges();
-            return RedirectToAction("Index", "ApplicationUsers", likeInDb);
-
-        }
-
-        public List<LikedItem> GetLikes()
-        {
-            List<LikedItem> likes = _context.LikedItems.Where(l => l.Id > 0).ToList();
-            return likes.OrderByDescending(l => l.ImageId).ThenBy(l => l.DateLiked).ToList();
-        }
+    
         public List<SelectListItem> ClothingCategory()
         {
             List<SelectListItem> category = new List<SelectListItem>();
@@ -257,7 +224,7 @@ namespace RefreshMyStyleApp.Controllers
             var image = _context.Images.Where(i => i.ApplicationUserId == applicationUser.Id).FirstOrDefault();
             //image = await _context.Images.FindAsync(id);
 
-            var imagePath = Path.Combine(_env.WebRootPath, "images/items", image.ImageTitle);
+            var imagePath = Path.Combine(_env.WebRootPath, "images/items", image.ImageFilePath);
             if (System.IO.File.Exists(imagePath))
                 System.IO.File.Delete(imagePath);
 

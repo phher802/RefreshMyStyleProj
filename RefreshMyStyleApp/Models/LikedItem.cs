@@ -12,11 +12,12 @@ namespace RefreshMyStyleApp.Models
         [Key]
         public int? Id { get; set; }
         public bool IsLiked { get; set; }
-        public int UserId { get; set; }
+
         public DateTime? DateLiked { get; set; }
    
-        public string ImageTitle { get; set; }
+        public string ImageFilePath { get; set; }
 
+        public int LikedImageOwnerId { get; set; }
         public string LikedImageOwnerFullName { get; set; }
 
         public string LikedByName { get; set; }

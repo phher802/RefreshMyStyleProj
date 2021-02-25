@@ -27,6 +27,7 @@ namespace RefreshMyStyleApp.Data
         public DbSet<Comment> Comments { get; set; }
         public DbSet<AttendEvent> Attendees { get; set; }   
        
+        public DbSet<Message> Messages { get; set; }
     
         protected override void OnModelCreating(ModelBuilder builder)
         {

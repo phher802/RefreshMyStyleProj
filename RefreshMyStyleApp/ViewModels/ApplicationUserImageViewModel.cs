@@ -38,5 +38,8 @@ namespace RefreshMyStyleApp.ViewModels
 
         public List<AttendEvent> Attendees { get; set; }
        public AttendEvent Attendee { get; set; }
+
+        public Message Message { get; set; }
+        public List<Message> Messages { get; set; }
     }
 }

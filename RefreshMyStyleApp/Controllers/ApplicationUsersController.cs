@@ -35,8 +35,7 @@ namespace RefreshMyStyleApp.Controllers
 
         }
 
-
-        // GET: People
+        // GET: ApplicationUsers
         public IActionResult Index()
         {
             ApplicationUser applicationUserLoggedIn = new ApplicationUser();
@@ -68,39 +67,44 @@ namespace RefreshMyStyleApp.Controllers
         }
 
 
-        // GET: People/Details/5
+
+        // GET: ApplicationUser/Details/5
         public IActionResult Details(int id)
         {
+            
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var appUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             var AppUserNotLoggedIn = _context.ApplicationUsers.Find(id);
-            var appUser = _context.ApplicationUsers.Where(a => a.Id == id).SingleOrDefault();
-            var post = _context.Posts.Where(p => p.ApplicationUserId == appUser.Id).FirstOrDefault();
+           // var appUser = _context.ApplicationUsers.Where(a => a.Id == id).SingleOrDefault();
+            //var post = _context.Posts.Where(p => p.ApplicationUserId == appUser.Id).FirstOrDefault();
+        
 
             ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
             {
                 AppUserNotLoggedIn = _context.ApplicationUsers.Find(id),
+                //AppUserNotLoggedIn = _context.ApplicationUsers.Where(a => a.Id == id).FirstOrDefault(),
                 Images = _context.Images.Where(i => i.ApplicationUserId == id).ToList(),
                 Event = _context.Events.Where(e => e.EventCreatorId == id).FirstOrDefault(),
                 Events = _context.Events.Where(e => e.EventCreatorId == id).ToList(),
-                Attendees = _context.Attendees.Where(x => x.EventId == id).ToList(),
+                Attendees = _context.Attendees.Where(x => x.AttendeeId == appUserLoggedIn.Id).ToList(),
+                //Posts = posts,
                 Posts = _context.Posts.Where(x => x.ApplicationUserId == id).ToList(),
-                Comments = _context.Comments.Where(x => x.PostId == post.Id).ToList(),
-
+                Comments = _context.Comments.Where(x => x.ApplicationUserId == id).ToList(),
+               
             };
 
             return View(personViewModel);
         }
 
 
-        // GET: People/Create
+        // GET: ApplicationUser/Create
         public IActionResult Create()
         {
             ApplicationUser applicationUser = new ApplicationUser();
             return View(applicationUser);
         }
 
-        // POST: People/Create
+        // POST: ApplicationUser/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -240,14 +244,14 @@ namespace RefreshMyStyleApp.Controllers
 
             LikedItem newLike = new LikedItem();
             newLike.ImageId = currentImage.Id;
-            newLike.ImageTitle = currentImage.ImageTitle;
-            newLike.UserId = currentImage.ApplicationUserId;
+            newLike.ImageFilePath = currentImage.ImageFilePath;
+            newLike.LikedImageOwnerId = currentImage.ApplicationUserId;
             newLike.LikedImageOwnerFullName = imageOwner.FullName;
             newLike.ApplicationUserId = currentAppUser.Id;
             newLike.IsLiked = true;
             newLike.DateLiked = DateTime.Now;
             newLike.LikedById = currentAppUser.Id;
-            newLike.LikedByName = currentAppUser.FName;
+            newLike.LikedByName = currentAppUser.FullName;
 
             _context.LikedItems.Add(newLike);
             _context.SaveChanges();
@@ -269,6 +273,21 @@ namespace RefreshMyStyleApp.Controllers
             return View(personViewModel);
         }
 
+        //public IActionResult CountClaims(int id)
+        //{
+        //    var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    var appUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+        //    var images = _context.Images.Where(i => i.ApplicationUserId == appUserLoggedIn.Id).ToList();
+        //    var claimed = _context.ClaimedItems.Where(c => c.ClaimedImageOwnerId == appUserLoggedIn.Id).ToList();
+
+        //    if (claimed.Count > 0)
+        //    {
+        //        return claimed.Count();
+        //    }
+
+        //    return View();
+        //}
+
         public IActionResult ClaimImage(int id)
         {
             //get image
@@ -279,15 +298,15 @@ namespace RefreshMyStyleApp.Controllers
             Image currentImage = _context.Images.Find(id);
             var imageOwner = _context.ApplicationUsers.Where(x => x.Id == currentImage.ApplicationUserId).FirstOrDefault();
 
-            
+
             ClaimedItem newClaim = new ClaimedItem();
             newClaim.ImageId = currentImage.Id;
-            newClaim.ImageTitle = currentImage.ImageTitle;
+            newClaim.ImageFilePath = currentImage.ImageFilePath;
             newClaim.ClaimedImageOwnerId = currentImage.ApplicationUserId;
             newClaim.ClaimImageOwnerFullName = imageOwner.FullName;
             newClaim.ApplicationUserId = currentAppUser.Id;
             newClaim.ClaimedById = currentAppUser.Id;
-            newClaim.ClaimedByName = currentAppUser.FullName;        
+            newClaim.ClaimedByName = currentAppUser.FullName;
             newClaim.DateClaimed = DateTime.Now;
 
             currentImage.IsClaimed = true;
@@ -303,14 +322,14 @@ namespace RefreshMyStyleApp.Controllers
         public IActionResult DeleteClaimedImage(int? id)
         {
             //id = claimed.Id;
-            var deleteClaimedImage = _context.ClaimedItems.Find(id);         
+            var deleteClaimedImage = _context.ClaimedItems.Find(id);
             var image = _context.Images.Where(x => x.Id == deleteClaimedImage.ImageId).SingleOrDefault();
             deleteClaimedImage.IsDeleted = true;
 
             if (deleteClaimedImage.IsDeleted == true)
             {
                 image.IsClaimed = false;
-             
+
             }
 
             _context.Images.Update(image);
@@ -322,36 +341,73 @@ namespace RefreshMyStyleApp.Controllers
 
         public IActionResult ConfirmClaim(int id)
         {
-            //var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var claimItem = _context.ClaimedItems.Where(c => c.ClaimedImageOwnerId == currentAppUser.Id).FirstOrDefault();
             var image = _context.Images.Where(c => c.ApplicationUserId == id).FirstOrDefault();
+            image.IsConfirmed = true;
 
+            Message newMessage = new Message();
 
-            if (image.IsClaimed)
+            if (image.IsConfirmed)
             {
-                //  image.Claimed += 25.00;
-                _context.Update(image);
+                newMessage.SenderID = currentAppUser.Id;
+                newMessage.SenderName = currentAppUser.FullName;
+                newMessage.ReceiverId = claimItem.ClaimedById;
+                newMessage.ReceiverName = claimItem.ClaimedByName;
+                newMessage.ImageFilePath = image.ImageFilePath;
+                newMessage.ImageId = image.Id;
+                newMessage.DateMessageSent = DateTime.Now;
+                newMessage.MessageContent = "Hello your claim has been confirmed. Please contact me within 3 days if you're still interested. Thank you.";
+                newMessage.ConfirmMsgIsSent = true;
+
+                _context.Messages.Add(newMessage);
                 _context.SaveChanges();
 
             }
 
-            return RedirectToAction("GetLikedAndClaimed");
+            return RedirectToAction(nameof(GetLikedAndClaimedItems));
         }
+
+        public IActionResult GetMessages(int id)
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var messages = _context.Messages.Find(id);
+
+            ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
+            {
+                ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
+                Images = _context.Images.Where(i => i.Id == messages.ImageId).ToList(),
+                Messages = _context.Messages.Where(m => m.ReceiverId == currentAppUser.Id).ToList(),
+            };
+
+            return View(personViewModel);
+        }
+
+        public IActionResult DeleteMessage(int? id)
+        {
+            var deleteMsg = _context.Messages.Find(id);
+            _context.Messages.Remove(deleteMsg);
+            _context.SaveChanges();
+
+            return RedirectToAction(nameof(GetMessages));
+        }
+
         //passes in ClaimedImageId
         public IActionResult GetLikedAndClaimedItems(int id)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            var claimedImages = _context.Images.Find(id);
-            var claimedItem = _context.Images.Where(c => c.IsClaimed == true).FirstOrDefault(c => c.Id == claimedImages.Id);
+            var image = _context.Images.Find(id);
 
 
             ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
             {
                 ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
                 Images = _context.Images.Where(i => i.ApplicationUserId == id).ToList(),
-          
-                Claims = _context.ClaimedItems.Where(c => c.ClaimedImageOwnerId == claimedImages.Id).ToList(),
+                Likes = _context.LikedItems.Where(c => c.LikedImageOwnerId == image.Id).ToList(),
+                Claims = _context.ClaimedItems.Where(c => c.ClaimedImageOwnerId == image.Id).ToList(),
             };
             return View(personViewModel);
         }
@@ -445,8 +501,8 @@ namespace RefreshMyStyleApp.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var appUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            var appUserNotLoggedIn = _context.ApplicationUsers.Find(id);
-            var currentEvent = _context.Events.Find(id);
+            //var appUserNotLoggedIn = _context.ApplicationUsers.Find(id);
+            //var currentEvent = _context.Events.Find(id);
 
             EventViewModel eventViewModel = new EventViewModel
             {
@@ -468,8 +524,9 @@ namespace RefreshMyStyleApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateEvent(Event newEvent)
+        public IActionResult CreateEvent(int? id, Event newEvent)
         {
+            id = newEvent.Id;
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             //var appUserNotLoggedIn = _context.ApplicationUsers.Find(id);
@@ -477,7 +534,7 @@ namespace RefreshMyStyleApp.Controllers
             Event createEvent = new Event();
             createEvent.EventCreatorId = currentAppUser.Id;
             createEvent.EventCreatorName = currentAppUser.FName + " " + currentAppUser.LName;
-            createEvent.DatePosted = DateTime.Now;
+            createEvent.DatePosted = DateTime.Today;
             createEvent.EventDate = newEvent.EventDate;
             createEvent.EventTitle = newEvent.EventTitle;
             createEvent.Message = newEvent.Message;
@@ -503,7 +560,7 @@ namespace RefreshMyStyleApp.Controllers
             cancelEvent.IsCanceled = true;
             cancelEvent.Message = "This event has been canceled.";
             cancelEvent.Address = "Not Available";
-            cancelEvent.DateCanceled = DateTime.Now;
+            cancelEvent.DateCanceled = DateTime.Today;
 
             _context.Events.Update(cancelEvent);
             _context.SaveChanges();
@@ -511,12 +568,13 @@ namespace RefreshMyStyleApp.Controllers
 
         }
 
-        public IActionResult GetAttendee(int id)
+        //passes in the event id
+        public IActionResult GetAttendee(int id, AttendEvent newAttendee)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
 
-            AttendEvent newAttendee = new AttendEvent();
+            newAttendee = new AttendEvent();
             newAttendee.AttendeeId = currentAppUser.Id;
             newAttendee.AttendeeName = currentAppUser.FName + " " + currentAppUser.LName;
             newAttendee.EventId = id;
@@ -525,7 +583,8 @@ namespace RefreshMyStyleApp.Controllers
             _context.SaveChanges();
 
             // return RedirectToAction(nameof(EventList));
-            return RedirectToAction("Details", new { Id = id });
+            //return RedirectToAction("Details", newAttendee);
+            return View(newAttendee);
         }
 
         // GET: ApplicationUser/Edit/5
@@ -587,7 +646,7 @@ namespace RefreshMyStyleApp.Controllers
             return RedirectToAction(nameof(GetLikes));
         }
 
-       
+
 
         // GET: ClothingEnthusiasts/Delete/5
         public async Task<IActionResult> Delete(int? id)

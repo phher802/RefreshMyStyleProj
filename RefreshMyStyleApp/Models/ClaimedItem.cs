@@ -16,7 +16,7 @@ namespace RefreshMyStyleApp.Models
     
         public int ClaimedImageOwnerId { get; set; }
         public string ClaimImageOwnerFullName { get; set; }
-        public string ImageTitle { get; set; }
+        public string ImageFilePath { get; set; }
 
         public int ClaimedById { get; set; }
         public string ClaimedByName { get; set; }

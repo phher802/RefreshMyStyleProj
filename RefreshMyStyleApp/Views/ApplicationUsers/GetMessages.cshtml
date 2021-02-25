@@ -1,11 +1,11 @@
 ﻿@model RefreshMyStyleApp.ViewModels.ApplicationUserImageViewModel
 
 @{
-    ViewData["Title"] = "GetLikes";
+    ViewData["Title"] = "GetMessages";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 style="text-align: center">My Likes</h1>
+<h1 style="text-align: center">My Messages</h1>
 
 <p>
     <a asp-action="Index" asp-controller="ApplicationUsers">
@@ -25,56 +25,62 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @*@Html.DisplayNameFor(m => m.Like.DateLiked)*@
+            <th>              
                 Date
             </th>
-            <th>
-                @*@Html.DisplayNameFor(m => m.Image)*@
-                Clothing Item
+            <th>               
+                From
+            </th>
+            <th>              
+                Item
             </th>
             <th>
-                @*@Html.DisplayNameFor(m => m.AppUserNotLoggedIn.FullName)*@
-                Contact
+                Message
             </th>
-            <th></th>
+            <th>
+
+            </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var like in Model.Likes)
+        @foreach (var msg in Model.Messages)
         {
             <tr>
 
                 <td>
-                    @like.DateLiked
+                    @msg.DateMessageSent
+                </td>
+                <td>
+                    @msg.SenderName
                 </td>
                 <td>
                     <p style="text-align: center">
-                        <img src="~/images/items/@like.ImageFilePath" height="100" width="80" />
+                        <img src="~/images/items/@msg.ImageFilePath" height="100" width="80" />
                     </p>
                 </td>
 
                 <td>
-                    @like.LikedImageOwnerFullName
+                    @msg.MessageContent
                 </td>
                 <td>
                     <p>
-                        <a asp-action="Details" asp-route-id="@like.LikedImageOwnerId">
+                        <a asp-action="Details" asp-route-id="@msg.SenderID">
                             <button type="button" class="btn btn-outline-warning btn-event">
                                 Details
                             </button>
                         </a>
                     </p>
                     <p>
-                        <a asp-action="DeleteLikedImage" asp-route-id="@like.Id">
+                        <a asp-action="DeleteMessage" asp-route-id="@msg.Id">
                             <button type="button" class="btn btn-outline-warning btn-event">
                                 Delete
                             </button>
                         </a>
 
-                    </p>                                                        
+                    </p>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+

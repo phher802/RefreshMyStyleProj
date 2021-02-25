@@ -47,6 +47,28 @@ namespace RefreshMyStyleApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReceiverId = table.Column<int>(nullable: false),
+                    ReceiverName = table.Column<string>(nullable: true),
+                    SenderID = table.Column<int>(nullable: false),
+                    SenderName = table.Column<string>(nullable: true),
+                    ImageFilePath = table.Column<string>(nullable: true),
+                    MessageContent = table.Column<string>(nullable: true),
+                    ConfirmMsgIsSent = table.Column<bool>(nullable: false),
+                    DateMessageSent = table.Column<DateTime>(nullable: false),
+                    ApplicationUserId = table.Column<int>(nullable: false),
+                    ImageId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -234,7 +256,7 @@ namespace RefreshMyStyleApp.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AttendeeName = table.Column<string>(nullable: true),
                     AttendeeId = table.Column<int>(nullable: false),
-                    EventId = table.Column<int>(nullable: true),
+                    EventId = table.Column<int>(nullable: false),
                     EventViewModelId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -316,7 +338,7 @@ namespace RefreshMyStyleApp.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ImageName = table.Column<string>(nullable: true),
-                    ImageTitle = table.Column<string>(nullable: true),
+                    ImageFilePath = table.Column<string>(nullable: true),
                     SearchImages = table.Column<string>(nullable: true),
                     ClothingCategory = table.Column<string>(nullable: true),
                     Color = table.Column<string>(nullable: true),
@@ -324,6 +346,7 @@ namespace RefreshMyStyleApp.Migrations
                     Description = table.Column<string>(nullable: true),
                     ItemStatus = table.Column<string>(nullable: true),
                     IsLiked = table.Column<bool>(nullable: false),
+                    IsConfirmed = table.Column<bool>(nullable: false),
                     IsClaimed = table.Column<bool>(nullable: false),
                     ClaimedById = table.Column<int>(nullable: false),
                     ClaimedByName = table.Column<string>(nullable: true),
@@ -372,7 +395,7 @@ namespace RefreshMyStyleApp.Migrations
                     DateClaimed = table.Column<DateTime>(nullable: true),
                     ClaimedImageOwnerId = table.Column<int>(nullable: false),
                     ClaimImageOwnerFullName = table.Column<string>(nullable: true),
-                    ImageTitle = table.Column<string>(nullable: true),
+                    ImageFilePath = table.Column<string>(nullable: true),
                     ClaimedById = table.Column<int>(nullable: false),
                     ClaimedByName = table.Column<string>(nullable: true),
                     IsDeleted = table.Column<bool>(nullable: false),
@@ -397,9 +420,9 @@ namespace RefreshMyStyleApp.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     IsLiked = table.Column<bool>(nullable: false),
-                    UserId = table.Column<int>(nullable: false),
                     DateLiked = table.Column<DateTime>(nullable: true),
-                    ImageTitle = table.Column<string>(nullable: true),
+                    ImageFilePath = table.Column<string>(nullable: true),
+                    LikedImageOwnerId = table.Column<int>(nullable: false),
                     LikedImageOwnerFullName = table.Column<string>(nullable: true),
                     LikedByName = table.Column<string>(nullable: true),
                     LikedById = table.Column<int>(nullable: false),
@@ -426,7 +449,7 @@ namespace RefreshMyStyleApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "0484a458-a0be-4a08-93d3-b5930b71d310", "c433f26f-676c-421c-802d-c604dbbab6c8", "ApplicationUser", "APPLICATIONUSER" });
+                values: new object[] { "f47b5ebc-bd56-4942-8b35-998cc23be32b", "eb6dd6e0-0c0a-44f2-914e-72954d72c46e", "ApplicationUser", "APPLICATIONUSER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationUsers_ApplicationUserId",
@@ -633,6 +656,9 @@ namespace RefreshMyStyleApp.Migrations
 
             migrationBuilder.DropTable(
                 name: "LikedItems");
+
+            migrationBuilder.DropTable(
+                name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

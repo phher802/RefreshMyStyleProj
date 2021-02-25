@@ -23,66 +23,68 @@
             </button>
         </a>
     </p>
-  
+
 </div>
 
-
+<hr />
 <div>
-
-    <hr />
     <div>
-        @foreach (var e in Model.Events)
+        @if (Model.Events != null)
         {
-            <div class="card text-center" style="padding: 10px">
-                <div class="card-header" style="background-color: #a2d0c1">
-                    <h5 class="text-light">
-                        Event Date: @Html.DisplayFor(e => e.Event.EventDate, "{0:MM/dd/yyyy}", new { @class = "form-control" })
-                    </h5>
-                </div>
-                <div class="card-body" style="background-color: #eff7e1">
-                    <h5 class="card-title">@Html.DisplayFor(e => e.Event.EventTitle)</h5>
-                    <p class="card-text">@Html.DisplayFor(e => e.Event.Message)</p>
-                    <hr />
-                    <p>Location Address: @Html.DisplayFor(e => e.Event.Address)</p>
-                    @if (e.IsCanceled)
-                    {
-                        <h2>@Html.DisplayFor(e => e.Event.Message)</h2>
-                        <h6>@Html.DisplayFor(e => e.Event.DateCanceled, "{0:MM/dd/yyyy}", new { @class = "form-control" }) </h6>
-                    }
-                    @*<a asp-action="GetAttendee" asp-controller="ApplicationUsers" asp-route-attendee="@Model.Attendee">
-                            <button>
-                                Attend This Event
-                            </button>
-                        </a>*@
-                </div>
-                <div class="card-footer text-muted" style="background-color: #a2d0c1">
-                    Created on: @Html.DisplayFor(item => item.Event.DatePosted)
-                </div>
-                <div>
-                    <h6 class="text-center">Attendees</h6>
-                    @foreach (var a in Model.Attendees)
-                    {
-                        @if (a.EventId == e.Id)
+            @foreach (var e in Model.Events)
+            {
+                <div class="card text-center" style="padding: 10px">
+                    <div class="card-header" style="background-color: #a2d0c1">
+                        <h5 class="text-light">
+                            Event Date: @e.EventDate
+                        </h5>
+                    </div>
+                    <div class="card-body" style="background-color: #eff7e1">
+                        <h5 class="card-title">@e.EventTitle</h5>
+                        <p class="card-text">@e.Message</p>
+                        <hr />
+                        <p>Location Address: @e.Address</p>
+                        @if (e.IsCanceled)
                         {
-                            <p class="text-center">@a.AttendeeName</p>
+                            <h2>@e.Message</h2>
+                            <h6>@e.DateCanceled</h6>
                         }
 
-                    }
-                </div>
-                
-                <a asp-action="DeleteEvent" asp-controller="ApplicationUsers" asp-route-id="@e.Id">
-                    <button type="submit" class="btn btn-default btn-sm">
-                        Delete Event
-                    </button>
-                </a>
-                <a asp-action="CancelEvent" asp-controller="ApplicationUsers" asp-route-id="@e.Id">
-                    <button type="submit" class="btn btn-default btn-sm">
-                        Cancel Event
-                    </button>
-                </a>
-            </div>
+                    </div>
+                    <div class="card-footer text-muted" style="background-color: #a2d0c1">
+                        Created on: @e.DatePosted
+                    </div>
+                    <div>
+                        <h6 class="text-center">Attendees</h6>
+                        @foreach (var a in Model.Attendees)
+                        {
+                            @if (a.EventId == e.Id)
+                            {
+                                <p class="text-center">@a.AttendeeName</p>
+                            }
 
+                        }
+                    </div>
+
+                    <a asp-action="DeleteEvent" asp-controller="ApplicationUsers" asp-route-id="@e.Id">
+                        <button type="submit" class="btn btn-default btn-sm">
+                            Delete Event
+                        </button>
+                    </a>
+                    <a asp-action="CancelEvent" asp-controller="ApplicationUsers" asp-route-id="@e.Id">
+                        <button type="submit" class="btn btn-default btn-sm">
+                            Cancel Event
+                        </button>
+                    </a>
+                </div>
+
+            }
         }
+        else
+        {
+            <p>There are no events.  Create one!</p>
+        }
+
     </div>
 
 

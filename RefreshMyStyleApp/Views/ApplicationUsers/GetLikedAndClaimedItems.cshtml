@@ -35,7 +35,10 @@
                 <th>
                     Claimer's Name
                 </th>
-                <th></th>
+                <th>
+                   Actions
+                </th>
+               
             </tr>
         </thead>
         <tbody>
@@ -48,7 +51,7 @@
                     </td>
                     <td>
                         <p>
-                            <img src="~/images/items/@claim.ImageTitle" height="100" width="50" />
+                            <img src="~/images/items/@claim.ImageFilePath" height="100" width="50" />
                         </p>
                     </td>
 
@@ -71,6 +74,13 @@
                                 </button>
                             </a>
                         </p>
+                        <p>
+                            <a asp-action="ConfirmClaim" asp-controller="ApplicationUsers" asp-route-id="@claim.Id" >
+                                <button type="button" class="btn btn-outline-warning btn-event">
+                                    Confirm
+                                </button>
+                            </a>
+                        </p>
 
                     </td>
                 </tr>
@@ -78,4 +88,61 @@
         </tbody>
     </table>
 </div>
+<hr />
+<div>
+    <h3>Items Liked</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Date Liked
+                </th>
+                <th>
+                    Clothing Item
+                </th>
+                <th>
+                    Liker's Name
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var like in Model.Likes)
+            {
+                <tr>
 
+                    <td>
+                        @like.DateLiked
+                    </td>
+                    <td>
+                        <p>
+                            <img src="~/images/items/@like.ImageFilePath" height="100" width="50" />
+                        </p>
+                    </td>
+
+                    <td>
+                        @like.LikedByName
+                    </td>
+                    <td>
+                        <p>
+                            <a asp-action="Details" asp-route-id="@like.LikedById">
+                                <button type="button" class="btn btn-outline-warning btn-event">
+                                    Details
+                                </button>
+                            </a>
+                        </p>
+
+                        <p>
+                            <a asp-action="DeleteClaimedImage" asp-controller="ApplicationUsers" asp-route-id="@like.Id">
+                                <button type="button" class="btn btn-outline-warning btn-event">
+                                    Delete
+                                </button>
+                            </a>
+                        </p>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

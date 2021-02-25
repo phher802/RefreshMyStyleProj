@@ -9,11 +9,11 @@ namespace RefreshMyStyleApp.Models
     public class AttendEvent
     {
         [Key]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         public string AttendeeName { get; set; }
         public int AttendeeId { get; set; }
-        public int? EventId { get; set; }
+        public int EventId { get; set; }
 
         
 

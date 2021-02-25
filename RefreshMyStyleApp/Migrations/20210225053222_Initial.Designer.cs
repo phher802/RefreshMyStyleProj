@@ -10,7 +10,7 @@ using RefreshMyStyleApp.Data;
 namespace RefreshMyStyleApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210224051315_Initial")]
+    [Migration("20210225053222_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,8 +50,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0484a458-a0be-4a08-93d3-b5930b71d310",
-                            ConcurrencyStamp = "c433f26f-676c-421c-802d-c604dbbab6c8",
+                            Id = "f47b5ebc-bd56-4942-8b35-998cc23be32b",
+                            ConcurrencyStamp = "eb6dd6e0-0c0a-44f2-914e-72954d72c46e",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -282,7 +282,7 @@ namespace RefreshMyStyleApp.Migrations
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.AttendEvent", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
@@ -293,7 +293,7 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<string>("AttendeeName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EventId")
+                    b.Property<int>("EventId")
                         .HasColumnType("int");
 
                     b.Property<int?>("EventViewModelId")
@@ -331,11 +331,11 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<DateTime?>("DateClaimed")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ImageFilePath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("ImageId")
                         .HasColumnType("int");
-
-                    b.Property<string>("ImageTitle")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -490,13 +490,16 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ImageFilePath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ImageName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageTitle")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsClaimed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsConfirmed")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsLiked")
@@ -531,11 +534,11 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<DateTime?>("DateLiked")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("ImageFilePath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("ImageId")
                         .HasColumnType("int");
-
-                    b.Property<string>("ImageTitle")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsLiked")
                         .HasColumnType("bit");
@@ -549,7 +552,7 @@ namespace RefreshMyStyleApp.Migrations
                     b.Property<string>("LikedImageOwnerFullName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("LikedImageOwnerId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -559,6 +562,48 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasIndex("ImageId");
 
                     b.ToTable("LikedItems");
+                });
+
+            modelBuilder.Entity("RefreshMyStyleApp.Models.Message", b =>
+                {
+                    b.Property<int?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("ApplicationUserId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("ConfirmMsgIsSent")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("DateMessageSent")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageFilePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("ImageId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MessageContent")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReceiverName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SenderID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SenderName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Post", b =>

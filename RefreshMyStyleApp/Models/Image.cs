@@ -13,15 +13,15 @@ namespace RefreshMyStyleApp.Models
         [Key]
         public int? Id { get; set; }
         public string ImageName { get; set; }
-        public string ImageTitle { get; set; }
+        public string ImageFilePath { get; set; }
 
         [Display(Name = "Search your style")]
         public string SearchImages { get; set; }
 
-        //public string FilePath { get; set; }
 
         [NotMapped]
         public IFormFile ImageFile { get; set; }
+
 
         [Display(Name = "Category")]
         public string ClothingCategory { get; set; }
@@ -29,8 +29,8 @@ namespace RefreshMyStyleApp.Models
         public string Size { get; set; }
         public string Description { get; set; }
         public string ItemStatus { get; set; }
-        public bool IsLiked { get; set; }
-      
+        public bool IsLiked { get; set; }    
+        public bool IsConfirmed { get; set; }
         public bool IsClaimed { get; set; }
         public int ClaimedById { get; set; }
         public string ClaimedByName { get; set; }
