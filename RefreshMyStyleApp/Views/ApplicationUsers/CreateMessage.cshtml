@@ -21,6 +21,7 @@
             <div class="form-group">
                 @*<label asp-for="ReceiverName" class="control-label"></label>*@
                 <p>Send To:</p>
+                <input type="hidden" asp-for="ReceiverId" name="name" value="" />
                 <Select asp-for="ReceiverName" asp-items="ViewBag.GetAllUsers" class="form-control" ></Select>
                 <span asp-validation-for="ReceiverName" class="text-danger"></span>
             </div>

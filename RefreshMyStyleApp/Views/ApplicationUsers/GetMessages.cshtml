@@ -47,7 +47,7 @@
         <tbody>
             @foreach (var msg in Model.Messages)
             {
-                @if (msg.ReceiverId == msg.ApplicationUserId)
+                @if (msg.ReceiverId == Model.ApplicationUser.Id)
                 {
                     <tr>
 
@@ -127,7 +127,7 @@
         <tbody>
             @foreach (var msg in Model.Messages)
             {
-                @if (msg.SenderID == msg.ApplicationUserId)
+                @if (msg.SenderID == Model.ApplicationUser.Id)
                 {
                     <tr>
 

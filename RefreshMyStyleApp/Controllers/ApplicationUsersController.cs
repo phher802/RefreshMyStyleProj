@@ -344,12 +344,13 @@ namespace RefreshMyStyleApp.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             var claimItem = _context.ClaimedItems.Where(c => c.ClaimedImageOwnerId == currentAppUser.Id).FirstOrDefault();
-            var image = _context.Images.Where(c => c.ApplicationUserId == id).FirstOrDefault();
+            var image = _context.Images.Where(c => c.Id == claimItem.ImageId).FirstOrDefault();
             image.IsConfirmed = true;
+            Message newMessage = new Message();
 
-            if (image.IsConfirmed)
+            if (image.IsConfirmed == true)
             {
-                Message newMessage = new Message();
+                newMessage.ApplicationUserId = currentAppUser.Id;
                 newMessage.SenderID = currentAppUser.Id;
                 newMessage.SenderName = currentAppUser.FullName;
                 newMessage.ReceiverId = claimItem.ClaimedById;
@@ -359,13 +360,10 @@ namespace RefreshMyStyleApp.Controllers
                 newMessage.DateMessageSent = DateTime.Now;
                 newMessage.MessageContent = "Hello your claim has been confirmed. Please contact me within 3 days if you're still interested. Thank you.";
                 newMessage.ConfirmMsgIsSent = true;
-
-                _context.Messages.Add(newMessage);
-                _context.SaveChanges();
-
-
             }
 
+            _context.Messages.Add(newMessage);
+            _context.SaveChanges();
             return RedirectToAction("GetMessages", new { Id = id });
         }
 
@@ -427,15 +425,24 @@ namespace RefreshMyStyleApp.Controllers
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             //var messages = _context.Messages.Find(id);
+            List<Message> allMessages = GetAllMessages();
 
             ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
             {
                 ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
-                Images = _context.Images.Where(i => i.ApplicationUserId == currentAppUser.Id).ToList(),
-                Messages = _context.Messages.Where(m => m.ApplicationUserId == currentAppUser.Id).ToList(),
+                Images = _context.Images.Where(i => i.ApplicationUserId == id).ToList(),
+                //Messages = _context.Messages.Where(m => m.ApplicationUserId == id).ToList(),
+                Messages = allMessages,
+                //Message = _context.Messages.Where(m => m.ApplicationUserId == id).FirstOrDefault(),
             };
 
             return View(personViewModel);
+        }
+
+        public List<Message> GetAllMessages()
+        {
+            List<Message> getAllMessages = _context.Messages.Where(m => m.Id > 0).ToList();
+            return getAllMessages.OrderByDescending(m => m.DateMessageSent).ToList();
         }
 
         public IActionResult DeleteMessage(int? id)
