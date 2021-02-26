@@ -47,28 +47,6 @@ namespace RefreshMyStyleApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Messages",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ReceiverId = table.Column<int>(nullable: false),
-                    ReceiverName = table.Column<string>(nullable: true),
-                    SenderID = table.Column<int>(nullable: false),
-                    SenderName = table.Column<string>(nullable: true),
-                    ImageFilePath = table.Column<string>(nullable: true),
-                    MessageContent = table.Column<string>(nullable: true),
-                    ConfirmMsgIsSent = table.Column<bool>(nullable: false),
-                    DateMessageSent = table.Column<DateTime>(nullable: false),
-                    ApplicationUserId = table.Column<int>(nullable: false),
-                    ImageId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Messages", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
@@ -364,6 +342,34 @@ namespace RefreshMyStyleApp.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReceiverId = table.Column<int>(nullable: false),
+                    ReceiverName = table.Column<string>(nullable: true),
+                    SenderID = table.Column<int>(nullable: false),
+                    SenderName = table.Column<string>(nullable: true),
+                    ImageFilePath = table.Column<string>(nullable: true),
+                    MessageContent = table.Column<string>(nullable: true),
+                    ConfirmMsgIsSent = table.Column<bool>(nullable: false),
+                    DateMessageSent = table.Column<DateTime>(nullable: false),
+                    ApplicationUserId = table.Column<int>(nullable: false),
+                    ImageId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_ApplicationUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "ApplicationUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Posts",
                 columns: table => new
                 {
@@ -449,7 +455,7 @@ namespace RefreshMyStyleApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "f47b5ebc-bd56-4942-8b35-998cc23be32b", "eb6dd6e0-0c0a-44f2-914e-72954d72c46e", "ApplicationUser", "APPLICATIONUSER" });
+                values: new object[] { "9bb4bd7f-e0b8-40f4-acb2-1a4cb806c98f", "1bac6933-dc47-461a-b12d-cb93a6cd78a5", "ApplicationUser", "APPLICATIONUSER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationUsers_ApplicationUserId",
@@ -569,6 +575,11 @@ namespace RefreshMyStyleApp.Migrations
                 name: "IX_LikedItems_ImageId",
                 table: "LikedItems",
                 column: "ImageId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_ApplicationUserId",
+                table: "Messages",
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Posts_ApplicationUserId",

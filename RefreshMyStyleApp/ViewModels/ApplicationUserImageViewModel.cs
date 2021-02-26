@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using RefreshMyStyleApp.Models;
 
 namespace RefreshMyStyleApp.ViewModels
@@ -12,7 +13,8 @@ namespace RefreshMyStyleApp.ViewModels
     {
         public ApplicationUser ApplicationUser { get; set; }
         public ApplicationUser AppUserNotLoggedIn { get; set; }
-
+        //public string SelectAppUsersID { get; set; }
+        //public List<SelectListItem> AppUsers { get; set; }
         public List<ApplicationUser> AppUsersNotLoggedIn { get; set; }
         public List<ApplicationUser> ApplicationUsers { get; set; }
         public Image Image { get; set; }

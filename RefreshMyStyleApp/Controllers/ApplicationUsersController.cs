@@ -367,57 +367,58 @@ namespace RefreshMyStyleApp.Controllers
             return RedirectToAction("GetMessages", new { Id = id });
         }
 
-        public List<SelectListItem> GetAllUsers()
-        {
-            List<ApplicationUser> applicationUsers = _context.ApplicationUsers.Where(a => a.Id > 0).ToList();       
-            //return applicationUsers.OrderByDescending(a => a.LName).ThenBy(a => a.FName).ToList();
+        //public List<SelectListItem> GetAllUsers()
+        //{
+        //    List<ApplicationUser> applicationUsers = _context.ApplicationUsers.Where(a => a.Id > 0).ToList();
+        //    //return applicationUsers.OrderByDescending(a => a.LName).ThenBy(a => a.FName).ToList();
 
-            List<SelectListItem> users = applicationUsers.ConvertAll(a =>
-            {
-                return new SelectListItem()
-                {
-                    Text = a.FullName.ToString(),
-                    Value = a.FullName.ToString(),
-                    Selected = false
-                };
-            });
+        //    //List<SelectListItem> users = applicationUsers.ConvertAll(a =>
+        //    //{
+        //    //    return new SelectListItem()
+        //    //    {
+        //    //        Text = a.FullName.ToString(),
+        //    //        Value = a.FullName.ToString(),
+        //    //        //Selected = false
+        //    //    };
+        //    //});
 
-            return users;
+        //    return users;
+
+        //}
+
+        //public IActionResult CreateMessage()
+        //{
+        //    ViewData["GetAllUsers"] = GetAllUsers();
+        //    return View();
+        //}
+
+        //[HttpPost]
+        //public IActionResult CreateMessage(Message message)
+        //{
+        //    var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        //    var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+        //    var AppUserNotLoggedIn = _context.ApplicationUsers.Where(c => c.Id == message.ReceiverId).FirstOrDefault();
+        //    var claimItem = _context.ClaimedItems.Where(c => c.ClaimedImageOwnerId == currentAppUser.Id).FirstOrDefault();
+        //    var image = _context.Images.Where(c => c.ApplicationUserId == currentAppUser.Id).FirstOrDefault();
+
+        //    Message newMessage = new Message();
+        //    newMessage.ApplicationUserId = currentAppUser.Id;
+        //    newMessage.SenderID = currentAppUser.Id;
+        //    newMessage.SenderName = currentAppUser.FullName;
+        //    newMessage.ReceiverId = message.ReceiverId;
+        //    newMessage.ReceiverName = message.ReceiverName;
+        //    newMessage.ImageFilePath = message.ImageFilePath;
+        //    newMessage.ImageId = message.ImageId;
+        //    newMessage.DateMessageSent = DateTime.Now;
+        //    newMessage.MessageContent = message.MessageContent;
             
-        }
 
-        public IActionResult CreateMessage()
-        {
-            ViewData["GetAllUsers"] = GetAllUsers();
-            return View();
-        }
+        //    _context.Messages.Add(newMessage);
+        //    _context.SaveChanges();
 
-        [HttpPost]
-        public IActionResult CreateMessage(Message message)
-        {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            var claimItem = _context.ClaimedItems.Where(c => c.ClaimedImageOwnerId == currentAppUser.Id).FirstOrDefault();
-            var image = _context.Images.Where(c => c.ApplicationUserId == currentAppUser.Id).FirstOrDefault();
+        //    return RedirectToAction(nameof(GetMessages));
 
-            Message newMessage = new Message();
-            newMessage.ApplicationUserId = currentAppUser.Id;
-            newMessage.SenderID = currentAppUser.Id;
-            newMessage.SenderName = currentAppUser.FullName;
-            newMessage.ReceiverId = message.ReceiverId;
-            newMessage.ReceiverName = message.ReceiverName;
-            newMessage.ImageFilePath = message.ImageFilePath;
-            newMessage.ImageId = message.ImageId;
-            newMessage.DateMessageSent = DateTime.Now;
-            newMessage.MessageContent = message.MessageContent;
-            
-
-            _context.Messages.Add(newMessage);
-            _context.SaveChanges();
-
-            return RedirectToAction(nameof(GetMessages));
-
-        }
+        //}
 
 
         public IActionResult GetMessages(int id)

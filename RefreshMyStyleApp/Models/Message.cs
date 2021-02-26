@@ -19,8 +19,10 @@ namespace RefreshMyStyleApp.Models
         public string MessageContent { get; set; }
         public bool ConfirmMsgIsSent { get; set; }
         public DateTime DateMessageSent { get; set; }
-        public int ApplicationUserId { get; set; }
-       
+
+        [ForeignKey("ApplicationUser")]
+        public int ApplicationUserId { get; set; }     
+        public ApplicationUser ApplicationUser { get; set; }
         public int? ImageId { get; set; }
        
 

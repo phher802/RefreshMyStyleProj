@@ -48,8 +48,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "f47b5ebc-bd56-4942-8b35-998cc23be32b",
-                            ConcurrencyStamp = "eb6dd6e0-0c0a-44f2-914e-72954d72c46e",
+                            Id = "9bb4bd7f-e0b8-40f4-acb2-1a4cb806c98f",
+                            ConcurrencyStamp = "1bac6933-dc47-461a-b12d-cb93a6cd78a5",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -601,6 +601,8 @@ namespace RefreshMyStyleApp.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ApplicationUserId");
+
                     b.ToTable("Messages");
                 });
 
@@ -791,6 +793,15 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasOne("RefreshMyStyleApp.Models.Image", "Image")
                         .WithMany("Likes")
                         .HasForeignKey("ImageId");
+                });
+
+            modelBuilder.Entity("RefreshMyStyleApp.Models.Message", b =>
+                {
+                    b.HasOne("RefreshMyStyleApp.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("RefreshMyStyleApp.Models.Post", b =>
