@@ -65,17 +65,32 @@
 
                         }
                     </div>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-4">
+                            <a asp-action="DeleteEvent" asp-controller="ApplicationUsers" asp-route-id="@e.Id">
+                                <button type="submit" class="btn btn-outline-warning btn-event">
+                                    Delete Event
+                                </button>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a asp-action="CancelEvent" asp-controller="ApplicationUsers" asp-route-id="@e.Id">
+                                <button type="submit" class="btn btn-outline-warning btn-event">
+                                    Cancel Event
+                                </button>
+                            </a>
+                        </div>
+                        <div class="col-md-4">
+                            <a asp-action="EditEvent" asp-controller="ApplicationUsers" asp-route-id="@e.Id">
+                                <button type="submit" class="btn btn-outline-warning btn-event">Edit Event</button>
+                            </a>
+                        </div>
 
-                    <a asp-action="DeleteEvent" asp-controller="ApplicationUsers" asp-route-id="@e.Id">
-                        <button type="submit" class="btn btn-default btn-sm">
-                            Delete Event
-                        </button>
-                    </a>
-                    <a asp-action="CancelEvent" asp-controller="ApplicationUsers" asp-route-id="@e.Id">
-                        <button type="submit" class="btn btn-default btn-sm">
-                            Cancel Event
-                        </button>
-                    </a>
+                    </div>
+                   
+                   
+                 
                 </div>
 
             }

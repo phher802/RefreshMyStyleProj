@@ -630,6 +630,21 @@ namespace RefreshMyStyleApp.Controllers
 
         }
 
+        public IActionResult EditEvent(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+         
+             var editEvent = _context.Events.Find(id);
+
+            _context.Events.Update(editEvent);
+            _context.SaveChanges();
+            return View(editEvent);
+
+        }
+
         //passes in the eventCreator id
         public IActionResult GetAttendee(int id)
         {

@@ -65,11 +65,11 @@
             </a>
         </li>
         @*<li class="nav-item">
-            <a asp-action="CreateMessage" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
-                <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
-                Send A Message
-            </a>
-        </li>*@
+                <a asp-action="CreateMessage" asp-controller="ApplicationUsers" asp-route-id="@Model.ApplicationUser.Id" class="nav-link text-dark font-italic">
+                    <i class="fa fa-picture-o mr-3 text-primary fa-fw"></i>
+                    Send A Message
+                </a>
+            </li>*@
     </ul>
 
     <a class="nav-link dropdown-toggle" data-bs-toggle="collapse" href="#collapseExample2" role="button" aria-expanded="false" aria-controls="collapseExample">
@@ -142,20 +142,28 @@
                                     <p class="card-text">Color: @item.Color</p>
                                     <p class="card-text">Size: @item.Size</p>
                                     <p class="card-text">Status: @item.ItemStatus</p>
-                                    <p>
-                                        <a asp-action="DeleteImage" asp-controller="Images" asp-route-id="@item.Id">
-                                            <button type="submit" class="btn btn-default btn-sm" style="background-color: #a2d0c1">
-                                                Delete Image
-                                            </button>
-                                        </a>
-                                    </p>
-                                    <p>
-                                        <a asp-action="EditImage" asp-controller="Images" asp-route-id="@item.Id">
-                                            <button type="submit" class="btn btn-default btn-sm" style="background-color: #a2d0c1">
-                                                Edit
-                                            </button>
-                                        </a>
-                                    </p>
+                                    <div class="row">
+                                        <div class="col-sm-8">
+
+                                            <a asp-action="DeleteImage" asp-controller="Images" asp-route-id="@item.Id">
+                                                <button type="submit" class="btn btn-default btn-sm" style="background-color: #a2d0c1">
+                                                    Delete Image
+                                                </button>
+                                            </a>
+
+                                        </div>
+                                        <div class="col-sm-4">
+
+                                            <a asp-action="EditImage" asp-controller="Images" asp-route-id="@item.Id">
+                                                <button type="submit" class="btn btn-default btn-sm" style="background-color: #a2d0c1">
+                                                    Edit
+                                                </button>
+                                            </a>
+
+                                        </div>
+                                    </div>
+
+
 
                                 </div>
 
