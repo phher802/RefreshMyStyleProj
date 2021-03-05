@@ -36,5 +36,32 @@
 
 .tiny-text{
     font-size: .7em;
-} 
+}
 
+.cursive-text {
+    font-family: 'Berkshire Swash', cursive;
+   /* font-family: 'Great Vibes', cursive;
+    font-family: 'Pacifico', cursive;*/
+   font-size: xx-large;
+   color: #214151;
+   
+}
+
+.navbar a:hover form:hover {
+    color: #214151;
+    background-color: #f8dc81;
+}
+
+.navbar{
+    background-color: #a2d0c1;
+    width: auto; 
+}
+
+.img-container {
+    text-align: center;
+    background-color: #eff7e1;
+}
+
+.container{
+
+}
