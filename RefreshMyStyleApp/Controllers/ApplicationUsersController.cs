@@ -460,7 +460,6 @@ namespace RefreshMyStyleApp.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            //var image = _context.Images.Find(id);
 
             ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
             {

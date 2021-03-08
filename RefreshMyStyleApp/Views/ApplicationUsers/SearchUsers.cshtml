@@ -5,34 +5,33 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-<div class="reg-container">
-    <h1 style="text-align:center">Search Users</h1>
-
+<nav class="navbar navbar-expand-lg navbar-light nav-hover">
     <div class="container-fluid">
-        <div class="col-3">
-            <form asp-action="SearchUsers" asp-controller="ApplicationUsers">
-                <input type="hidden" asp-for="Id" />
+        <a asp-action="Index" style="text-decoration: none; color: white">Home</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div>
+            <form class="d-flex" asp-action="SearchUsers" asp-controller="ApplicationUsers">
                 <input name="searchString" type="text" class="form-control" />
-                <input type="submit" value="Search" class="btn btn-outline-warning btn-event" />
+                <button class="btn btn-outline-warning btn-event" type="submit">Search</button>
             </form>
         </div>
-        <p>
-            <a asp-action="Index"><button type="button" class="btn btn-outline-warning btn-event">Home</button></a>
-        </p>
+    </div>
+</nav>
+<div >
+    <h1 style="text-align:center">Clothing Enthusiasts</h1>
+    <div class="container-fluid">     
         <table class="table" style="text-align: center">
             <thead>
                 <tr>
-
                     <th>
                         @Html.DisplayNameFor(model => model.FName)
                     </th>
                     <th>
                         @Html.DisplayNameFor(model => model.LName)
                     </th>
-
                     <th>
-
                         @Html.DisplayNameFor(model => model.ProfileImageName)
                     </th>
                     <th>

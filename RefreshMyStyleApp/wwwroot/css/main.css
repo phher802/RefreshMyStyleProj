@@ -47,7 +47,11 @@
    
 }
 
-.navbar a:hover form:hover {
+.nav-hover a:hover {
+    background-color: #214151;
+}
+
+.dropdown-menu a:hover {
     color: #214151;
     background-color: #f8dc81;
 }
@@ -67,8 +71,29 @@
 
 }
 
-.reg-container{
+.reg-container {
     margin: 2rem;
+    background-color: #eff7e1;
+}
+
+.reg-container button {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+}
+
+.detail-img-cont {
+    margin: 3.5rem 0;
+   padding: 2rem;
+}
+
+.detail-events-cont {
+    margin: 3rem 0;
+}
+
+.details-post-cont{
+    margin: 3rem 0;
+   
 }
 
 .post-container {

@@ -101,27 +101,32 @@
 
                         </div>
                         <div>
-                            <div class="comment-container collapse multi-collapse" id="multiCollapseExample1">
+                            <div class="comment-container">
+
                                 @foreach (var comment in Model.Comments)
                                 {
                                     @if (comment.PostId == post.Id)
                                     {
-                                        <div class="comment-box card card-body" style="background-color: #eff7e1; text-decoration: none">
-                                            <div class="row comment-content">
-                                                <div class="tiny-text col-sm-5">
-                                                    @comment.CommentorFullName
+                                        <div class="collapse multi-collapse" id="multiCollapseExample1">
+                                            <div class="comment-box" style="background-color: #eff7e1">
+                                                <div class="row comment-content">
+                                                    <div class="tiny-text col-sm-5">
+                                                        @comment.CommentorFullName
+                                                    </div>
+                                                    <div class="tiny-text col-sm-7">
+                                                        @comment.CommentDateTime
+                                                    </div>
+                                                    <p>@comment.CommentContent</p>
                                                 </div>
-                                                <div class="tiny-text col-sm-7">
-                                                    @comment.CommentDateTime
-                                                </div>
-                                                <p>@comment.CommentContent</p>
+                                                <a class="tiny-text" asp-action="DeleteComment" asp-route-id="@comment.Id" asp-controller="ApplicationUsers">
+                                                    Delete
+                                                </a>
                                             </div>
-                                            <a class="tiny-text" asp-action="DeleteComment" asp-route-id="@comment.Id" asp-controller="ApplicationUsers">
-                                                Delete
-                                            </a>
                                         </div>
+
                                     }
                                 }
+
                             </div>
                             <div>
                                 <form asp-action="AddcommentToIndex" asp-controller="ApplicationUsers" method="post">
