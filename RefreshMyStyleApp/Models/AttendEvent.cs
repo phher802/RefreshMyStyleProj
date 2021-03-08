@@ -12,8 +12,8 @@ namespace RefreshMyStyleApp.Models
         public int? Id { get; set; }
 
         public string AttendeeName { get; set; }
-        public int AttendeeId { get; set; }
-        public int EventId { get; set; }
+        public int? AttendeeId { get; set; }
+        public int? EventId { get; set; }
 
         
 

@@ -5,28 +5,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="reg-container">
-    <div>
-
-        <h1 class="text-center">My Events</h1>
-        <p>
-            <a asp-action="CreateEvent" asp-controller="ApplicationUsers" asp-route-newEvent="@Model.Event">
-                <button type="button" class="btn btn-outline-warning btn-event">
-                    Create A New Event
-                </button>
-            </a>
-        </p>
-        <p>
-            <a asp-action="Index">
-                <button type="button" class="btn btn-outline-warning btn-event">
-                    Home
-                </button>
-            </a>
-        </p>
-
+<nav class="navbar navbar-expand-lg navbar-light nav-hover">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item" style="color: white">
+                    <a class="nav-link" style="color: white" asp-action="Index">
+                        Home
+                    </a>
+                </li>
+                <li class="nav-item" style="color: white">
+                    <a class="nav-link" style="color: white" asp-action="CreateEvent" asp-controller="ApplicationUsers" >
+                        Create A New Event
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
 
-    <hr />
+</nav>
+
     <div>
         <div>
             @if (Model.Events != null)
@@ -83,7 +81,7 @@
                             </div>
                             <div class="col-md-4">
                                 <a asp-action="EditEvent" asp-controller="ApplicationUsers" asp-route-id="@e.Id">
-                                    <button type="submit" class="btn btn-outline-warning btn-event">Edit Event</button>
+                                    <button class="btn btn-outline-warning btn-event">Edit Event</button>
                                 </a>
                             </div>
 

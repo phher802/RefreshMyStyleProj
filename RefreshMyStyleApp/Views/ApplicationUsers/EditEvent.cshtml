@@ -5,21 +5,29 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="reg-container">
-    <h1>EditEvent</h1>
+<nav class="navbar navbar-expand-lg navbar-light nav-hover">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item" style="color: white">
+                    <a class="nav-link" style="color: white" asp-action="Index">
+                        Home
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container1">
+    <h1>Edit Event</h1>
 
-    <h4>Event</h4>
     <hr />
     <div class="row">
         <div class="col-md-4">
-            <form asp-action="EditEvent">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Id" />
-                <div class="form-group">
-                    <label asp-for="DatePosted" class="control-label"></label>
-                    <input asp-for="DatePosted" class="form-control" />
-                    <span asp-validation-for="DatePosted" class="text-danger"></span>
-                </div>
+            <form asp-action="EditEvent" asp-controller="ApplicationUsers">
+                <input type="hidden" asp-for="Id" name="name" value="" />
+                <input type="hidden" asp-for="EventCreatorId" name="name" value="" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>             
                 <div class="form-group">
                     <label asp-for="EventDate" class="control-label"></label>
                     <input asp-for="EventDate" class="form-control" />
@@ -55,13 +63,6 @@
                     <input asp-for="Zipcode" class="form-control" />
                     <span asp-validation-for="Zipcode" class="text-danger"></span>
                 </div>
-
-                <div class="form-group">
-                    <label class="control-label">Date Canceled</label>
-                    <input asp-for="DateCanceled" class="form-control" />
-                    <span asp-validation-for="DateCanceled" class="text-danger"></span>
-                </div>
-
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-outline-warning btn-event" />
                 </div>

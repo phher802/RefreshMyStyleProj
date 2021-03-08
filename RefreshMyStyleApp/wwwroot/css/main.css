@@ -71,9 +71,8 @@
 
 }
 
-.reg-container {
+.container1 {
     margin: 2rem;
-    background-color: #eff7e1;
 }
 
 .reg-container button {
@@ -145,4 +144,12 @@
 .post_delete{
     margin: 0;
   
+}
+
+.header-hover a:hover {
+    color: #a2d0c1;
+}
+
+.navbar {
+    padding-left: 1rem;
 }
