@@ -204,13 +204,20 @@ namespace RefreshMyStyleApp.Controllers
 
         // GET: Images/Delete/5
         public IActionResult DeleteImage(int? id)
-        {
-            var deleteImage = _context.Images.Find(id);
-            _context.Images.Remove(deleteImage);
-            _context.SaveChanges();
-            return RedirectToAction("Index", "ApplicationUsers");
-
-           
+        {          
+            try
+            {
+                var deleteImage = _context.Images.Find(id);           
+                _context.Images.Remove(deleteImage);
+                _context.SaveChanges();
+                return RedirectToAction("Index", "ApplicationUsers");
+            }
+            catch (Exception)
+            {
+              
+                throw;
+            }
+                   
         }
 
         // POST: Images/Delete/5

@@ -6,35 +6,35 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Upload A Selfie!</h1>
+<div class="reg-container">
+    <h1>Upload A Selfie!</h1>
 
+    <hr />
+    <div class="row" style="padding-top: 5rem">
+        <div class="col-md-4">
+            <form method="post" enctype="multipart/form-data" asp-controller="ApplicationUsers"
+                  asp-action="UploadProfileFiles">
+                <div class="form-group">
+                    <div class="col-md-10">
 
-<hr />
-<div class="row" style="padding-top: 5rem">
-    <div class="col-md-4">
-        <form method="post" enctype="multipart/form-data" asp-controller="ApplicationUsers"
-              asp-action="UploadProfileFiles">
-            <div class="form-group">
-                <div class="col-md-10">
-
-                    <input asp-for="ProfileImage" type="file" name="files" accept="image/*" multiple />
-                    <span asp-validation-for="ProfileImage" class="text-danger"></span>
+                        <input asp-for="ProfileImage" type="file" name="files" accept="image/*" multiple />
+                        <span asp-validation-for="ProfileImage" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    <input type="submit" value="Upload" class="btn btn-outline-warning btn-event" />
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <input type="submit" value="Upload" class="btn btn-outline-warning btn-event" />
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
+    </div>
+
+    <div>
+        <a asp-action="Index" asp-controller="ApplicationUsers">
+            <Button type="button" class=" btn btn-outline-warning btn-event">
+                Home
+            </Button>
+        </a>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index" asp-controller="ApplicationUsers">
-        <Button type="button" class=" btn btn-outline-warning btn-event">
-            Home
-        </Button>
-    </a>
-</div>
-

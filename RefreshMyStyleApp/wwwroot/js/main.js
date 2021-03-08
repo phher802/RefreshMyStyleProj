@@ -1,4 +1,6 @@
 ﻿jQuery(function ($) {
+    //submit comment form
+ 
     // Dropdown menu
     $('.sidebar-dropdown > a').click(function () {
         $('.sidebar-submenu').slideUp(200);

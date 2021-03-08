@@ -1,0 +1,39 @@
+﻿@model RefreshMyStyleApp.Models.Post
+
+@{
+    ViewData["Title"] = "EditPost";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>EditPost</h1>
+
+<h4>Post</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditPost">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+         
+            <div class="form-group">
+                <label asp-for="PostContent" class="control-label"></label>
+                <input asp-for="PostContent" class="form-control" />
+                <span asp-validation-for="PostContent" class="text-danger"></span>
+            </div>
+
+            @*<div class="form-group">
+                <label asp-for="ApplicationUserId" class="control-label"></label>
+                <select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+                <span asp-validation-for="ApplicationUserId" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-outline-warning btn-event" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

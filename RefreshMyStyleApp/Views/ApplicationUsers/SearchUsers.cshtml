@@ -6,77 +6,75 @@
 }
 
 
+<div class="reg-container">
+    <h1 style="text-align:center">Search Users</h1>
 
-<h1 style="text-align:center">Search Users</h1>
-
-
-
-<div class="container-fluid">
-    <div class="col-3">
-        <form asp-action="SearchUsers" asp-controller="ApplicationUsers">
-            <input type="hidden" asp-for="Id" />
-            <input name="searchString" type="text" class="form-control" />
-            <input type="submit" value="Search" class="btn btn-outline-warning btn-event" />
-        </form>
-    </div>
-    <p>
-        <a asp-action="Index"><button type="button" class="btn btn-outline-warning btn-event">Home</button></a>
-    </p>
-    <table class="table" style="text-align: center">
-        <thead>
-            <tr>
-
-                <th>
-                    @Html.DisplayNameFor(model => model.FName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.LName)
-                </th>
-
-                <th>
-
-                    @Html.DisplayNameFor(model => model.ProfileImageName)
-                </th>
-                <th>
-                    Go to User Profile
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.SearchResults)
-            {
+    <div class="container-fluid">
+        <div class="col-3">
+            <form asp-action="SearchUsers" asp-controller="ApplicationUsers">
+                <input type="hidden" asp-for="Id" />
+                <input name="searchString" type="text" class="form-control" />
+                <input type="submit" value="Search" class="btn btn-outline-warning btn-event" />
+            </form>
+        </div>
+        <p>
+            <a asp-action="Index"><button type="button" class="btn btn-outline-warning btn-event">Home</button></a>
+        </p>
+        <table class="table" style="text-align: center">
+            <thead>
                 <tr>
 
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.LName)
-                    </td>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.LName)
+                    </th>
 
-                    <td>
-                        <p>
-                            <img src="~/images/profileImages/@item.ProfileImageName" height="80" width="70" class="mr-3 rounded-circle img-thumbnail shadow-sm" />
-                        </p>
-                    </td>
+                    <th>
 
-                    <td>
-
-                        <p>
-                            <a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.Id">
-                                <button type="button" class="btn btn-outline-warning btn-event">
-                                    Details
-                                </button>
-                            </a>
-                        </p>
-
-
-                    </td>
+                        @Html.DisplayNameFor(model => model.ProfileImageName)
+                    </th>
+                    <th>
+                        Go to User Profile
+                    </th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.SearchResults)
+                {
+                    <tr>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.LName)
+                        </td>
+
+                        <td>
+                            <p>
+                                <img src="~/images/profileImages/@item.ProfileImageName" height="80" width="70" class="mr-3 rounded-circle img-thumbnail shadow-sm" />
+                            </p>
+                        </td>
+
+                        <td>
+
+                            <p>
+                                <a asp-action="Details" asp-controller="ApplicationUsers" asp-route-id="@item.Id">
+                                    <button type="button" class="btn btn-outline-warning btn-event">
+                                        Details
+                                    </button>
+                                </a>
+                            </p>
+
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
 </div>
-
-
 

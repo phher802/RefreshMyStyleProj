@@ -62,6 +62,62 @@
     background-color: #eff7e1;
 }
 
-.container{
+.index-body-container {
+    margin: 1rem;
 
+}
+
+.reg-container{
+    margin: 2rem;
+}
+
+.post-container {
+    background-color: #eff7e1;
+    padding: 3%;
+    margin-right: 5%;
+    margin-left: 5%;
+    border-radius: 1em;
+}
+.comment-container {
+    /*padding: 2%;*/
+}
+
+.index-body-container a {
+    text-decoration: none;
+    color: #214151;
+}
+
+.comment-box{
+    margin: 2%;
+}
+
+.comment-content {
+    background-color: #f8dc81;
+    border-radius: 1em;
+    padding: 2%;
+    /*    border-radius: 2%;*/
+
+}
+
+.index-body-container button {
+    background: none !important;
+    border: none;
+    padding: 0 !important;
+    /*border is optional*/
+    /* border-bottom: 1px solid #444;*/
+}
+
+.postbox {
+}
+
+.postContent {
+    background-color: #fbeeac;
+    border-radius: 1em;
+    padding: 2%;
+}
+
+
+.post_delete{
+    margin: 0;
+  
 }

@@ -5,192 +5,193 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 style="text-align: center">My Messages</h1>
+<div class="reg-container">
+    <h1 style="text-align: center">My Messages</h1>
 
-<p>
-    <a asp-action="Index" asp-controller="ApplicationUsers">
-        <button type="button" class="btn btn-outline-warning btn-event">
-            Home
-        </button>
-    </a>
-</p>
-<p>
-    <a asp-action="SearchUsers" asp-controller="ApplicationUsers">
-        <button type="button" class="btn btn-outline-warning btn-event">
-            Search Users
-        </button>
-    </a>
-</p>
-@*<p>
-    <a asp-action="CreateMessage" asp-controller="ApplicationUsers">
-        <button type="button" class="btn btn-outline-warning btn-event">
-            Send A New Message
-        </button>
-    </a>
-</p>*@
-<hr />
-<div>
-    <h5>Incoming Messages</h5>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Date
-                </th>
-                <th>
-                    Received From
-                </th>
-                <th>
-                    Item
-                </th>
-                <th>
-                    Message
-                </th>
-                <th>
+    <p>
+        <a asp-action="Index" asp-controller="ApplicationUsers">
+            <button type="button" class="btn btn-outline-warning btn-event">
+                Home
+            </button>
+        </a>
+    </p>
+    <p>
+        <a asp-action="SearchUsers" asp-controller="ApplicationUsers">
+            <button type="button" class="btn btn-outline-warning btn-event">
+                Search Users
+            </button>
+        </a>
+    </p>
+    @*<p>
+            <a asp-action="CreateMessage" asp-controller="ApplicationUsers">
+                <button type="button" class="btn btn-outline-warning btn-event">
+                    Send A New Message
+                </button>
+            </a>
+        </p>*@
+    <hr />
+    <div>
+        <h5>Incoming Messages</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Received From
+                    </th>
+                    <th>
+                        Item
+                    </th>
+                    <th>
+                        Message
+                    </th>
+                    <th>
 
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var msg in Model.Messages)
-            {
-                @if (msg.ReceiverId == Model.ApplicationUser.Id)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var msg in Model.Messages)
                 {
-                    <tr>
+                    @if (msg.ReceiverId == Model.ApplicationUser.Id)
+                    {
+                        <tr>
 
-                        <td>
-                            @msg.DateMessageSent
-                        </td>
-                        <td>
-                            @msg.SenderName
-                        </td>
-                        <td>
-                            @if (msg.ImageFilePath != null)
-                            {
-                                <p style="text-align: center">
-                                    <img src="~/images/items/@msg.ImageFilePath" height="100" width="80" />
+                            <td>
+                                @msg.DateMessageSent
+                            </td>
+                            <td>
+                                @msg.SenderName
+                            </td>
+                            <td>
+                                @if (msg.ImageFilePath != null)
+                                {
+                                    <p style="text-align: center">
+                                        <img src="~/images/items/@msg.ImageFilePath" height="100" width="80" />
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p>No image included with this message.</p>
+                                }
+
+                            </td>
+
+                            <td>
+                                @msg.MessageContent
+                            </td>
+                            <td>
+                                <p>
+                                    <a asp-action="Details" asp-route-id="@msg.SenderID">
+                                        <button type="button" class="btn btn-outline-warning btn-event">
+                                            Details
+                                        </button>
+                                    </a>
                                 </p>
-                            }
-                            else
-                            {
-                                <p>No image included with this message.</p>
-                            }
+                                <p>
+                                    <a asp-action="DeleteMessage" asp-route-id="@msg.Id">
+                                        <button type="button" class="btn btn-outline-warning btn-event">
+                                            Delete
+                                        </button>
+                                    </a>
 
-                        </td>
+                                </p>
+                            </td>
+                        </tr>
+                    }
 
-                        <td>
-                            @msg.MessageContent
-                        </td>
-                        <td>
-                            <p>
-                                <a asp-action="Details" asp-route-id="@msg.SenderID">
-                                    <button type="button" class="btn btn-outline-warning btn-event">
-                                        Details
-                                    </button>
-                                </a>
-                            </p>
-                            <p>
-                                <a asp-action="DeleteMessage" asp-route-id="@msg.Id">
-                                    <button type="button" class="btn btn-outline-warning btn-event">
-                                        Delete
-                                    </button>
-                                </a>
-
-                            </p>
-                        </td>
-                    </tr>
                 }
+            </tbody>
+        </table>
+    </div>
 
-            }
-        </tbody>
-    </table>
-</div>
+    <hr />
+    <hr />
+    <hr />
+    <div>
+        <h5>OutGoing Messages</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Date
+                    </th>
+                    <th>
+                        Sent to
+                    </th>
+                    <th>
+                        Item
+                    </th>
+                    <th>
+                        Message
+                    </th>
+                    <th>
 
-<hr />
-<hr />
-<hr />
-<div>
-    <h5>OutGoing Messages</h5>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    Date
-                </th>
-                <th>
-                    Sent to
-                </th>
-                <th>
-                    Item
-                </th>
-                <th>
-                    Message
-                </th>
-                <th>
-
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var msg in Model.Messages)
-            {
-                @if (msg.SenderID == Model.ApplicationUser.Id)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var msg in Model.Messages)
                 {
-                    <tr>
+                    @if (msg.SenderID == Model.ApplicationUser.Id)
+                    {
+                        <tr>
 
-                        <td>
-                            @msg.DateMessageSent
-                        </td>
-                        <td>
-                            @msg.ReceiverName
-                        </td>
-                        <td>
-                            @if (msg.ImageFilePath != null)
-                            {
-                                <p style="text-align: center">
-                                    <img src="~/images/items/@msg.ImageFilePath" height="100" width="80" />
+                            <td>
+                                @msg.DateMessageSent
+                            </td>
+                            <td>
+                                @msg.ReceiverName
+                            </td>
+                            <td>
+                                @if (msg.ImageFilePath != null)
+                                {
+                                    <p style="text-align: center">
+                                        <img src="~/images/items/@msg.ImageFilePath" height="100" width="80" />
+                                    </p>
+                                }
+                                else
+                                {
+                                    <p>No image included with this message.</p>
+                                }
+
+                            </td>
+
+                            <td>
+                                @msg.MessageContent
+                            </td>
+                            <td>
+                                <p>
+                                    <a asp-action="Details" asp-route-id="@msg.ReceiverId">
+                                        <button type="button" class="btn btn-outline-warning btn-event">
+                                            Details
+                                        </button>
+                                    </a>
                                 </p>
-                            }
-                            else
-                            {
-                                <p>No image included with this message.</p>
-                            }
+                                <p>
+                                    <a asp-action="DeleteMessage" asp-route-id="@msg.Id">
+                                        <button type="button" class="btn btn-outline-warning btn-event">
+                                            Delete
+                                        </button>
+                                    </a>
 
-                        </td>
+                                </p>
+                                <p>
+                                    <a asp-action="CreateMessage" asp-route-id="@msg.Id">
+                                        <button type="button" class="btn btn-outline-warning btn-event">
+                                            Reply
+                                        </button>
+                                    </a>
 
-                        <td>
-                            @msg.MessageContent
-                        </td>
-                        <td>
-                            <p>
-                                <a asp-action="Details" asp-route-id="@msg.ReceiverId">
-                                    <button type="button" class="btn btn-outline-warning btn-event">
-                                        Details
-                                    </button>
-                                </a>
-                            </p>
-                            <p>
-                                <a asp-action="DeleteMessage" asp-route-id="@msg.Id">
-                                    <button type="button" class="btn btn-outline-warning btn-event">
-                                        Delete
-                                    </button>
-                                </a>
+                                </p>
+                            </td>
+                        </tr>
+                    }
 
-                            </p>
-                            <p>
-                                <a asp-action="CreateMessage" asp-route-id="@msg.Id">
-                                    <button type="button" class="btn btn-outline-warning btn-event">
-                                        Reply
-                                    </button>
-                                </a>
-
-                            </p>
-                        </td>
-                    </tr>
                 }
-
-            }
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>
-

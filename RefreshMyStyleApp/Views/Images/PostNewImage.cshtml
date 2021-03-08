@@ -5,38 +5,31 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Upload A Clothing Item</h1>
 
+<div class="reg-container">
+    <h1>Upload A Clothing Item</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post" enctype="multipart/form-data" asp-controller="Images"
+                  asp-action="PostNewImage">
+                <div class="form-group">
+                    <div class="col-md-10">
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post" enctype="multipart/form-data" asp-controller="Images"
-              asp-action="PostNewImage">
-            <div class="form-group">
-                <div class="col-md-10">
-                   
-                    <input asp-for="ImageFile" type="file" name="files" accept="image/*" multiple />
-                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                        <input asp-for="ImageFile" type="file" name="files" accept="image/*" multiple />
+                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+                    </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-md-10">
-                    <input type="submit" value="Upload" class="btn btn-outline-warning btn-event" />
+                <div class="form-group">
+                    <div class="col-md-10">
+                        <input type="submit" value="Upload" class="btn btn-outline-warning btn-event" />
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 </div>
-
 @*<div>
         <a asp-action="Index">Back to List</a>
     </div>*@
 
-<P>
-    <a asp-action="Index" asp-controller="ApplicationUsers">
-        <button type="button" class="btn btn-outline-warning btn-event">
-            Home
-        </button>
-    </a>
-</P>

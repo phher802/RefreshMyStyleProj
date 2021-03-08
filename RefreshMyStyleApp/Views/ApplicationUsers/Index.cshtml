@@ -6,20 +6,25 @@
 }
 
 
-<partial name="_NavPartial" />
 
- 
+
+
 
 <div class="img-container">
     <p>
-        <img src="~/images/profileImages/@Model.ApplicationUser.ProfileImageName" alt="Profile Image" width="80" height="50" class="mr-3 rounded-circle img-thumbnail shadow-sm">
+        <img src="~/images/profileImages/@Model.ApplicationUser.ProfileImageName" alt="Profile Image" width="100" height="70" class="mr-3 rounded-circle img-thumbnail shadow-sm">
     </p>
+    <div class="media-body" style="padding-bottom: 0.5rem">
+        <h4 class="m-0" style="text-align: center"> @Model.ApplicationUser.FullName</h4>
+    </div>
 
 </div>
 
-<div class="page-content p-5" id="content">
-    <div class="col-sm-6">
-        <div class="row">
+<partial name="_NavPartial" />
+
+<div class="row index-body-container">
+    <div class="col-sm-8">
+        <div class="row row-cols-3">
             @foreach (var item in Model.Images)
             {
                 <div>
@@ -35,22 +40,16 @@
                                 <p class="card-text">Status: @item.ItemStatus</p>
                                 <div class="row">
                                     <div class="col-sm-8">
-
                                         <a asp-action="DeleteImage" asp-controller="Images" asp-route-id="@item.Id">
-                                            <button type="submit" class="btn btn-default btn-sm" style="background-color: #a2d0c1">
-                                                Delete Image
-                                            </button>
+                                            Delete Image
                                         </a>
-
                                     </div>
                                     <div class="col-sm-4">
-
                                         <a asp-action="EditImage" asp-controller="Images" asp-route-id="@item.Id">
-                                            <button type="submit" class="btn btn-default btn-sm" style="background-color: #a2d0c1">
+                                            <button type="submit">
                                                 Edit
                                             </button>
                                         </a>
-
                                     </div>
                                 </div>
                             </div>
@@ -61,11 +60,97 @@
         </div>
 
     </div>
-    <div class="col-sm-3">
-        <p>are you</p>
-    </div>
-</div>
+    <div class="col-sm-4">
+        <div style="text-align: center">
+            <h3>Posts</h3>
+        </div>
+        @if (Model.Posts != null)
+        {
 
+            @foreach (var post in Model.Posts)
+            {
+                <div class="post-container">
+                    <div class="post-box">
+                        <div class="postContent">
+                            <div class="tiny-text row">
+                                <div class="col-5">
+                                    <p>@post.PostByUser </p>
+                                </div>
+                                <div class="col-7">
+                                    <p>@post.DateTimePosted</p>
+                                </div>
+                            </div>
+
+                            <p>@post.PostContent</p>
+
+                        </div>
+                        <div class="row post_delete">
+                            <div class="col-sm-4">
+                                <a class="tiny-text" data-bs-toggle="collapse" href="#multiCollapseExample1" aria-expanded="false" aria-controls="multiCollapseExample1">See Comments</a>
+                            </div>
+                            <div class="col-sm-4">
+                                <a class="tiny-text" asp-action="DeletePost" asp-route-id="@post.Id" asp-controller="ApplicationUsers">
+                                    Delete Post
+                                </a>
+                            </div>
+                            <div class="col-sm-4">
+                                <a class="tiny-text" asp-action="EditPost" asp-route-id="@post.Id" asp-controller="ApplicationUsers">
+                                    Edit Post
+                                </a>
+                            </div>
+
+                        </div>
+                        <div>
+                            <div class="comment-container collapse multi-collapse" id="multiCollapseExample1">
+                                @foreach (var comment in Model.Comments)
+                                {
+                                    @if (comment.PostId == post.Id)
+                                    {
+                                        <div class="comment-box card card-body" style="background-color: #eff7e1; text-decoration: none">
+                                            <div class="row comment-content">
+                                                <div class="tiny-text col-sm-5">
+                                                    @comment.CommentorFullName
+                                                </div>
+                                                <div class="tiny-text col-sm-7">
+                                                    @comment.CommentDateTime
+                                                </div>
+                                                <p>@comment.CommentContent</p>
+                                            </div>
+                                            <a class="tiny-text" asp-action="DeleteComment" asp-route-id="@comment.Id" asp-controller="ApplicationUsers">
+                                                Delete
+                                            </a>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                            <div>
+                                <form asp-action="AddcommentToIndex" asp-controller="ApplicationUsers" method="post">
+                                    <div>
+                                        <input type="hidden" asp-for="Comment.PostId" value="@post.Id" />
+                                        <textarea asp-for="Comment.CommentContent" maxlength="100" class="form-control" id="" placeholder="Comment..."></textarea>
+                                    </div>
+                                    <div>
+                                        <a asp-action="AddcommentToIndex" asp-controller="ApplicationUsers" asp-route-comment="@Model.Comment">
+                                            <button type="submit">
+                                                Add comment
+                                            </button>
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>There are no posts yet. Create a post!</p>
+        }
+
+    </div>
+
+</div>
 
 
 

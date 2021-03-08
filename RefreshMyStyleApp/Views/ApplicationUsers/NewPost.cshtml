@@ -5,47 +5,38 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<P>
-    <a asp-action="Index">
-        <button type="button" class="btn btn-outline-warning btn-event">
-            Home
-        </button>
-    </a>
-</P>
+<div class="reg-container">
 
+    <h1>Create A New Post</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="NewPost" asp-controller="ApplicationUsers" method="post">
+                <!--<div class="form-group">-->
+                    @*<label asp-for="PostTitle" class="control-label"></label>*@
+                    <!--<p>Title</p>
+                    <input asp-for="PostTitle" class="form-control" />
+                    <span asp-validation-for="PostTitle" class="text-danger"></span>
+                </div>-->
+                <div class="form-group" style="padding-top: 1rem">
+                    @*<label asp-for="PostContent" class="control-label"></label>*@
+                    <p>Message</p>
+                    <textarea asp-for="PostContent" placeholder="Make a request" class="form-control" maxlength="100"></textarea>
+                    <span asp-validation-for="PostContent" class="text-danger"></span>
+                </div>
 
-<h1>Create A New Post</h1>
+                <div class="form-group" style="display: none">
+                    <label asp-for="ApplicationUserId" class="control-label"></label>
+                    <select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"></select>
+                </div>
+                <div class="form-group" style="padding-top: 1rem">
+                    <input type="submit" value="Create" class="btn btn-outline-warning btn-event" />
+                </div>
 
-
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="NewPost" asp-controller="ApplicationUsers" method="post">
-            <div class="form-group">
-                @*<label asp-for="PostTitle" class="control-label"></label>*@
-                <p>Title</p>
-                <input asp-for="PostTitle" class="form-control" />
-                <span asp-validation-for="PostTitle" class="text-danger"></span>
-            </div>
-            <div class="form-group" style="padding-top: 1rem">
-                @*<label asp-for="PostContent" class="control-label"></label>*@
-                <p>Message</p>
-                <textarea asp-for="PostContent" placeholder="Make a request" class="form-control" maxlength="100"></textarea>
-                <span asp-validation-for="PostContent" class="text-danger"></span>
-            </div>
-
-            <div class="form-group" style="display: none">
-                <label asp-for="ApplicationUserId" class="control-label"></label>
-                <select asp-for="ApplicationUserId" class="form-control" asp-items="ViewBag.ApplicationUserId"></select>
-            </div>
-            <div class="form-group" style="padding-top: 1rem">
-                <input type="submit" value="Create" class="btn btn-outline-warning btn-event" />
-            </div>
-
-        </form>
+            </form>
+        </div>
     </div>
 </div>
-
 @*<div>
         <a asp-action="Index">
             <button type="button" class="btn btn-outline-warning btn-event">

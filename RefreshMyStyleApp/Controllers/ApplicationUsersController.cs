@@ -456,20 +456,20 @@ namespace RefreshMyStyleApp.Controllers
         }
 
         //passes in ClaimedImageId
-        public IActionResult GetLikedAndClaimedItems(int id)
+        public IActionResult GetLikedAndClaimedItems()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var currentAppUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            var image = _context.Images.Find(id);
-
+            //var image = _context.Images.Find(id);
 
             ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
             {
                 ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
-                Images = _context.Images.Where(i => i.ApplicationUserId == id).ToList(),
-                Likes = _context.LikedItems.Where(c => c.LikedImageOwnerId == image.Id).ToList(),
-                Claims = _context.ClaimedItems.Where(c => c.ClaimedImageOwnerId == image.Id).ToList(),
+                Images = _context.Images.Where(i => i.ApplicationUserId == currentAppUser.Id).ToList(),
+                Likes = _context.LikedItems.Where(c => c.LikedImageOwnerId == currentAppUser.Id).ToList(),
+                Claims = _context.ClaimedItems.Where(c => c.ClaimedImageOwnerId == currentAppUser.Id).ToList(),
             };
+
             return View(personViewModel);
         }
 
@@ -504,6 +504,19 @@ namespace RefreshMyStyleApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public IActionResult EditPost(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var editPost = _context.Posts.Find(id);
+
+            _context.Posts.Update(editPost);
+            _context.SaveChanges();
+            return View("Index");
+        }
         public IActionResult AddcommentToIndex(Comment comment)
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);

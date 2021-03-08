@@ -6,52 +6,50 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div style="padding-top: 5rem">
-    <h1>What's Your Name?</h1>
-</div>
+<div class="reg-container">
+    <div style="padding-top: 5rem">
+        <h1>What's Your Name?</h1>
+    </div>
 
+    <hr />
 
+    <div>
+        <a asp-action="Index">
+            <button type="button" class="btn btn-outline-warning btn-event">Home</button>
+        </a>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="FName" class="control-label"></label>
+                    <input asp-for="FName" class="form-control" />
+                    <span asp-validation-for="FName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="LName" class="control-label"></label>
+                    <input asp-for="LName" class="form-control" />
+                    <span asp-validation-for="LName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber" class="control-label"></label>
+                    <input asp-for="PhoneNumber" class="form-control" />
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group" style="display: none">
+                    <label asp-for="IdentityUserId" class="control-label"></label>
+                    <select asp-for="IdentityUserId" class="form-control" asp-items="ViewBag.IdentityUserId"></select>
+                </div>
 
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-outline-warning btn-event" />
+                </div>
+            </form>
 
-<hr />
-
-<div>
-    <a asp-action="Index">
-        <button type="button" class="btn btn-outline-warning btn-event">Home</button>
-    </a>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="FName" class="control-label"></label>
-                <input asp-for="FName" class="form-control" />
-                <span asp-validation-for="FName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LName" class="control-label"></label>
-                <input asp-for="LName" class="form-control" />
-                <span asp-validation-for="LName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group" style="display: none">
-                <label asp-for="IdentityUserId" class="control-label"></label>
-                <select asp-for="IdentityUserId" class="form-control" asp-items="ViewBag.IdentityUserId"></select>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-outline-warning btn-event" />
-            </div>
-        </form>
-
+        </div>
     </div>
 </div>
-
 
 
 

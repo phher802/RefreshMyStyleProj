@@ -3,6 +3,12 @@
 
 // Write your JavaScript code.
 
+$(function () {
+    $('#comment_submit"').click(function () {
+        $('#comment_form').submit();
+    });
+
+});
 
 
 $(function () {
