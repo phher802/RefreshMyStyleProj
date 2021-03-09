@@ -50,8 +50,7 @@ namespace RefreshMyStyleApp.Controllers
             _context.ApplicationUsers.Update(applicationUserLoggedIn);
             _context.SaveChanges();
 
-            var appUser = _context.ApplicationUsers.Where(a => a.Id == applicationUserLoggedIn.Id).SingleOrDefault();
-            var post = _context.Posts.Where(p => p.ApplicationUserId == appUser.Id).FirstOrDefault();
+            var post = _context.Posts.Where(p => p.ApplicationUserId == applicationUserLoggedIn.Id).FirstOrDefault();
 
             ApplicationUserImageViewModel applicationUserImageViewModel = new ApplicationUserImageViewModel
             {
@@ -60,8 +59,9 @@ namespace RefreshMyStyleApp.Controllers
                 Likes = _context.LikedItems.Where(x => x.ImageId == applicationUserLoggedIn.Id).ToList(),
                 Posts = _context.Posts.Where(x => x.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
                 Comments = _context.Comments.Where(x => x.PostId == post.Id).ToList(),
-                //Comments = _context.Comments.Where(x => x.PostId == post.Id).ToList(),
+                //Comments = _context.Comments.Where(x => x.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
             };
+
             return View(applicationUserImageViewModel);
         }
 
@@ -556,7 +556,6 @@ namespace RefreshMyStyleApp.Controllers
         }
 
 
-
         public IActionResult DeleteComment(int id)
         {
             var deleteComment = _context.Comments.Find(id);
@@ -579,13 +578,15 @@ namespace RefreshMyStyleApp.Controllers
             var appUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             //var appUserNotLoggedIn = _context.ApplicationUsers.Find(id);
             var currentEvent = _context.Events.Where(e => e.EventCreatorId == appUserLoggedIn.Id).FirstOrDefault();
-
+           
+                
             EventViewModel eventViewModel = new EventViewModel
             {
                 ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
                 Event = _context.Events.Where(e => e.EventCreatorId == appUserLoggedIn.Id).FirstOrDefault(),
                 Events = _context.Events.Where(e => e.EventCreatorId == appUserLoggedIn.Id).ToList(),
                 Attendees = _context.Attendees.Where(x => x.EventId == currentEvent.Id).ToList(),
+               
             };
 
             return View(eventViewModel);
@@ -626,6 +627,13 @@ namespace RefreshMyStyleApp.Controllers
         public IActionResult DeleteEvent(int id)
         {
             var deleteEvent = _context.Events.Find(id);
+            var attendees = _context.Attendees.Where(a => a.EventId == deleteEvent.Id).ToList();
+
+            foreach (var attendee in attendees)
+            {
+                _context.Attendees.Remove(attendee);
+            }
+          
             _context.Events.Remove(deleteEvent);
             _context.SaveChanges();
             return RedirectToAction(nameof(EventList));

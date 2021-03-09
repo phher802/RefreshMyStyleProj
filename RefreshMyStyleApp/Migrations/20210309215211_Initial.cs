@@ -455,7 +455,7 @@ namespace RefreshMyStyleApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "fb176381-6fe0-456d-87a3-bab73f422602", "3331d78f-81c3-4143-aa8a-4abf8149bc26", "ApplicationUser", "APPLICATIONUSER" });
+                values: new object[] { "da08536d-9e05-49b3-bfab-16bec5695ae4", "9441e545-0a0a-4e8f-8363-67a6ccf16f3e", "ApplicationUser", "APPLICATIONUSER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationUsers_ApplicationUserId",

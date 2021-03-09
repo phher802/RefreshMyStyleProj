@@ -48,8 +48,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "fb176381-6fe0-456d-87a3-bab73f422602",
-                            ConcurrencyStamp = "3331d78f-81c3-4143-aa8a-4abf8149bc26",
+                            Id = "da08536d-9e05-49b3-bfab-16bec5695ae4",
+                            ConcurrencyStamp = "9441e545-0a0a-4e8f-8363-67a6ccf16f3e",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
