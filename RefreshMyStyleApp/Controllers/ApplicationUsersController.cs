@@ -320,13 +320,7 @@ namespace RefreshMyStyleApp.Controllers
             //id = claimed.Id;
             var deleteClaimedImage = _context.ClaimedItems.Find(id);
             var image = _context.Images.Where(x => x.Id == deleteClaimedImage.ImageId).SingleOrDefault();
-            deleteClaimedImage.IsDeleted = true;
-
-            if (deleteClaimedImage.IsDeleted == true)
-            {
-                image.IsClaimed = false;
-
-            }
+            image.IsClaimed = false;
 
             _context.Images.Update(image);
             _context.ClaimedItems.Remove(deleteClaimedImage);
@@ -761,6 +755,10 @@ namespace RefreshMyStyleApp.Controllers
         public IActionResult DeleteLikedImage(int id)
         {
             var deleteLikedImage = _context.LikedItems.Find(id);
+            var image = _context.Images.Where(i => i.Id == deleteLikedImage.ImageId).FirstOrDefault();
+            image.IsLiked = false;
+
+            _context.Images.Update(image);
             _context.LikedItems.Remove(deleteLikedImage);
             _context.SaveChanges();
             return RedirectToAction(nameof(GetLikes));
