@@ -6,18 +6,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="reg-container">
-    <div style="padding-top: 5rem">
+<nav class="navbar navbar-expand-lg navbar-light nav-hover">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item" style="color: white">
+                    <a class="nav-link" style="color: white" asp-action="Index">
+                        Home
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<div class="container1">
+    <div>
         <h1>What's Your Name?</h1>
     </div>
 
     <hr />
 
-    <div>
-        <a asp-action="Index">
-            <button type="button" class="btn btn-outline-warning btn-event">Home</button>
-        </a>
-    </div>
     <div class="row">
         <div class="col-md-4">
             <form asp-action="Create">

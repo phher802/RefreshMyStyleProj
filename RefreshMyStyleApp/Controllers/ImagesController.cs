@@ -151,6 +151,7 @@ namespace RefreshMyStyleApp.Controllers
         // GET: Images/Edit/5
         public async Task<IActionResult> EditImage(int? id)
         {
+            ViewData["ItemStatus"] = ItemStatus();
             if (id == null)
             {
                 return NotFound();

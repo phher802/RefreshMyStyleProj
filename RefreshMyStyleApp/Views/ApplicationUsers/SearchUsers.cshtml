@@ -20,17 +20,18 @@
     </div>
 </nav>
 <div >
-    <h1 style="text-align:center">Clothing Enthusiasts</h1>
+    <h1 style="text-align:center; padding-top: 1rem; padding-bottom: 1rem">Clothing Enthusiasts</h1>
     <div class="container-fluid">     
         <table class="table" style="text-align: center">
             <thead>
                 <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.FName)
+                        @*@Html.DisplayNameFor(model => model.FullName)*@
+                        Name
                     </th>
-                    <th>
+                    @*<th>
                         @Html.DisplayNameFor(model => model.LName)
-                    </th>
+                    </th>*@
                     <th>
                         @Html.DisplayNameFor(model => model.ProfileImageName)
                     </th>
@@ -45,11 +46,11 @@
                     <tr>
 
                         <td>
-                            @Html.DisplayFor(modelItem => item.FName)
+                            @Html.DisplayFor(modelItem => item.FullName)
                         </td>
-                        <td>
+                        @*<td>
                             @Html.DisplayFor(modelItem => item.LName)
-                        </td>
+                        </td>*@
 
                         <td>
                             <p>

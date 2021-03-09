@@ -48,8 +48,8 @@ namespace RefreshMyStyleApp.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9bb4bd7f-e0b8-40f4-acb2-1a4cb806c98f",
-                            ConcurrencyStamp = "1bac6933-dc47-461a-b12d-cb93a6cd78a5",
+                            Id = "fb176381-6fe0-456d-87a3-bab73f422602",
+                            ConcurrencyStamp = "3331d78f-81c3-4143-aa8a-4abf8149bc26",
                             Name = "ApplicationUser",
                             NormalizedName = "APPLICATIONUSER"
                         });
@@ -285,13 +285,13 @@ namespace RefreshMyStyleApp.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("AttendeeId")
+                    b.Property<int?>("AttendeeId")
                         .HasColumnType("int");
 
                     b.Property<string>("AttendeeName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("EventId")
+                    b.Property<int?>("EventId")
                         .HasColumnType("int");
 
                     b.Property<int?>("EventViewModelId")

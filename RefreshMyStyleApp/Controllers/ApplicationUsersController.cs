@@ -46,7 +46,6 @@ namespace RefreshMyStyleApp.Controllers
             {
                 return RedirectToAction(nameof(Create));
             }
-
             applicationUserLoggedIn.FullName = applicationUserLoggedIn.FName + " " + applicationUserLoggedIn.LName;
             _context.ApplicationUsers.Update(applicationUserLoggedIn);
             _context.SaveChanges();
@@ -60,7 +59,7 @@ namespace RefreshMyStyleApp.Controllers
                 Images = _context.Images.Where(i => i.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
                 Likes = _context.LikedItems.Where(x => x.ImageId == applicationUserLoggedIn.Id).ToList(),
                 Posts = _context.Posts.Where(x => x.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
-                Comments = _context.Comments.Where(x => x.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
+                Comments = _context.Comments.Where(x => x.PostId == post.Id).ToList(),
                 //Comments = _context.Comments.Where(x => x.PostId == post.Id).ToList(),
             };
             return View(applicationUserImageViewModel);
@@ -76,8 +75,7 @@ namespace RefreshMyStyleApp.Controllers
             var appUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             var AppUserNotLoggedIn = _context.ApplicationUsers.Find(id);
             // var appUser = _context.ApplicationUsers.Where(a => a.Id == id).SingleOrDefault();
-            //var post = _context.Posts.Where(p => p.ApplicationUserId == appUser.Id).FirstOrDefault();
-
+            var post = _context.Posts.Where(p => p.ApplicationUserId == id).FirstOrDefault();
 
             ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
             {
@@ -87,9 +85,9 @@ namespace RefreshMyStyleApp.Controllers
                 Event = _context.Events.Where(e => e.EventCreatorId == id).FirstOrDefault(),
                 Events = _context.Events.Where(e => e.EventCreatorId == id).ToList(),
                 Attendees = _context.Attendees.Where(x => x.AttendeeId == appUserLoggedIn.Id).ToList(),
-                //Posts = posts,
-                Posts = _context.Posts.Where(x => x.ApplicationUserId == id).ToList(),
-                Comments = _context.Comments.Where(x => x.ApplicationUserId == id).ToList(),
+                Posts = _context.Posts.Where(x => x.ApplicationUserId == AppUserNotLoggedIn.Id).ToList(),
+                Comments = _context.Comments.Where(x => x.PostId == post.Id).ToList(),
+                //Comment = _context.Comments.Where(x => x.PostId == post.Id).FirstOrDefault(),
 
             };
 
@@ -517,11 +515,12 @@ namespace RefreshMyStyleApp.Controllers
             _context.SaveChanges();
             return View("Index");
         }
-        public IActionResult AddcommentToIndex(Comment comment)
+        public IActionResult AddCommentToIndex(int? id, Comment comment)
         {
+            id = comment.PostId;
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var appUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
-            Post postOwner = _context.Posts.Where(x => x.Id == comment.PostId).FirstOrDefault();
+            Post postOwner = _context.Posts.Where(x => x.Id == id).FirstOrDefault();
 
             Comment newComment = new Comment();
             newComment.PostId = comment.PostId;
@@ -557,7 +556,7 @@ namespace RefreshMyStyleApp.Controllers
             _context.SaveChanges();
             //return RedirectToAction();
 
-            id = postOwerId.Id;
+            //id = postOwerId.Id;
 
             return RedirectToAction("Details", new { Id = id });
         }
@@ -570,6 +569,14 @@ namespace RefreshMyStyleApp.Controllers
             _context.Comments.Remove(deleteComment);
             _context.SaveChanges();
             return RedirectToAction(nameof(Index));
+        }
+
+        public IActionResult DeleteCommentDetails(int id)
+        {
+            var deleteComment = _context.Comments.Find(id);
+            _context.Comments.Remove(deleteComment);
+            _context.SaveChanges();
+            return RedirectToAction(nameof(Details));
         }
 
         public IActionResult EventList()

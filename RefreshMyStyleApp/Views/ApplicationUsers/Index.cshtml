@@ -102,7 +102,6 @@
                         </div>
                         <div>
                             <div class="comment-container">
-
                                 @foreach (var comment in Model.Comments)
                                 {
                                     @if (comment.PostId == post.Id)
@@ -129,13 +128,13 @@
 
                             </div>
                             <div>
-                                <form asp-action="AddcommentToIndex" asp-controller="ApplicationUsers" method="post">
+                                <form asp-action="AddCommentToIndex" asp-controller="ApplicationUsers" method="post">
                                     <div>
                                         <input type="hidden" asp-for="Comment.PostId" value="@post.Id" />
                                         <textarea asp-for="Comment.CommentContent" maxlength="100" class="form-control" id="" placeholder="Comment..."></textarea>
                                     </div>
                                     <div>
-                                        <a asp-action="AddcommentToIndex" asp-controller="ApplicationUsers" asp-route-comment="@Model.Comment">
+                                        <a asp-action="AdCommentToIndex" asp-controller="ApplicationUsers" asp-route-id="@post.Id">
                                             <button type="submit">
                                                 Add comment
                                             </button>

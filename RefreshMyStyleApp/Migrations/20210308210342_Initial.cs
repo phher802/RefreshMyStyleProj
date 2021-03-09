@@ -233,8 +233,8 @@ namespace RefreshMyStyleApp.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AttendeeName = table.Column<string>(nullable: true),
-                    AttendeeId = table.Column<int>(nullable: false),
-                    EventId = table.Column<int>(nullable: false),
+                    AttendeeId = table.Column<int>(nullable: true),
+                    EventId = table.Column<int>(nullable: true),
                     EventViewModelId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
@@ -455,7 +455,7 @@ namespace RefreshMyStyleApp.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
-                values: new object[] { "9bb4bd7f-e0b8-40f4-acb2-1a4cb806c98f", "1bac6933-dc47-461a-b12d-cb93a6cd78a5", "ApplicationUser", "APPLICATIONUSER" });
+                values: new object[] { "fb176381-6fe0-456d-87a3-bab73f422602", "3331d78f-81c3-4143-aa8a-4abf8149bc26", "ApplicationUser", "APPLICATIONUSER" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ApplicationUsers_ApplicationUserId",
