@@ -86,7 +86,8 @@ namespace RefreshMyStyleApp.Controllers
                 Events = _context.Events.Where(e => e.EventCreatorId == id).ToList(),
                 Attendees = _context.Attendees.Where(x => x.AttendeeId == appUserLoggedIn.Id).ToList(),
                 Posts = _context.Posts.Where(x => x.ApplicationUserId == AppUserNotLoggedIn.Id).ToList(),
-                Comments = _context.Comments.Where(x => x.PostId == post.Id).ToList(),
+                //Comments = _context.Comments.Where(x => x.PostId == post?.Id).ToList(),
+                Comments = GetComments(post),
                 //Comment = _context.Comments.Where(x => x.PostId == post.Id).FirstOrDefault(),
 
             };
@@ -94,6 +95,14 @@ namespace RefreshMyStyleApp.Controllers
             return View(personViewModel);
         }
 
+        private List<Comment> GetComments(Post post)
+        {
+            if (post != null)
+            {
+               return  _context.Comments.Where(x => x.PostId == post.Id).ToList();
+            }
+            return new List<Comment>();
+        }
 
         // GET: ApplicationUser/Create
         public IActionResult Create()
