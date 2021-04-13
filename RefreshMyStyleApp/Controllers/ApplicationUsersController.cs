@@ -58,24 +58,22 @@ namespace RefreshMyStyleApp.Controllers
                 Images = _context.Images.Where(i => i.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
                 Likes = _context.LikedItems.Where(x => x.ImageId == applicationUserLoggedIn.Id).ToList(),
                 Posts = _context.Posts.Where(x => x.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
-                Comments = _context.Comments.Where(x => x.PostId == post.Id).ToList(),
+                Comments = GetComments(post),
                 //Comments = _context.Comments.Where(x => x.ApplicationUserId == applicationUserLoggedIn.Id).ToList(),
             };
 
             return View(applicationUserImageViewModel);
         }
 
-
-
         // GET: ApplicationUser/Details/5
         public IActionResult Details(int id)
         {
-
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var appUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             var AppUserNotLoggedIn = _context.ApplicationUsers.Find(id);
             // var appUser = _context.ApplicationUsers.Where(a => a.Id == id).SingleOrDefault();
             var post = _context.Posts.Where(p => p.ApplicationUserId == id).FirstOrDefault();
+            var currentEvent = _context.Events.Where(e => e.EventCreatorId == id).FirstOrDefault();
 
             ApplicationUserImageViewModel personViewModel = new ApplicationUserImageViewModel
             {
@@ -84,16 +82,27 @@ namespace RefreshMyStyleApp.Controllers
                 Images = _context.Images.Where(i => i.ApplicationUserId == id).ToList(),
                 Event = _context.Events.Where(e => e.EventCreatorId == id).FirstOrDefault(),
                 Events = _context.Events.Where(e => e.EventCreatorId == id).ToList(),
-                Attendees = _context.Attendees.Where(x => x.AttendeeId == appUserLoggedIn.Id).ToList(),
+                //Attendees = _context.Attendees.Where(x => x.AttendeeId == appUserLoggedIn.Id).ToList(),
                 Posts = _context.Posts.Where(x => x.ApplicationUserId == AppUserNotLoggedIn.Id).ToList(),
-                //Comments = _context.Comments.Where(x => x.PostId == post?.Id).ToList(),
                 Comments = GetComments(post),
+                Attendees = GetAttendees(currentEvent),
                 //Comment = _context.Comments.Where(x => x.PostId == post.Id).FirstOrDefault(),
 
             };
 
             return View(personViewModel);
         }
+
+        private List<AttendEvent> GetAttendees(Event newEvent){
+
+            if(newEvent != null)
+            {
+                return _context.Attendees.Where(x => x.AttendeeId == newEvent.Id).ToList();
+            }
+
+            return new List<AttendEvent>();
+        }
+      
 
         private List<Comment> GetComments(Post post)
         {
