@@ -97,7 +97,7 @@ namespace RefreshMyStyleApp.Controllers
 
             if(newEvent != null)
             {
-                return _context.Attendees.Where(x => x.AttendeeId == newEvent.Id).ToList();
+                return _context.Attendees.Where(x => x.EventId == newEvent.Id).ToList();
             }
 
             return new List<AttendEvent>();
