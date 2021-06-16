@@ -596,20 +596,44 @@ namespace RefreshMyStyleApp.Controllers
             var appUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             //var appUserNotLoggedIn = _context.ApplicationUsers.Find(id);
             var currentEvent = _context.Events.Where(e => e.EventCreatorId == appUserLoggedIn.Id).FirstOrDefault();
-           
-                
+
             EventViewModel eventViewModel = new EventViewModel
             {
                 ApplicationUser = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault(),
                 Event = _context.Events.Where(e => e.EventCreatorId == appUserLoggedIn.Id).FirstOrDefault(),
-                Events = _context.Events.Where(e => e.EventCreatorId == appUserLoggedIn.Id).ToList(),
-                Attendees = _context.Attendees.Where(x => x.EventId == currentEvent.Id).ToList(),
+                Events = GetEvents(),
+                Attendees = GetAttendees(currentEvent)
                
             };
 
             return View(eventViewModel);
         }
 
+        private List<Event> GetEvents()
+        {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var appUserLoggedIn = _context.ApplicationUsers.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            var events = _context.Events.Where(e => e.EventCreatorId == appUserLoggedIn.Id).ToList();
+
+            if ( events != null)
+            {
+                return _context.Events.Where(x => x.EventCreatorId == appUserLoggedIn.Id).ToList();
+            }
+          
+
+            return new List<Event>();
+        }
+
+        //private List<AttendEvent> GetAttendees(Event newEvent)
+        //{
+
+        //    if (newEvent != null)
+        //    {
+        //        return _context.Attendees.Where(x => x.EventId == newEvent.Id).ToList();
+        //    }
+
+        //    return new List<AttendEvent>();
+        //}
         public IActionResult CreateEvent()
         {
             ViewData["states"] = new List<string> { "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS",
