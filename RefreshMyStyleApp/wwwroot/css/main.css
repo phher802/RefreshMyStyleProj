@@ -56,9 +56,21 @@
     background-color: #f8dc81;
 }
 
-.navbar{
-    background-color: #a2d0c1;
-    width: auto; 
+nav {
+    width: 100%;
+    margin: 0%;
+}
+
+.container {
+    width: 100%;
+}
+
+.navbar {
+    /*background-color: #a2d0c1;*/
+    background-color: #39A6A3;
+    align-items: center;
+    padding-left: 1rem;
+   
 }
 
 .img-container {
@@ -74,6 +86,8 @@
 .container1 {
     margin: 2rem;
 }
+
+
 
 .reg-container button {
     background: none !important;
@@ -150,6 +164,5 @@
     color: #a2d0c1;
 }
 
-.navbar {
-    padding-left: 1rem;
-}
+
+
