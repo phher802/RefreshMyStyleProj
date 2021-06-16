@@ -206,25 +206,30 @@ namespace RefreshMyStyleApp.Controllers
         // GET: Images/Delete/5
         public IActionResult DeleteImage(int? id)
         {
+            var deleteImage = _context.Images.Find(id);
             var claimedItems = _context.ClaimedItems.Where(c => c.ImageId == id).FirstOrDefault();
             var likedItems = _context.LikedItems.Where(c => c.ImageId == id).FirstOrDefault();
+           
+            if(claimedItems != null)
+            {
+                _context.ClaimedItems.Remove(claimedItems);
+            }
 
+            if(likedItems != null)
+            {
+                _context.LikedItems.Remove(likedItems);
+            }
             try
             {
-                
-                var deleteImage = _context.Images.Find(id);
                 deleteImage.IsClaimed = false;
                 deleteImage.IsLiked = false;
 
-                _context.ClaimedItems.Remove(claimedItems);
-                _context.LikedItems.Remove(likedItems);
                 _context.Images.Remove(deleteImage);
                 _context.SaveChanges();
                 return RedirectToAction("Index", "ApplicationUsers");
             }
             catch (Exception)
             {
-              
                 throw;
             }
                    
