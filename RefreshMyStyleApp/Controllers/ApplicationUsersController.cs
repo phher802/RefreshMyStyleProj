@@ -624,16 +624,7 @@ namespace RefreshMyStyleApp.Controllers
             return new List<Event>();
         }
 
-        //private List<AttendEvent> GetAttendees(Event newEvent)
-        //{
-
-        //    if (newEvent != null)
-        //    {
-        //        return _context.Attendees.Where(x => x.EventId == newEvent.Id).ToList();
-        //    }
-
-        //    return new List<AttendEvent>();
-        //}
+    
         public IActionResult CreateEvent()
         {
             ViewData["states"] = new List<string> { "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "HI", "ID", "IL", "IN", "IA", "KS",
