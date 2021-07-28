@@ -36,13 +36,17 @@
 
 <div class="reg-container">
     <div class="row">
+       
         <div class="col-sm-4 detail-img-cont">
+            <div style="text-align: center">
+                <h3>Items</h3>
+            </div>
             @foreach (var img in Model.Images)
             {
                 <div>
-                    <div class="card h-100" style="padding-bottom: 0.3rem">
+                    <div class="card h-100 card-body" style="padding-bottom: 0.3rem">
                         <img src="~/images/items/@img.ImageFilePath" class="card-img-top img-fluid img-thumbnail" alt="@img.ImageName" />
-                        <div class="card-body">
+                        <div class="card-body d-flex">
                             <h5 class="card-title">@img.ImageName</h5>
                             <h6 class="card-subtitle mb-2 text-muted">@img.ClothingCategory</h6>
                             <p class="card-text"> @img.Description</p>
@@ -74,7 +78,7 @@
                                             </button>
                                         </a>
                                     }
-                                 
+
                                 </div>
                             </div>
 
@@ -114,9 +118,9 @@
                             else
                             {
                                 <a asp-action="GetAttendee" asp-controller="ApplicationUsers" asp-route-id="@e.EventCreatorId" type="button" class="btn btn-outline-warning btn-event">
-                             
-                                        Attend This Event
-                                   
+
+                                    Attend This Event
+
                                 </a>
                             }
 

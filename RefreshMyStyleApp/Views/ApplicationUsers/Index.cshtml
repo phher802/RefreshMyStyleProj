@@ -29,7 +29,7 @@
             {
                 <div>
                     <div class="col-sm-4">
-                        <div class="card" style="width: 15rem">
+                        <div class="card h-100 card-body" style="width: 15rem">
                             <img src="~/images/items/@item.ImageFilePath" alt="@item.ImageName" />
                             <div class="card-body">
                                 <h5 class="card-title">@item.ImageName</h5>
@@ -40,12 +40,12 @@
                                 <p class="card-text">Status: @item.ItemStatus</p>
                                 <div class="row">
                                     <div class="col-sm-8">
-                                        <a asp-action="DeleteImage" asp-controller="Images" asp-route-id="@item.Id">
-                                            Delete Image
+                                        <a type="button" class="btn btn-outline-success" asp-action="DeleteImage" asp-controller="Images" asp-route-id="@item.Id">
+                                            Delete
                                         </a>
                                     </div>
                                     <div class="col-sm-4">
-                                        <a type="submit" asp-action="EditImage" asp-controller="Images" asp-route-id="@item.Id" >
+                                        <a type="submit" class="btn btn-outline-success" asp-action="EditImage" asp-controller="Images" asp-route-id="@item.Id" >
                                                 Edit
                                         </a>
                                     </div>

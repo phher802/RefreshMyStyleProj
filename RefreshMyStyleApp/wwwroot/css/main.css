@@ -21,6 +21,21 @@
         border-color: #eff7e1;
     }
 
+.btn-outline-success {
+    color: black;
+    border-color: #f8dc81;
+    background-color: white;
+    border-width: thin;
+    margin-top: 1rem;
+}
+
+    .btn-outline-success:hover {
+        color: black;
+        background-color: #f8dc81;
+        border-color: #f8dc81;
+    }
+
+
 .accordion-header {
     background-color: #eff7e1;
 }

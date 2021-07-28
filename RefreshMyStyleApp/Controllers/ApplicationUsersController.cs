@@ -93,6 +93,7 @@ namespace RefreshMyStyleApp.Controllers
             return View(personViewModel);
         }
 
+ 
         private List<AttendEvent> GetAttendees(Event newEvent){
 
             if(newEvent != null)
